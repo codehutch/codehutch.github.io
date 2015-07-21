@@ -1,0 +1,39 @@
+FILES
+=====
+
+./fsblog.fsx
+root build file
+
+config.yml 
+is a YAML file that contains configuration settings used by FsBlog
+
+source : a root folder that contains main razor (index.cshtml) and Markdown (*.md) files to be processed when fake generate is run.
+blog : a folder that contains razor (.cshtml) and Markdown (.md) files to be processed as blog posts.
+themes : a folder contains FsBlog themes.
+
+content : a folder contains files for an ACTIVE theme. (don't edit, edit a theme and use it via config.yml)
+output : a folder contains generated static website.
+
+COMMANDS - NEW ITEMS
+====================
+
+./fake new post="post title"
+This will create a new file in the following location, ready for you to edit: ./source/blog/yyyy/MM-dd-title.md.
+
+./fake new page="about fsblog"
+Will create a new blank Markdown file in your blog's source files ready for you to author a non-post page of content.
+
+./fake new fsx="hello fsharp"
+Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post. 
+To find out more about using .fsx files as the source of your posts, check out F# Formatting: Literate programming.
+
+COMMANDS - OPS
+==============
+
+./fake generate
+
+./fake preview (calls generate too)
+
+./fake install theme="theme-name"
+Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
+themes folder. Please see the default theme for the sample.

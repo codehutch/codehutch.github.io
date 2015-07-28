@@ -30,6 +30,8 @@ To find out more about using .fsx files as the source of your posts, check out F
 COMMANDS - OPS
 ==============
 
+./build - build fsblog if contents of bin folder etc go astray.
+
 ./fake generate
 
 ./fake preview (calls generate too)

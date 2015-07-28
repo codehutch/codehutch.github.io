@@ -39,3 +39,5 @@ COMMANDS - OPS
 ./fake install theme="theme-name"
 Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
 themes folder. Please see the default theme for the sample.
+
+git push - on source branch - save source

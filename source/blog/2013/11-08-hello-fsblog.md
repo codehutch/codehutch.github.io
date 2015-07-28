@@ -6,7 +6,7 @@
     Description = "Introducing FsBlog - a blog-aware static site generator using F#.";
 }
 
-**FsBlog** aims to be a blog-aware static site generator, mostly built in `F#` for .NET and Mono developers. 
+**FsBlog** hutch_test aims to be a blog-aware static site generator, mostly built in `F#` for .NET and Mono developers. 
 
 <!--more-->
 

@@ -8,7 +8,7 @@ config.yml
 is a YAML file that contains configuration settings used by FsBlog
 
 source : a root folder that contains main razor (index.cshtml) and Markdown (*.md) files to be processed when fake generate is run.
-blog : a folder that contains razor (.cshtml) and Markdown (.md) files to be processed as blog posts.
+source/blog : a folder that contains razor (.cshtml) and Markdown (.md) files to be processed as blog posts.
 themes : a folder contains FsBlog themes.
 
 content : a folder contains files for an ACTIVE theme. (don't edit, edit a theme and use it via config.yml)
@@ -32,12 +32,17 @@ COMMANDS - OPS
 
 ./build - build fsblog if contents of bin folder etc go astray.
 
-./fake generate
+./fake.sh generate
 
-./fake preview (calls generate too)
+./fake.sh preview (calls generate too)
 
-./fake install theme="theme-name"
+./fake.sh install theme="theme-name"
 Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
 themes folder. Please see the default theme for the sample.
 
-git push - on source branch - save source
+SOURCE CONTROL & PUBLISHING
+===========================
+
+git push - save source (***on SOURCE branch  - FROM CYGWIN***)
+
+./fake.sh GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH *** WILL CREATE output FOLDER AND PUBLISH TO master***) 

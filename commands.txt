@@ -17,13 +17,13 @@ output : a folder contains generated static website.
 COMMANDS - NEW ITEMS
 ====================
 
-./fake new post="post title"
+./fake.sh new post="post title"
 This will create a new file in the following location, ready for you to edit: ./source/blog/yyyy/MM-dd-title.md.
 
-./fake new page="about fsblog"
+./fake.sh new page="about fsblog"
 Will create a new blank Markdown file in your blog's source files ready for you to author a non-post page of content.
 
-./fake new fsx="hello fsharp"
+./fake.sh new fsx="hello fsharp"
 Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post. 
 To find out more about using .fsx files as the source of your posts, check out F# Formatting: Literate programming.
 
@@ -43,6 +43,11 @@ themes folder. Please see the default theme for the sample.
 SOURCE CONTROL & PUBLISHING
 ===========================
 
-git push - save source (***on SOURCE branch  - FROM CYGWIN***)
+git push - save source (***on SOURCE branch ONLY *** - FROM CYGWIN***)
 
-./fake.sh GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH *** WILL CREATE output FOLDER AND PUBLISH TO master***) 
+./fake.sh GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH only *** WILL CREATE output FOLDER AND PUBLISH TO master***) 
+
+MAINTENANCE
+===========
+
+Need to periodically copy some of /content and /source back over /themes/progletariat, or re-install of theme will wipe content

@@ -2,14 +2,13 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://localhost:8080/FsBlog
+url: http://www.progletariat.com
 gitlocation: https://github.com/codehutch/codehutch.github.io.git
 gitbranch: master
 title: Progletariat
 description: >
-    Progletariat (/ˌproʊglɪˈtɛəriːət/): A term used to describe the class of wage-earners (especially programmers) in a
-    capitalist society whose only possession of significant material value is their labour-power (their ability to code).
-
+    Progletariat /ˌproʊglɪˈtɛəriːət/: A term used to describe the class of wage-earners (especially programmers) in a
+    capitalist society whose only possession of any perceived value is their labour-power (their ability to code).
 source: source/
 blog: source/blog/
 blogIndex: source/blog/index.cshtml

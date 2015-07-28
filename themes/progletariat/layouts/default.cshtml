@@ -6,8 +6,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>FsBlog</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Progletariat</title>
     <link rel="stylesheet" href="@Model.Root/stylesheets/styles.css">
     <link rel="stylesheet" href="@Model.Root/stylesheets/pygment_trac.css">
     <link rel="shortcut icon" href="@Model.Root/favicon.png">
@@ -23,15 +23,6 @@
   <body>
   	<div class="wrapper">
 	  <header>
-	  	  <a href="@Model.Root/index.html" class="falseheader">FsBlog</a>
-        <p>Blog aware, static site generation using F#.</p>
-
-        <p class="view"><a href="https://github.com/saxonmatt/FsBlog">View the Project on GitHub</a></p>
-        <ul>
-          <li><a href="https://github.com/saxonmatt/FsBlog">View On <strong>GitHub</strong></a></li>
-          <li><a href="https://github.com/saxonmatt/FsBlog/issues">Report a <strong>Bug</strong></a></li>
-          <li><a href="https://github.com/saxonmatt/FsBlog/issues/milestones">Check <strong>Progress</strong></a></li>
-        </ul>
         <h2>Recent posts</h2>
         @foreach (var post in Enumerable.Take(Model.Posts, 5))
     		{
@@ -42,10 +33,6 @@
       <section>
 		    @RenderBody()
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://twitter.com/mattdrivendev">MattDrivenDev</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
   	</div>
     <script src="@Model.Root/javascripts/scale.fix.js"></script>
   </body>

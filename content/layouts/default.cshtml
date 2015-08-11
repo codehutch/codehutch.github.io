@@ -7,32 +7,24 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Progletariat</title>
+	<title>@Title</title>
+  	<link rel="stylesheet" type="text/css" media="screen" href="/fsharp.formatting/tooltips.css" />
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
     <link rel="shortcut icon" href="/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!-- FSharp.Formatting Styles -->
-  	<link rel="stylesheet" type="text/css" media="screen" href="/fsharp.formatting/tooltips.css" />
   	<script type="text/javascript" src="/fsharp.formatting/tooltips.js"></script>
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+	@RenderBody()
   	<div class="wrapper">
-	  <header>
+	  <footer>
         <h2>Recent posts</h2>
         @foreach (var post in Enumerable.Take(Model.Posts, 10))
     		{
     		    <h3 class="h2link"><a href="/blog/@post.Url/index.html">@post.Title</a></h3>
     		    <p class="view"><small>@PostDate(post.Date)</small><br />@post.Abstract</p>
     		}
-      </header>
-      <section>
-		    @RenderBody()
-      </section>
+      </footer>
   	</div>
     <script src="/javascripts/scale.fix.js"></script>
   </body>

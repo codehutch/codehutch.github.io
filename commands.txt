@@ -18,21 +18,24 @@ COMMANDS - NEW ITEMS
 ====================
 
 ./fake.sh new post="post title"
-This will create a new file in the following location, ready for you to edit: ./source/blog/yyyy/MM-dd-title.md.
+This will create a new file in the following location, ready for you to edit: 
+Goes into ./source/blog/yyyy/MM-dd-title.md.
 
 ./fake.sh new page="about fsblog"
 Will create a new blank Markdown file in your blog's source files ready for you to author a non-post page of content.
+Goes into ./source/pageTitle/index.md
 
 ./fake.sh new fsx="hello fsharp"
 Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post. 
 To find out more about using .fsx files as the source of your posts, check out F# Formatting: Literate programming.
+Goes into ./source/blog/yyyy/MM-dd-title.fsx
 
 COMMANDS - OPS
 ==============
 
 ./build - build fsblog if contents of bin folder etc go astray.
 
-./fake.sh generate
+./fake.sh generate 
 
 ./fake.sh preview (calls generate too)
 

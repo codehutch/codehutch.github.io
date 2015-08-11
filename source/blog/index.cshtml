@@ -6,7 +6,11 @@
 
 @using System.Linq
 
+<ul>
+
 @foreach (var post in Enumerable.Take(Model.Posts, 10000))
 {
-    <a href="blog/@post.Url/index.html">@post.Title</a>
+    <li><a href="blog/@post.Url/index.html">@post.Title</a></li>
 }
+
+</ul>

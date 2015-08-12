@@ -15,17 +15,17 @@
   	<script type="text/javascript" src="/fsharp.formatting/tooltips.js"></script>
   </head>
   <body>
+	<h1>
+		<div>
+			Pro<i>g</i>letariat
+		</div>
+	</h1>
 	@RenderBody()
-  	<div class="wrapper">
-	  <footer>
-        <h2>Recent posts</h2>
-        @foreach (var post in Enumerable.Take(Model.Posts, 10))
-    		{
-    		    <h3 class="h2link"><a href="/blog/@post.Url/index.html">@post.Title</a></h3>
-    		    <p class="view"><small>@PostDate(post.Date)</small><br />@post.Abstract</p>
-    		}
-      </footer>
-  	</div>
+	<footer>
+	    <div>
+			Text: &copy; Andy Hutchinson 2015
+		</div>
+    </footer>
     <script src="/javascripts/scale.fix.js"></script>
   </body>
 </html>

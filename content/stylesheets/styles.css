@@ -161,8 +161,7 @@ table,
 table.pre {
 	width: 100%;
 	max-width: 1200px;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 1.75rem auto 1.75rem auto;
 }
 
 th {
@@ -170,16 +169,19 @@ th {
 	color: white;
 }
 
-td:nth-child(3n) {
-	background-color: rgb(235, 189, 49);
-}
-
-td:nth-child(3n+1) {
-	background-color: rgb(50, 157, 202);
-}
-
-td:nth-child(3n+2) {
+td:nth-child(even) {
 	background-color: rgb(204, 223, 80);
+	color: rgb(10, 29, 45);
+}
+
+td:nth-child(odd) {
+	background-color: rgb(235, 189, 49);
+	color: rgb(10, 29, 45);
+}
+
+td:nth-child(1) {
+	background-color: skyblue;
+	color: rgb(10, 29, 45);
 }
 
 ul {
@@ -194,6 +196,27 @@ blockquote {
     font-family: 'Gentium Book Basic', serif;
 	font-weight: normal;
 	font-style: italic;
+}
+
+footer {
+    padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+    font-family: 'Open Sans', sans-serif;
+	font-size: 12pt;
+	font-weight: normal;
+	margin: 0;
+	margin-top: 1rem;
+	color: white;
+	background-color: rgb(10, 29, 45);
+    border-top: 2px solid rgb(50, 157, 202);
+}
+
+a {
+	color: rgb(50, 157, 202);
+}
+
+a:visited {
+	color: rgb(148, 48, 179);
 }
 
 .definitionTerm  {

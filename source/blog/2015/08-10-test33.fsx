@@ -89,6 +89,20 @@ to [fork the project on GitHub][fs] and add more
 features or report bugs!
 
   [fs]: https://github.com/tpetricek/FSharp.Formatting
+  
+#### _Tables_ ####
+
+fruit |price|colour     |climate   | description                                  |
+------|----:|-----------|:--------:|----------------------------------------------|
+apple |2.05 |green/red  |temperate |a fairly boring and not very tasty fruit      |
+pear  |1.37 |green/brown|temperate |good mainly for making cider                  |
+orange|3.09 |orange     |tropical  |very tasty, but blighted by being hard to peel|
+banana|2.42 |yellow     |tropical  |both tasty and easy to peel                   |
+
+### _Block **QUOTES**_ ###
+
+> This is a blockquote
+> what happens with it?  
 
 *)
 

@@ -4,24 +4,39 @@
     Description = "A blog mostly about F#";
 }
 
-<h1>Progletariat</h1>
+@using System.Linq
 
-<h2 class="fancy">/ˌprəʊglɪˈtɛəriːət/ n. </h2>
+<h2>
 
-<p>
-    A term used to describe the class of wage-earners (especially programmers) in a
-    capitalist society whose only possession of any perceived value is their labour-power 
-	(their ability to code).
-</p>
+    <div class="definitionTerm">
+		/ˌprəʊglɪˈtɛəriːət/ n.
+	</div>
+    <div class="definition">
+	    <span class="definitionNumber">1.</span>
+		A term used to describe the class of wage-earners in a capitalist society whose only skill
+		of any perceived value is their ability to write computer programmes.
+	</div>
+    <div class="definition">
+	    <span class="definitionNumber">2.</span>
+		Those of us yet to attain functional righteousness (myself included).
+	</div>
+
+</h2>
+
+<h3>
+	Posts
+</h3>
+
+<ul>
+
+@foreach (var post in Enumerable.Take(Model.Posts, 10000))
+{
+    <li><a href="blog/@post.Url/index.html">@post.Title</a></li>
+}
+
+</ul>
 
 <p>
 	There's not much here yet.
 </p>
 
-<p>
-    Proudly made in North Yorkshire, UK.
-</p>
-
-<h2>Posts</h2>
-
-<p><a href="/blog/index.html">Here they all aren't</p>

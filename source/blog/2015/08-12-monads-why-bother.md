@@ -53,4 +53,6 @@ Non-relationship of >> to >>=
 
 Enlightenment. Transcendental
 
-This needs finishing...
+This is only one view of Monads. Original source (mathematical, haskall, didn't understand all the maths or all the haskall)
+Other links.
+

@@ -1,7 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic|Open+Sans:400,800);
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-	margin: 0;
+	margin: 0 0 2.5rem 0;
 	padding: 1.0rem 2.0rem 1.0rem 2.0rem;
 	font-size: 16pt;
 	color: rgb(10, 29, 45);
@@ -199,6 +204,11 @@ blockquote {
 }
 
 footer {
+	position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1.5rem;
+    width: 100%;
     padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
     font-family: 'Open Sans', sans-serif;

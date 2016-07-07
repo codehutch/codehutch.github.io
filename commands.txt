@@ -32,14 +32,15 @@ Goes into ./source/blog/yyyy/MM-dd-title.fsx
 
 COMMANDS - OPS
 ==============
-
-./build - build fsblog if contents of bin folder etc go astray.
+Rebuild - .paket\paket.bootstrapper.exe
+          .paket\paket.exe update
+          (rebuild in visual studio by opening solution file, after updating dependencies)
 
 ./fake.sh generate 
 
 ./fake.sh preview (calls generate too)
 
-./fake.sh install theme="theme-name"
+./fake.sh install theme="theme-name"   ## remember that installing a new theme **WILL** wipe out changes to content directory ##
 Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
 themes folder. Please see the default theme for the sample.
 

@@ -1,0 +1,24 @@
+https://jaspervdj.be/hakyll/examples.html - Hakyll
+http://cryogenweb.org/docs/writing-posts.html - Clojure
+https://github.com/arnolddevos/Soapbox - Scala
+https://github.com/padurean/scalatic - Scala
+https://github.com/wspringer/monkeyman - Scala
+
+Haskell
+=======
+
+stack new hb
+cd hb
+stack setup
+stack build
+stack exec my-project-exe
+stack install hakyll
+
+hakyll-init hbSite
+cd hbSite
+stack init
+stack build
+
+stack exec site build
+stack exec site watch
+http://localhost:8000/

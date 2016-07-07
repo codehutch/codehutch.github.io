@@ -1,7 +1,7 @@
 source https://nuget.org/api/v2
 
 nuget FSharp.Configuration
-nuget FSharp.Formatting !~> 2.4.0
+nuget FSharp.Formatting !~> 2.14.3
 nuget FsUnit.xUnit
 nuget xunit.runners
 nuget NuGet.CommandLine

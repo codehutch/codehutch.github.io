@@ -1,3 +1,15 @@
+/**
+* Progletariat.com Blog CSS
+*
+* Copyright Andy Hutchinson 2015
+*
+* You are welcome to lift the layout, but please change the 
+* colours and fonts to make it a bit different.
+*
+* This CSS is a bit strange as it needs to be compatible with
+* the output of a markdown -> html processor.
+*/
+
 @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic|Open+Sans:400,800);
 
 html {
@@ -151,22 +163,31 @@ div {
 }
 
 code, pre {
-  font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', 'Droid Sans Mono', Terminal, 'Lucida Grande', monospace;  
-  font-size: 0.9em;
+  font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', 'Droid Sans Mono', Terminal, 'Lucida Grande', monospace; 
+  font-size: 15px;  
   padding:2px 3px;
   color:#d14;
-  background-color:#f7f7f9;
-  border:1px solid #e1e1e8;
   -webkit-border-radius:3px;
   -moz-border-radius:3px;
   border-radius:3px;
+  column-count: 1;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+}
+
+.hljs {
+  background-color: #212d30;
 }
 
 table,
 table.pre {
-	width: 100%;
+	width: 95%;
 	max-width: 1200px;
 	margin: 1.75rem auto 1.75rem auto;
+}
+
+td.lines {
+    display: none;	
 }
 
 th {
@@ -187,6 +208,14 @@ td:nth-child(odd) {
 td:nth-child(1) {
 	background-color: skyblue;
 	color: rgb(10, 29, 45);
+}
+
+table.pre td {
+    background-color: inherit;	
+}
+
+table.pre, pre.fssnip, pre, .hljs {
+	
 }
 
 ul {

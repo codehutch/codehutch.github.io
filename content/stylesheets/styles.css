@@ -175,8 +175,27 @@ code, pre {
   -moz-column-count: 1;
 }
 
-.hljs {
+code.fsharp {
+  background-image: url("/images/fsharpLogo.png");
+}
+
+code.clojure {
+  background-image: url("/images/clojureLogo.png");
+}
+
+code.haskell {
+  background-image: url("/images/haskellLogo.svg");
+}
+
+code.scala {
+  background-image: url("/images/scalaLogo.png");
+}
+
+code.hljs {
   background-color: #212d30;
+  background-repeat: no-repeat;
+  background-position: right top; 
+  background-size: 64px 64px;
 }
 
 table,
@@ -184,6 +203,19 @@ table.pre {
 	width: 95%;
 	max-width: 1200px;
 	margin: 1.75rem auto 1.75rem auto;
+}
+
+table.pre caption {
+	font-size: 15px;
+	background-color: white;
+	color: rgb(10, 29, 45);
+	border-radius: 7px;
+	float: right;
+	text-align: center;
+}
+
+table.pre tbody {
+    width: 100%; 
 }
 
 td.lines {

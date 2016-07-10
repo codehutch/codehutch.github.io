@@ -9,8 +9,13 @@
 ** _multifunctional:_ LISTS **
 ------------------------------
 
+Here's some introduction. Here's a longer list of stuff it goes on and on for a while...
 
-Here's some F#
+~~~~haskell
+
+doubleMe x = x + x
+
+~~~~
 
 ~~~~fsharp
 
@@ -20,8 +25,6 @@ let b = 2
 
 ~~~~
 	
-Here's some scala
-
 ~~~~scala
 
 def max(x: Int, y: Int): Int = {
@@ -36,8 +39,6 @@ def max2(x: Int, y: Int): Int = {
 
 ~~~~
 
-Here's some clojure
-
 ~~~~clojure
 
 (ns clojure-noob.core
@@ -50,10 +51,4 @@ Here's some clojure
 
 ~~~~
 
-Here's some haskell
-
-~~~~haskell
-
-doubleMe x = x + x
-
-~~~~
+Here's the conclusion

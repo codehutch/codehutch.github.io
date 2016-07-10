@@ -146,6 +146,17 @@ p {
     padding-right: 2rem;
 }
 
+p.noCols {
+	column-count: 1;
+	-webkit-column-count: 1;
+	-moz-column-count: 1;
+    max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
 table p {
 	column-count: 1;
 	-webkit-column-count: 1;
@@ -198,11 +209,14 @@ code.hljs {
   background-size: 64px 64px;
 }
 
-table,
-table.pre {
+table {
 	width: 95%;
 	max-width: 1200px;
 	margin: 1.75rem auto 1.75rem auto;
+}
+
+table.pre {
+	width: 95%;
 }
 
 table.pre caption {
@@ -210,12 +224,40 @@ table.pre caption {
 	background-color: white;
 	color: rgb(10, 29, 45);
 	border-radius: 7px;
-	float: right;
+	float: left;
 	text-align: center;
 }
 
 table.pre tbody {
     width: 100%; 
+}
+
+table.haskell {
+	float: left; 
+	width: 46%;
+	max-width: 500px;
+	margin: 1rem auto 1rem auto;
+}
+
+table.fsharp {
+	float: right; 
+	width: 46%;	
+	max-width: 500px;
+	margin: 1rem auto 1rem auto;
+}
+
+table.scala {
+	float: left; 
+	width: 46%;	
+	max-width: 500px;
+	margin: 1rem auto 1rem auto;
+}
+
+table.clojure {
+	float: right; 
+	width: 46%;	
+	max-width: 500px;
+	margin: 1rem auto 1rem auto;
 }
 
 td.lines {
@@ -244,10 +286,6 @@ td:nth-child(1) {
 
 table.pre td {
     background-color: inherit;	
-}
-
-table.pre, pre.fssnip, pre, .hljs {
-	
 }
 
 ul {

@@ -1,0 +1,57 @@
+FILES
+=====
+
+./fsblog.fsx
+root build file
+
+config.yml 
+is a YAML file that contains configuration settings used by FsBlog
+
+source : a root folder that contains main razor (index.cshtml) and Markdown (*.md) files to be processed when fake generate is run.
+source/blog : a folder that contains razor (.cshtml) and Markdown (.md) files to be processed as blog posts.
+themes : a folder contains FsBlog themes.
+
+content : a folder contains files for an ACTIVE theme. (don't edit, edit a theme and use it via config.yml)
+output : a folder contains generated static website.
+
+COMMANDS - NEW ITEMS
+====================
+
+./fake.sh new post="post title"
+This will create a new file in the following location, ready for you to edit: 
+Goes into ./source/blog/yyyy/MM-dd-title.md.
+
+./fake.sh new page="about fsblog"
+Will create a new blank Markdown file in your blog's source files ready for you to author a non-post page of content.
+Goes into ./source/pageTitle/index.md
+
+./fake.sh new fsx="hello fsharp"
+Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post. 
+To find out more about using .fsx files as the source of your posts, check out F# Formatting: Literate programming.
+Goes into ./source/blog/yyyy/MM-dd-title.fsx
+
+COMMANDS - OPS
+==============
+Rebuild - .paket\paket.bootstrapper.exe
+          .paket\paket.exe update
+          (rebuild in visual studio by opening solution file, after updating dependencies)
+
+./fake.sh generate 
+
+./fake.sh preview (calls generate too)
+
+./fake.sh install theme="theme-name"   ## remember that installing a new theme **WILL** wipe out changes to content directory ##
+Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
+themes folder. Please see the default theme for the sample.
+
+SOURCE CONTROL & PUBLISHING
+===========================
+
+git push - save source (***on SOURCE branch ONLY *** - FROM CYGWIN***)
+
+./fake.sh GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH only *** WILL CREATE output FOLDER AND PUBLISH TO master***) 
+
+MAINTENANCE
+===========
+
+Need to periodically copy some of /content and /source back over /themes/progletariat, or re-install of theme will wipe content

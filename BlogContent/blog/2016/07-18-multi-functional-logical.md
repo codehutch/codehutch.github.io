@@ -1,24 +1,25 @@
 @{
     Layout = "post";
-    Title = "multi-functional-lists";
-    Date = "2016-07-01T10:05:10";
+    Title = "multi-functional-logical";
+    Date = "2016-07-18T08:38:02";
     Tags = "";
-    Description = "Lists in Haskell / F# / Scala / Clojure";
+    Description = "Logical operators in Haskell / F# / Scala / Clojure";
 }
 
-** _multifunctional:_ LISTS **
-------------------------------
+** _multifunctional:_ LOGICAL OPERATORS **
+------------------------------------------
 
-##### Creating Lists #####
-
-<p class="noCols">
-Here's some introduction. Here's a longer list of stuff it goes on and on for a while...
-</p>
+##### And / Or / Not #####
 
 <div class="flex">
   
 ~~~~haskell                           
-                  
+                 
+True && False  
+True || False   
+not False    
+not (True && False)  
+                   
 ~~~~                                  
   
 ~~~~fsharp                     
@@ -35,7 +36,7 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 
 </div>
 
-### _Some aspect **of** lists_ ###
+### _Some aspect **of** logic_ ###
 
 ##### Stuff #####
 
@@ -59,31 +60,9 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 
 </div>
 
-#### _Some other aspect **of** lists_ ####
+#### _Some other aspect **of** logic_ ####
 
 ##### More Stuff #####
-
-<div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
-
-~~~~
-
-~~~~scala
-
-~~~~
-
-~~~~clojure
-
-~~~~
-
-</div>
-
-##### Yet More Stuff #####
 
 <div class="flex">
   

@@ -1,24 +1,20 @@
 @{
     Layout = "post";
-    Title = "multi-functional-lists";
-    Date = "2016-07-01T10:05:10";
+    Title = "multi-functional-<<<<<title>>>>>";
+    Date = "2016-07-18T08:38:02";
     Tags = "";
-    Description = "Lists in Haskell / F# / Scala / Clojure";
+    Description = "<<<<<title>>>>> in Haskell / F# / Scala / Clojure";
 }
 
-** _multifunctional:_ LISTS **
-------------------------------
+** _multifunctional:_ <<<<<title>>>>> **
+------------------------------------------
 
-##### Creating Lists #####
-
-<p class="noCols">
-Here's some introduction. Here's a longer list of stuff it goes on and on for a while...
-</p>
+##### Whatever #####
 
 <div class="flex">
   
 ~~~~haskell                           
-                  
+                                    
 ~~~~                                  
   
 ~~~~fsharp                     
@@ -35,7 +31,7 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 
 </div>
 
-### _Some aspect **of** lists_ ###
+### _Some aspect **of** <<<<<title>>>>>_ ###
 
 ##### Stuff #####
 
@@ -59,31 +55,9 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 
 </div>
 
-#### _Some other aspect **of** lists_ ####
+#### _Some other aspect **of** <<<<<title>>>>>_ ####
 
 ##### More Stuff #####
-
-<div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
-
-~~~~
-
-~~~~scala
-
-~~~~
-
-~~~~clojure
-
-~~~~
-
-</div>
-
-##### Yet More Stuff #####
 
 <div class="flex">
   

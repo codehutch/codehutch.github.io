@@ -7,22 +7,28 @@
 }
 
 ** _multifunctional:_ MAPS **
-------------------------------------------
+---------------------------------------------------------------------
 
 ##### Creating #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                    
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+import qualified Data.Map as Map
+
+let bovineness = Map.insert "Cow" 9 . Map.insert "Car" 0 $ Map.empty
+
+let fruitAcceptability = Map.fromList [("Apple", 4),("Orange",7)]
+
+~~~~
+
+~~~~fsharp
 
 let annoyingness = Map.empty
                       .Add("Fish", 0)
                       .Add("Bee", 9)
-					  
+
 let niceness = [("Cream Egg", 7); ("Mini Egg", 8)] |> Map.ofList
 
 ~~~~
@@ -44,12 +50,12 @@ var annoyingness=Map("Cat" -> 3, "Dog" -> 7)
 ##### Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -68,12 +74,12 @@ var annoyingness=Map("Cat" -> 3, "Dog" -> 7)
 ##### More Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 

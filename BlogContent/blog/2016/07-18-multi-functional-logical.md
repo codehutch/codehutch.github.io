@@ -1,7 +1,7 @@
 @{
     Layout = "post";
-    Title = "multi-functional-logical";
-    Date = "2016-07-18T08:38:02";
+    Title = "multi-functional-logical-operators";
+    Date = "2099-07-18T08:38:02";
     Tags = "";
     Description = "Logical operators in Haskell / F# / Scala / Clojure";
 }
@@ -12,17 +12,17 @@
 ##### And / Or / Not #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                 
-True && False  
-True || False   
-not False    
-not (True && False)  
-                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+True && False
+True || False
+not False
+not (True && False)
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -41,12 +41,12 @@ not (True && False)
 ##### Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -65,12 +65,12 @@ not (True && False)
 ##### More Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 

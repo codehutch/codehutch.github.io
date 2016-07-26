@@ -22,30 +22,30 @@
 <h5>
 
     Intended Purpose
-	
+
 </h5>
 
-<p>	
-	
-	This blog is here to share some love for the particularly fine functional programming language, 
+<p>
+
+	This blog is here to share some love for the particularly fine functional programming language,
 	<a href=http://www.fsharp.org>F#</a>
-	
-	
+
+
 	C# / Java - like writing an essay.
 	F# / Scala - like writing a poem / song lyrics (actually nothing like that, but quicker to get your point accross).
 	             Mainly because the type-system is more flexible
-	
+
 	Trying to get better at drawing
 
 	Go one paragraph. Have 2/3 text and 1/3 images, every paragraph. Use dave^2 image convertion to svg.
 
 	Link on H1 to home.
 	Link to blog source.
-	
+
 	Fix root domain forwarding. Delete and reapply.
 
 	This needs finishing....
-	
+
 </p>
 
 <h3>
@@ -56,7 +56,10 @@
 
 @foreach (var post in Enumerable.Take(Model.Posts, 10000))
 {
-    <li><a href="blog/@post.Url/index.html">@post.Title</a></li>
+    @if(post.Date < DateTime.Now)
+	{
+		<li><a href="blog/@post.Url/index.html">@post.Title.Replace("-", " ").Replace("multi functional", "Multifunctional:") - @post.Description</a></li>
+	}
 }
 
 </ul>

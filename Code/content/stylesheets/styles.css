@@ -3,7 +3,7 @@
 *
 * Copyright Andy Hutchinson 2015
 *
-* You are welcome to lift the layout, but please change the 
+* You are welcome to lift the layout, but please change the
 * colours and fonts to make it a bit different.
 *
 * This CSS is a bit strange as it needs to be compatible with
@@ -37,6 +37,27 @@ h1 {
 	width: 100%;
 	color: white;
 	background-color: rgb(10, 29, 45);
+}
+
+h1 div a {
+	text-decoration: none;
+	color: white;
+	transition: color 0.2s ease;
+}
+
+h1 div a:visited {
+	text-decoration: none;
+	color: white;
+}
+
+h1 div a:hover {
+	text-decoration: none;
+	color: rgb(235, 189, 49);
+}
+
+h1 div a:active {
+	text-decoration: none;
+	color: rgb(204, 223, 80);
 }
 
 h2 {
@@ -122,13 +143,13 @@ table p {
 
 div.flex {
     display: flex;
-    flex-wrap: wrap;	
+    flex-wrap: wrap;
     align-items: stretch;
 }
 
 code, pre.fssnip, pre.highlighted {
-  font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', 'Droid Sans Mono', Terminal, 'Lucida Grande', monospace; 
-  font-size: 15px;  
+  font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', 'Droid Sans Mono', Terminal, 'Lucida Grande', monospace;
+  font-size: 15px;
   padding:2px 3px;
   color:#d14;
   background-color: transparent;
@@ -153,7 +174,7 @@ table {
 table.pre {
 	width: auto;
     background-repeat: no-repeat;
-    background-position: right 5px top 5px; 
+    background-position: right 5px top 5px;
     background-size: 48px 48px;
 	background-color: #212d30;
 	margin: 0rem auto 0.5rem auto !important;
@@ -163,7 +184,7 @@ table.pre {
 
 table.pre caption {
 	font-family: 'Open Sans', sans-serif;
-	font-weight: 800;	
+	font-weight: 800;
 	font-size: 15px;
 	background-color: white;
 	color: rgb(10, 29, 45);
@@ -192,7 +213,7 @@ table.scala {
 }
 
 td.lines {
-    display: none;	
+    display: none;
 }
 
 th {
@@ -216,10 +237,10 @@ td:nth-child(1) {
 }
 
 table.pre td {
-    background-color: inherit;	
+    background-color: inherit;
 }
 
-ul {
+ul li {
 	padding-left: 2rem !important;
 }
 
@@ -248,11 +269,20 @@ footer {
 }
 
 a {
+	transition: color 0.2s ease;
 	color: rgb(50, 157, 202);
 }
 
 a:visited {
 	color: rgb(148, 48, 179);
+}
+
+a:hover {
+	color: rgb(235, 189, 49);
+}
+
+a:active {
+	color: rgb(204, 223, 80);
 }
 
 .definitionTerm  {
@@ -307,7 +337,6 @@ a:visited {
 	background-color: rgb(10, 29, 45);
 }
 
-
 @media screen and (min-width: 1100px) {
   p {
 	column-count: 2;
@@ -338,16 +367,16 @@ h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul {
 
 @media screen and (min-width: 1850px) {
   h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 1600px; }
-}	
+}
 
 @media screen and (min-width: 2350px) {
   h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 2100px; }
-}	
+}
 
 @media screen and (min-width: 2850px) {
   h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 2600px; }
-}	
+}
 
 @media screen and (min-width: 3350px) {
   h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 3100px; }
-}	
+}

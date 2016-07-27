@@ -25,12 +25,14 @@ them for what the really are, and put them at our own disposal.
 
 ##### Heaven and Hell #####
 
+[test link](/index.html). [test link not visited](/index2.html)
+
 Monads help bridge the gap between the utopia that we would like to code in
 (heaven) and the depressingly complicated reality that we unfortunately have
 to deal with (hell). Here are some examples of this duality:
 
 | Situation      | Heaven                                                         | Hell                                                     |
-|----------------|----------------------------------------------------------------|----------------------------------------------------------| 
+|----------------|----------------------------------------------------------------|----------------------------------------------------------|
 | Validation     | Users can only enter valid input. There is no need to validate | User input may be invalid in thousands of different ways |
 | Error Handling | Nothing can possibly go wrong or be mis-configured             | Database connections may drop. Files always exist        |
 
@@ -43,10 +45,12 @@ But that is dogma. The Monadic Type is dirty and unclean, Monads primary
 benefit is to prevent you from having to get your hands dirty in the
 grubby, depressing Hell of the Monadic Type.
 
+[test link](/index.html). [test link not visited](/index2.html)
+
 #### _Which type of **HELL** would you like?_ ####
 
 | Situation  | Heaven Type (a.k.a. Plain Type)  | Hell Type (a.k.a. Monadic Type / Elevated Type / ... do more) |
-|------------|----------------------------------|---------------------------------------------------------------| 
+|------------|----------------------------------|---------------------------------------------------------------|
 | Validation | Users only enter valid input.    | Users enter a myriad of errors                                |
 
 Non-relationship of >> to >>=

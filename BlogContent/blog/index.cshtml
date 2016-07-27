@@ -6,11 +6,23 @@
 
 @using System.Linq
 
+<h2>
+
+    <div>
+	  Blog
+	</div>
+
+</h2>
+
+<h3>
+	<em>Posts</em>
+</h3>
+
 <ul>
 
 @foreach (var post in Enumerable.Take(Model.Posts, 10000))
 {
-    <li><a href="blog/@post.Url/index.html">@post.Title</a></li>
+	<li><a href="@post.Url/index.html">@post.Title.Replace("-", " ").Replace("multi functional", "Multifunctional:") - @post.Description</a></li>
 }
 
 </ul>

@@ -21,7 +21,7 @@
   <body>
 	<h1>
 		<div>
-			Pro<i>g</i>letariat
+			<a href="/index.html">Pro<i>g</i>letariat</a>
 		</div>
 	</h1>
 	@RenderBody()
@@ -31,20 +31,20 @@
 		</div>
     </footer>
     <script src="/javascripts/scale.fix.js"></script>
-  
+
     <script>
-	
+
 		function addCaption(ele) {
-		
+
 			var table = ele.parentElement.parentElement.parentElement.parentElement.parentElement;
 			var caption = document.createElement("caption");
 			var codeClass = ele.className.replace('hljs', '');
-			
+
 			caption.innerHTML = codeClass;
 			table.insertBefore(caption, table.firstChild);
 			table.className += ' ' + codeClass;
 		}
-	
+
 		var codeBlocks = document.getElementsByTagName('code');
 
 		for (var i = 0; i < codeBlocks.length; i++) {
@@ -53,8 +53,8 @@
 			addCaption(codeBlocks[i]);
 		}
 
-		
 
-	</script>  
+
+	</script>
   </body>
 </html>

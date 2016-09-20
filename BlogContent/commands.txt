@@ -4,7 +4,7 @@ FILES
 ./fsblog.fsx
 root build file
 
-config.yml 
+config.yml
 is a YAML file that contains configuration settings used by FsBlog
 
 source : a root folder that contains main razor (index.cshtml) and Markdown (*.md) files to be processed when fake generate is run.
@@ -14,11 +14,17 @@ themes : a folder contains FsBlog themes.
 content : a folder contains files for an ACTIVE theme. (don't edit, edit a theme and use it via config.yml)
 output : a folder contains generated static website.
 
+EMACS
+=====
+cygwin
+go
+runemacs
+
 COMMANDS - NEW ITEMS
 ====================
 
 ./fake new post="post title"
-This will create a new file in the following location, ready for you to edit: 
+This will create a new file in the following location, ready for you to edit:
 Goes into ./source/blog/yyyy/MM-dd-title.md.
 
 ./fake new page="about fsblog"
@@ -26,7 +32,7 @@ Will create a new blank Markdown file in your blog's source files ready for you 
 Goes into ./source/pageTitle/index.md
 
 ./fake new fsx="hello fsharp"
-Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post. 
+Will create a new blank .fsx file in your blog's source files ready for you to hack away at your next code-heavy blog post.
 To find out more about using .fsx files as the source of your posts, check out F# Formatting: Literate programming.
 Goes into ./source/blog/yyyy/MM-dd-title.fsx
 
@@ -36,12 +42,12 @@ Rebuild - .paket\paket.bootstrapper.exe
           .paket\paket.exe update
           (rebuild in visual studio by opening solution file, after updating dependencies)
 
-./fake generate 
+./fake generate
 
 ./fake preview (calls generate too)
 
 ./fake install theme="theme-name"   ## remember that installing a new theme **WILL** wipe out changes to content directory ##
-Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in 
+Once the new theme is installed, FsBlog will use the theme to generate the entire site. Themes are located in
 themes folder. Please see the default theme for the sample.
 
 SOURCE CONTROL & PUBLISHING
@@ -51,10 +57,10 @@ git push - save source (***on SOURCE branch ONLY *** - FROM CYGWIN***)
 
 ./fake GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH only *** WILL CREATE output FOLDER called "deploy" AND attempt to PUBLISH TO master***)
                    - usually fails, leaving generated files in "deploy", but console session still on source branch.
-                   - cd into "deploy" - "deploy" is a git repo in its own right and only has the master branch. 
+                   - cd into "deploy" - "deploy" is a git repo in its own right and only has the master branch.
                          (so when cd into "deploy", are automatically on the master branch).
                    - git push...
-                   - cd back out of "deploy", should be back on source branch, but check.				   
+                   - cd back out of "deploy", should be back on source branch, but check.
 
 MAINTENANCE
 ===========

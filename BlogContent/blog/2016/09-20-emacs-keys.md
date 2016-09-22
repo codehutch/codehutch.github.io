@@ -6,16 +6,16 @@
     Description = "";
 }
 
-** EMACS _Keys_ **
+** EMACS: Key _Keys_ **
 ------------------
 
 ##### Files / Buffers #####
 
 | Keys           | Command                                      | Keys           | Command                                                  |
 |----------------|----------------------------------------------|----------------|----------------------------------------------------------|
-| C-x C-f        | Open File                                    | C-x b <name>   | New Buffer                                               |
-| C-x C-s        | Save File                                    | C-x k          | Kill Buffer                                              |
-| C-x b          | Switch Buffer                                | C-g            | Abandon command                                          |
+| C-x C-f        | Open file                                    | C-x b <name>   | New buffer                                               |
+| C-x C-s        | Save file                                    | C-x k          | Kill buffer                                              |
+| C-x b          | Switch buffer                                | C-g            | Abandon command                                          |
 
 ##### Navigation #####
 
@@ -28,40 +28,41 @@
 | M-<            | Start of buffer                              | M->            | End of buffer                                            |
 | M-v            | Back 1 screen                                | C-v            | Forwards 1 screen                                        |
 | C-p            | Previous line (up)                           | C-n            | Next line (down)                                         |
-| M-a            | Move first non-whitespace                    |                |                                                          |
+| M-a            | Move first non-whitespace                    | Or...          | Just use the arrow keys                                  |
 
-### _Something **OR** Something else_ ###
+### _Even **more** Keys_ ###
 
-##### Whatever #####
-
-| Keys           | Usage                                        | Keys           | Usage                                                    |
-|----------------|----------------------------------------------|----------------|----------------------------------------------------------|
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-
-##### Whatever #####
+##### Windows #####
 
 | Keys           | Usage                                        | Keys           | Usage                                                    |
 |----------------|----------------------------------------------|----------------|----------------------------------------------------------|
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
+| C-x o q        | Close window                                 | C-x 1          | Delete all other windows                                 |
+| C-x o          | Switch windows                               | C-x 2          | Split frame top / bottom                                 |
+| C-x 0          | Delete current window                        | C-x 3          | Split frame left / right                                 |
 
-#### _One thing **OR** another_ ####
-
-##### Whatever #####
+##### Help / Search #####
 
 | Keys           | Usage                                        | Keys           | Usage                                                    |
 |----------------|----------------------------------------------|----------------|----------------------------------------------------------|
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
+| C-h k <keys>   | Help on key binding                          | C-s            | Search (regex)                                           |
+| C-h f <func>   | Describe function                            | C-r            | Search backwards                                         |
+| M-g g          | Go to line                                   | C-c C-d C-a    | Free text search of documentation                        |
+|                |                                              | C-c C-d C-d    | Display documentation                                    |
 
-##### Whatever #####
+#### _Editing **and** Modes_ ####
+
+##### Editing #####
+
+| Keys           | Usage                                        | Keys           | Usage                                                    |
+|----------------|----------------------------------------------|----------------|----------------------------------------------------------|
+| C-k            | Kill line                                    | M-w            | Copy to kill ring                                        |
+| C-/            | Undo                                         | C-w            | Cut to kill ring                                         |
+| C-space        | Start mark region                            | M-d            | Cut word                                                 |
+| M-x <str>      | Replace string                               | C-y            | Yank from kill ring (paste)                              |
+| M-/            | Expand                                       | M-y            |                                                          |
+| M-\            | Delete surrounding space                     | C-j            | Newline and indent                                       |
+
+##### Modes #####
 
 | Keys           | Usage                                        | Keys           | Usage                                                    |
 |----------------|----------------------------------------------|----------------|----------------------------------------------------------|

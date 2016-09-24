@@ -58,18 +58,17 @@
 | C-k            | Kill line                                    | M-w            | Copy to kill ring                                        |
 | C-/            | Undo                                         | C-w            | Cut to kill ring                                         |
 | C-space        | Start mark region                            | M-d            | Cut word                                                 |
-| M-x <str>      | Replace string                               | C-y            | Yank from kill ring (paste)                              |
+|                |                                              | C-y            | Yank from kill ring (paste)                              |
 | M-/            | Expand                                       | M-y            |                                                          |
 | M-\            | Delete surrounding space                     | C-j            | Newline and indent                                       |
 
 ##### Modes #####
 
-| Keys           | Usage                                        | Keys           | Usage                                                    |
-|----------------|----------------------------------------------|----------------|----------------------------------------------------------|
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
-|                |                                              |                |                                                          |
+| Keys                         | Usage                                        | Keys           | Usage                                                    |
+|------------------------------|----------------------------------------------|----------------|----------------------------------------------------------|
+| M-x package-refresh-contents |                                              |                |                                                          |
+| M-x package-list-packages    |                                              |                |                                                          |
+| M-x package-install          |                                              |                |                                                          |
 
 ##### Further Info #####
 
-[test link](/index.html). [test link not visited](/index2.html)

@@ -1,7 +1,7 @@
 @{
     Layout = "post";
     Title = "multi-functional-strings";
-    Date = "2016-07-14T08:38:02";
+    Date = "2096-07-14T08:38:02";
     Tags = "";
     Description = "strings in Haskell / F# / Scala / Clojure";
 }
@@ -12,12 +12,12 @@
 ##### Whatever #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                    
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -36,12 +36,12 @@
 ##### Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -60,12 +60,12 @@
 ##### More Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 

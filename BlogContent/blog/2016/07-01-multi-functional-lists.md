@@ -1,7 +1,7 @@
 @{
     Layout = "post";
     Title = "multi-functional-lists";
-    Date = "2016-07-01T10:05:10";
+    Date = "2096-07-01T10:05:10";
     Tags = "";
     Description = "Lists in Haskell / F# / Scala / Clojure";
 }
@@ -16,12 +16,12 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 </p>
 
 <div class="flex">
-  
-~~~~haskell                           
-                  
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -40,12 +40,12 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 ##### Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -64,12 +64,12 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 ##### More Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 
@@ -86,12 +86,12 @@ Here's some introduction. Here's a longer list of stuff it goes on and on for a 
 ##### Yet More Stuff #####
 
 <div class="flex">
-  
-~~~~haskell                           
-                                   
-~~~~                                  
-  
-~~~~fsharp                     
+
+~~~~haskell
+
+~~~~
+
+~~~~fsharp
 
 ~~~~
 

@@ -1,7 +1,7 @@
 @{
     Layout = "post";
     Title = "multi-functional-maps";
-    Date = "2016-07-16T08:38:02";
+    Date = "2096-07-16T08:38:02";
     Tags = "";
     Description = "Maps in Haskell / F# / Scala / Clojure";
 }

@@ -1,7 +1,7 @@
 @{
     Layout = "post";
     Title = "multi-functional-logical-operators";
-    Date = "2099-07-18T08:38:02";
+    Date = "2096-07-18T08:38:02";
     Tags = "";
     Description = "Logical operators in Haskell / F# / Scala / Clojure";
 }

@@ -55,7 +55,8 @@ SOURCE CONTROL & PUBLISHING
 
 git push - save source (***on SOURCE branch ONLY *** - FROM CYGWIN***)
 
-./fake GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH only in /Code dir *** WILL CREATE output FOLDER called "Code/deploy" AND attempt to PUBLISH TO master***)
+./fake GitPublish  - (***FROM CYGWIN - on SOURCE BRANCH only in /Code dir ***
+                      *** WILL CREATE output FOLDER called "Code/deploy" AND attempt to PUBLISH TO master***)
                    - usually fails, leaving generated files in "deploy", but console session still on source branch.
                    - cd into "deploy" - "deploy" is a git repo in its own right and only has the master branch.
                          (so when cd into "deploy", are automatically on the master branch).

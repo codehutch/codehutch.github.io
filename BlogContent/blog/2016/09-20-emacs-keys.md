@@ -46,7 +46,7 @@
 |----------------|----------------------------------------------|----------------|----------------------------------------------------------|
 | C-h k <keys>   | Help on key binding                          | C-s            | Search (regex)                                           |
 | C-h f <func>   | Describe function                            | C-r            | Search backwards                                         |
-| M-g g          | Go to line                                   | C-c C-d C-a    | Free text search of documentation                        |
+| M-g g          | Go to line                                   | C-c C-d C-a    | Free text doc search                                     |
 |                |                                              | C-c C-d C-d    | Display documentation                                    |
 
 #### _Editing **and** Modes_ ####
@@ -58,17 +58,35 @@
 | C-k            | Kill line                                    | M-w            | Copy to kill ring                                        |
 | C-/            | Undo                                         | C-w            | Cut to kill ring                                         |
 | C-space        | Start mark region                            | M-d            | Cut word                                                 |
-|                |                                              | C-y            | Yank from kill ring (paste)                              |
-| M-/            | Expand                                       | M-y            |                                                          |
+| C-u n <cmd>    | Repeat command n times                       | C-y            | Yank from kill ring (paste)                              |
+| M-/            | Expand                                       | M-y            | Kill selected text and replace it with last killed item  |
 | M-\            | Delete surrounding space                     | C-j            | Newline and indent                                       |
 
 ##### Modes #####
 
-| Keys                         | Usage                                        | Keys           | Usage                                                    |
-|------------------------------|----------------------------------------------|----------------|----------------------------------------------------------|
-| M-x package-refresh-contents |                                              |                |                                                          |
-| M-x package-list-packages    |                                              |                |                                                          |
-| M-x package-install          |                                              |                |                                                          |
+| Keys                         | Usage                                        | Keys             | Usage                                                    |
+|------------------------------|----------------------------------------------|------------------|----------------------------------------|
+| M-x package-refresh-contents | Refresh list of known packages               | M-x clojure-mode | Enter clojure mode                     |
+| M-x package-list-packages    | List packages                                |                  |                                        |
+| M-x package-install <name>   | Install package                              |                  |                                        |
 
-##### Further Info #####
+### _Cider **REPL**_ ###
 
+| Keys              | Command                                      | Keys           | Command                                                    |
+|-------------------|----------------------------------------------|----------------|------------------------------------------------------------|
+| M-x cider-jack-in | Start CIDER clojure REPL                     | C-Enter        | Evaluate                                                   |
+| C-x C-e           | Eval expression to left of cursor            | C-u C-x C-e    | Print to right of cursor, result of expr to left of cursor |
+| C-x C-k           | Compile buffer into REPL                     | a              | In stack trace - expand / collapse details                 |
+| M-, / M-.         | Navigate to source / back from source        | C-c M-n        | Set REPL namespace to match current file                   |
+| C-upArrow         | Command history - back                       | C-downArrow    | Command history - forwards                                 |
+
+#### _Paredit **mode**_ ####
+
+| Keys              | Command                                      | Keys           | Command                                                    |
+|-------------------|----------------------------------------------|----------------|------------------------------------------------------------|
+|                   |                                              |                |                                                            |
+|                   |                                              |                |                                                            |
+|                   |                                              |                |                                                            |
+|                   |                                              |                |                                                            |
+|                   |                                              |                |                                                            |
+|                   |                                              |                |                                                            |

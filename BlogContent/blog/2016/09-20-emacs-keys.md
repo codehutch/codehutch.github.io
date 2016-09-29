@@ -1,9 +1,9 @@
 @{
     Layout = "post";
-    Title = "emacs-keys";
+    Title = "Emacs-Keys";
     Date = "2016-09-20T08:42:41";
     Tags = "";
-    Description = "";
+    Description = "Key keys for Emacs";
 }
 
 ** EMACS: Key _Keys_ **
@@ -49,7 +49,7 @@
 | M-g g          | Go to line                                   | C-c C-d C-a    | Free text doc search                                     |
 |                |                                              | C-c C-d C-d    | Display documentation                                    |
 
-#### _Editing **and** Modes_ ####
+#### _Editing **and** Packages_ ####
 
 ##### Editing #####
 
@@ -62,7 +62,7 @@
 | M-/            | Expand                                       | M-y            | Kill selected text and replace it with last killed item  |
 | M-\            | Delete surrounding space                     | C-j            | Newline and indent                                       |
 
-##### Modes #####
+##### Packages #####
 
 | Keys                         | Usage                                        | Keys             | Usage                                                    |
 |------------------------------|----------------------------------------------|------------------|----------------------------------------|
@@ -70,7 +70,7 @@
 | M-x package-list-packages    | List packages                                |                  |                                        |
 | M-x package-install <name>   | Install package                              |                  |                                        |
 
-### _Cider **REPL**_ ###
+### _**Cider** REPL_ ###
 
 | Keys              | Command                                      | Keys           | Command                                                    |
 |-------------------|----------------------------------------------|----------------|------------------------------------------------------------|
@@ -80,13 +80,11 @@
 | M-, / M-.         | Navigate to source / back from source        | C-c M-n        | Set REPL namespace to match current file                   |
 | C-upArrow         | Command history - back                       | C-downArrow    | Command history - forwards                                 |
 
-#### _Paredit **mode**_ ####
+#### _**Paredit** mode_ ####
 
 | Keys              | Command                                      | Keys           | Command                                                    |
 |-------------------|----------------------------------------------|----------------|------------------------------------------------------------|
-|                   |                                              |                |                                                            |
-|                   |                                              |                |                                                            |
-|                   |                                              |                |                                                            |
-|                   |                                              |                |                                                            |
-|                   |                                              |                |                                                            |
-|                   |                                              |                |                                                            |
+| M-x paredit-mode  | Enable paredit                               | C-M-f          | Move forwards one expression                               |
+| M-(               | Wrap brackets around point                   | C-M-b          | Move backwards one expression                              |
+| C-rightArrow      | Slurp; move bracket after next token         |                |                                                            |
+| C-leftArrow       | Barf; move bracket before next token         |                |                                                            |

@@ -16,6 +16,7 @@
 | C-x C-f        | Open file                                    | C-x b <name>   | New buffer                                               |
 | C-x C-s        | Save file                                    | C-x k          | Kill buffer                                              |
 | C-x b          | Switch buffer                                | C-g            | Abandon command                                          |
+| C-x C-c        | Quit emacs                                   |                |                                                          |
 
 ##### Navigation #####
 

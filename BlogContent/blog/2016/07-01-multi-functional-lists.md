@@ -1,7 +1,7 @@
 @{
     Layout = "post";
     Title = "multi-functional-lists";
-    Date = "2096-07-01T10:05:10";
+    Date = "2916-07-01T10:05:10";
     Tags = "";
     Description = "Lists in Haskell / F# / Scala / Clojure";
 }

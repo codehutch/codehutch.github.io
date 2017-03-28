@@ -337,6 +337,98 @@ a:active {
 	background-color: rgb(10, 29, 45);
 }
 
+.palette blockquote {
+  border-radius: 8px;
+  background-color: white;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin: 0 0 0.5em 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  border: 3px solid rgb(148, 48, 179);
+}
+
+.palette hr {
+  display: none;
+}
+
+.palette blockquote h2 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  color: white;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 7px;
+  text-align: center;
+  padding: 0.25em;
+  font-size: 1em;
+  margin: 0;
+  margin-bottom: 0.1em;
+}
+
+.palette blockquote ul {
+  padding: 0.25em;
+  margin: 0;
+  line-height: 1.6em;
+}
+
+.palette blockquote ul li {
+  display: inline;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: white;
+  padding: 0.1em 0.3em 0.2em 0.3em !important;
+}
+
+.palette blockquote:nth-child(9n+1) { border-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(9n+1) h2, .palette blockquote:nth-child(9n+1) ul li { background-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(9n+2) { border-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(9n+2) h2, .palette blockquote:nth-child(9n+2) ul li { background-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(9n+3) { border-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(9n+3) h2, .palette blockquote:nth-child(9n+3) ul li { background-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(9n+4) { border-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(9n+4) h2, .palette blockquote:nth-child(9n+4) ul li { background-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(9n+5) { border-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(9n+5) h2, .palette blockquote:nth-child(9n+5) ul li { background-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(9n+6) { border-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(9n+6) h2, .palette blockquote:nth-child(9n+6) ul li { background-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(9n+7) { border-color: rgb(204, 223, 80); }
+.palette blockquote:nth-child(9n+7) h2, .palette blockquote:nth-child(9n+7) ul li { background-color: rgb(204, 223, 80); }
+.palette blockquote:nth-child(9n+8) { border-color: rgb(204, 223, 80); }
+.palette blockquote:nth-child(9n+8) h2, .palette blockquote:nth-child(9n+8) ul li { background-color: rgb(204, 223, 80); }
+.palette blockquote:nth-child(9n+0) { border-color: orange; }
+.palette blockquote:nth-child(9n+0) h2, .palette blockquote:nth-child(9n+0) ul li { background-color: orange; }
+
+
+.palette {
+  -moz-column-count: 4;
+  -moz-columns: 4;
+  -webkit-columns: 4;
+  columns: 4;
+}
+
+@media screen and (max-width: 600px) {
+  .palette {
+    -moz-column-count: 2;
+    -moz-columns: 2;
+    -webkit-columns: 2;
+    columns: 2;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .palette {
+    -moz-column-count: 3;
+    -moz-columns: 3;
+    -webkit-columns: 3;
+    columns: 3;
+  }
+}
+
 @media screen and (min-width: 1100px) {
   p {
 	column-count: 2;

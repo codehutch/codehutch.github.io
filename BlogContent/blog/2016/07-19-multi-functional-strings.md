@@ -1,13 +1,111 @@
 @{
     Layout = "post";
     Title = "multi-functional-strings";
-    Date = "2096-07-14T08:38:02";
+    Date = "2916-07-14T08:38:02";
     Tags = "";
     Description = "strings in Haskell / F# / Scala / Clojure";
 }
 
 ** _multifunctional:_ STRINGS **
 ------------------------------------------
+
+<div class="palette">
+
+> ## Hello ##
+> * firstly
+> * secondly
+> * thirdly
+
+---
+
+> ## Yo ##
+> * This is
+> * another
+> * listy thing
+> * like this
+
+---
+
+> ## Again ##
+> * Will this
+> * work out
+> * looking
+> * any good
+> * at all?
+
+---
+
+> ## Hello ##
+> * firstly
+> * secondly
+> * thirdly
+
+---
+
+> ## Yo ##
+> * This is
+> * another
+> * listy thing
+> * like this
+
+---
+
+> ## Again ##
+> * Will this
+> * work out
+> * looking
+> * any good
+> * at all?
+
+---
+
+> ## Hello ##
+> * firstly
+> * secondly
+> * thirdly
+
+---
+
+> ## Yo ##
+> * This is
+> * another
+> * listy thing
+> * like this
+
+---
+
+> ## Again ##
+> * Will this
+> * work out
+> * looking
+> * any good
+> * at all?
+
+---
+
+> ## Hello ##
+> * firstly
+> * secondly
+> * thirdly
+
+---
+
+> ## Yo ##
+> * This is
+> * another
+> * listy thing
+> * like this
+
+---
+
+> ## Again ##
+> * Will this
+> * work out
+> * looking
+> * any good
+> * at all?
+
+</div>
 
 ##### Whatever #####
 

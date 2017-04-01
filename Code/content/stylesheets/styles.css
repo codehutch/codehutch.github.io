@@ -128,12 +128,15 @@ h4 em strong {
 	font-style: normal;
 }
 
-h5 {
+h5, h6 {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 800;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
+
+h5 { font-size: 0.95em; }
+h6 { font-size: 0.85em; }
 
 p.noCols, p.noCol, p.oneCol, table p {
 	column-count: 1;
@@ -461,7 +464,7 @@ a:active {
   }
 }
 
-h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul {
+h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -470,17 +473,17 @@ h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul {
 }
 
 @media screen and (min-width: 1850px) {
-  h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 1600px; }
+  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 1600px; }
 }
 
 @media screen and (min-width: 2350px) {
-  h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 2100px; }
+  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2100px; }
 }
 
 @media screen and (min-width: 2850px) {
-  h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 2600px; }
+  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2600px; }
 }
 
 @media screen and (min-width: 3350px) {
-  h2 strong, h3 em, h4 em, h5, p, div, table, table.pre, ul { max-width: 3100px; }
+  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 3100px; }
 }

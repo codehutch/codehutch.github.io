@@ -249,9 +249,17 @@ table.pre td {
     background-color: inherit;
 }
 
-ul li {
-	padding-left: 2rem !important;
+ul { list-style: none; }
+
+ul li::before {
+  content: "\25A0 ";
 }
+
+ul li:nth-child(5n+1):before { color: rgb(93, 48, 171); }
+ul li:nth-child(5n+2):before { color: rgb(148, 48, 179); }
+ul li:nth-child(5n+3):before { color: rgb(50, 157, 202); }
+ul li:nth-child(5n+4):before { color: rgb(209, 220, 14); }
+ul li:nth-child(5n+0):before { color: orange; }
 
 blockquote {
     font-family: 'Gentium Book Basic', serif;
@@ -313,6 +321,8 @@ a:active {
 	padding-left: 5rem;
 	padding-bottom: 0.5rem;
 }
+
+.secondaryDefinition { display: none; }
 
 .tab {
 	text-indent: 4rem;
@@ -391,6 +401,9 @@ a:active {
   font-size: 0.9em;
   color: white;
   padding: 0.1em 0.3em 0.2em 0.3em !important;
+  margin-left: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .palette blockquote:nth-child(10n+1) { border-color: rgb(93, 48, 171); }
@@ -414,37 +427,39 @@ a:active {
 .palette blockquote:nth-child(10n+0) { border-color: orange; }
 .palette blockquote:nth-child(10n+0) h2, .palette blockquote:nth-child(10n+0) ul li { background-color: orange; }
 
-
 .palette {
-  -moz-column-count: 4;
-  -moz-columns: 4;
-  -webkit-columns: 4;
-  columns: 4;
-  padding-top: 1em;
+  -moz-column-count: 1;
+  -moz-columns: 1;
+  -webkit-columns: 1;
+  columns: 1;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 450px) {
   .palette {
     -moz-column-count: 2;
     -moz-columns: 2;
     -webkit-columns: 2;
     columns: 2;
   }
-  .secondaryDefinition { display: none; }
-  .tertiaryDefinition { display: none; }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (min-width: 630px) {
   .palette {
     -moz-column-count: 3;
     -moz-columns: 3;
     -webkit-columns: 3;
     columns: 3;
   }
-  .tertiaryDefinition { display: none; }
+  .secondaryDefinition { display: inherit; }
 }
 
 @media screen and (min-width: 1100px) {
+  .palette {
+    -moz-column-count: 4;
+    -moz-columns: 4;
+    -webkit-columns: 4;
+    columns: 4;
+  }
   p {
 	column-count: 2;
 	-webkit-column-count: 2;
@@ -472,18 +487,7 @@ h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul {
   padding-right: 2rem;
 }
 
-@media screen and (min-width: 1850px) {
-  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 1600px; }
-}
-
-@media screen and (min-width: 2350px) {
-  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2100px; }
-}
-
-@media screen and (min-width: 2850px) {
-  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2600px; }
-}
-
-@media screen and (min-width: 3350px) {
-  h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 3100px; }
-}
+@media screen and (min-width: 1850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 1600px; } }
+@media screen and (min-width: 2350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2100px; } }
+@media screen and (min-width: 2850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2600px; } }
+@media screen and (min-width: 3350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 3100px; } }

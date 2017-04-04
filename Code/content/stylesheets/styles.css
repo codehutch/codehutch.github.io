@@ -252,7 +252,7 @@ table.pre td {
 ul { list-style: none; }
 
 ul li::before {
-  content: "\25A0 ";
+  content: "\26AB\0020";
 }
 
 ul li:nth-child(5n+1):before { color: rgb(93, 48, 171); }
@@ -304,7 +304,7 @@ a:active {
 
 .definitionTerm  {
 	font-family: 'Times New Roman', 'times new roman', Times, serif;
-	font-size: 2.5rem;
+	font-size: 2.0rem;
 	font-weight: 800;
 	padding-bottom: 0.4rem;
 }
@@ -318,7 +318,7 @@ a:active {
 .definition {
 	font-size: 1.0rem;
 	font-weight: 400;
-	padding-left: 5rem;
+	padding-right: 0 !important;
 	padding-bottom: 0.5rem;
 }
 
@@ -444,13 +444,14 @@ a:active {
 }
 
 @media screen and (min-width: 630px) {
+  .definitionTerm  { font-size: 2.5rem; }
+  .secondaryDefinition { display: inherit; }
   .palette {
     -moz-column-count: 3;
     -moz-columns: 3;
     -webkit-columns: 3;
     columns: 3;
   }
-  .secondaryDefinition { display: inherit; }
 }
 
 @media screen and (min-width: 1100px) {

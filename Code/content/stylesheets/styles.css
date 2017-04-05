@@ -252,7 +252,8 @@ table.pre td {
 ul { list-style: none; }
 
 ul li::before {
-  content: "\26AB\0020";
+  content: "\2022\0020";
+  font-weight: bold;
 }
 
 ul li:nth-child(5n+1):before { color: rgb(93, 48, 171); }

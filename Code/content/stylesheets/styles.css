@@ -63,7 +63,7 @@ h1 div a:active {
 h2 {
 	margin: 0;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 64px;
+	font-size: 44px;
 	font-weight: 800;
 	font-style: normal;
 	padding-bottom: 0.15em;
@@ -76,14 +76,14 @@ h2 {
 h2 strong {
     display: block;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 64px;
+	font-size: 44px;
 	font-weight: 800;
 	font-style: normal;
 }
 
 h2 strong em {
     font-family: 'Gentium Book Basic', serif;
-	font-size: 72px;
+	font-size: 52px;
 	font-weight: normal;
 	font-style: italic;
 }
@@ -407,6 +407,11 @@ a:active {
   break-inside: avoid;
 }
 
+.palette blockquote ul li::before {
+  content: "";
+  display: none;
+}
+
 .palette blockquote:nth-child(10n+1) { border-color: rgb(93, 48, 171); }
 .palette blockquote:nth-child(10n+1) h2, .palette blockquote:nth-child(10n+1) ul li { background-color: rgb(93, 48, 171); }
 .palette blockquote:nth-child(10n+2) { border-color: rgb(93, 48, 171); }
@@ -445,6 +450,9 @@ a:active {
 }
 
 @media screen and (min-width: 630px) {
+  h2 { font-size: 64px; }
+  h2 strong { font-size: 64px; }
+  h2 strong em { font-size: 72px; }
   .definitionTerm  { font-size: 2.5rem; }
   .secondaryDefinition { display: inherit; }
   .palette {

@@ -9,15 +9,15 @@
 ** Software Architecture: Views _and_ Diagrams **
 -------------------------------------------------
 
-**A comparison of various standard sets of software architecture viewspoints / diagrams**. People who like
+**A comparison of various standard sets of software architecture viewpoints / diagrams**. People who like
 technicalities will want it made clear that strictly speaking there is a difference between a _viewpoint_
 and the choice of _diagram_ chosen to depict it. With that _(not really)_ highly important point duly noted,
-here's a look at some of the main diagramatic options knocking around the world of software systems design...
+here's a look at some of the main diagrammatic options knocking around the world of software systems design...
 
 ### _4 **PLUS** 1_ ###
 
 Let's start with the simple option. Philippe Kruchten (of Rational Software) proposes using a relatively
-small set of 5 viewspoints _(4+1)_ to descibe a software system. Five may seem _now_ like quite a lot of
+small set of 5 viewpoints _(4+1)_ to describe a software system. Five may seem _now_ like quite a lot of
 diagrams, but it's going to get a whole lot worse further down the page, so just be grateful for small
 mercies. The idea is that you use _one_ of each of the first four types (**logical, process, development & physical**)
 and then use _a few_ **scenario** views to illustrate key use cases. Scenario views can use a combination of
@@ -25,7 +25,7 @@ the drawing elements from the logical and process views.
 
 | _Viewpoint:_        | Logical View                              | Process View                        | Development View              | Physical View                     | Scenario Views                                               |
 |---------------------|-------------------------------------------|-------------------------------------|-------------------------------|-----------------------------------|--------------------------------------------------------------|
-| **Depicts:**        | Functionality / Objects Users Manipultate | Processing / Rhythms / Interactions | Implementation / Organisation | Deployment / Operation / Topology | Use Cases                                                    |
+| **Depicts:**        | Functionality / Objects Users Manipulate  | Processing / Rhythms / Interactions | Implementation / Organisation | Deployment / Operation / Topology | Use Cases                                                    |
 | **Concerns:**       | End-user focus                            | Dynamics / Communication / NFRs     | Re-use / Sharing / Layering   | Operability / Support             | Objects and Interactions                                     |
 | **Components:**     | Classes                                   | Tasks / Threads                     | Modules / Packages            | VMs / DBs / Servers               | Steps / Scripts                                              |
 | **Connectors:**     | Association / Inheritance / Composition   | Messages / RPC / IPC / HTTP / WS    | Dependencies / Usages         | Networking Protocols / Mediums    | Paths                                                        |
@@ -44,27 +44,35 @@ over actual comprehensibility, here's the full list anyway:
 
 ##### Static / Structural / Being / Is #####
 
-| _Diagram:_          | Class Diagram                                                                | Object Diagram                                                | Package Diagram                                                         | Composite Structure Diagram+                                        | Component Diagram                                                                                                                | Deployment Diagram                                                           | Profile Diagram+                                     |
-|---------------------|------------------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|------------------------------------------------------|
-| **Depicts:**        | Object Oriented Structure                                                    | Usage of Instances of Classes                                 | Splitting of Application into Packages                                  | Internal Structure of a Composite Entity                            | Interchangeability of Components (Classes) in a Component Based Design or Service Oriented Architecture                          | Distribution of Software Components to their Operating Environments          | Customised Adaptations of UML Semantics              |
-| **Concerns:**       | Domain Models, Module Structures                                             | How to Cater for a particular Task / Function / Scenario      | Namespacing, Dependencies, Packages for each App Tier                   | Internal Details, plus External Communications Ports                | The Interfaces that each Component Provides and Requires, Loose Coupling                                                         | Either Generic Operaional Requirements or Specific Cases                     | Extending / Specialising UML for a particular Domain |
-| **Components:**     | Classes, Interfaces, Enums                                                   | Instances of Classes / Enums                                  | Packages  or (at higher level) Application Tiers                        | Parts, Ports                                                        | Components, which are Individual Classes or a Structure built from Classes                                                       | Artifacts, Nodes, Execution Environments (DBs, Web Servers etc)              | Metaclasses, Stereotypes                             |
-| **Connectors:**     | Association, Aggregation, Composition, Generalization, Implementation, Usage | References (Links / Pointers), maybe with Counts and Ordering | Import, Use, Tempated By (a Package can be a template for similar Pkgs) | Associations / Lines of Communication                               | Provided Interface, Required Interface, Delegation, Assemly, Class, Port, Dependency, Usage                                      | Communication Paths, Deployment Paths                                        | Extension, Profile Application                       |
-| **Containers:**     | Components can contain Attributes and Methods                                | Instances can be shown containing particular Attribute Values | Packages contain Classes, Events, Types, Other Packages                 | Composite Entities have Ports and Parts, Parts have Names and Roles | Components can contain Classes and other Components. Both can have Roles. The 'Chip' icon signifies an Interchangeable Component | Environments contain Nodes, Nodes / Execution Environments contain Artifacts | Profiles                                             |
+| _Diagram:_          | Class Diagram                                                                | Package Diagram                                                         | Component Diagram                                                                                                                | Deployment Diagram                                                           |
+|---------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| **Depicts:**        | Object Oriented Structure                                                    | Splitting of Application into Packages                                  | Interchangeability of Components (Classes) in a Component Based Design or Service Oriented Architecture                          | Distribution of Software Components to their Operating Environments          |
+| **Concerns:**       | Domain Models, Module Structures                                             | Namespacing, Dependencies, Packages for each App Tier                   | The Interfaces that each Component Provides and Requires, Loose Coupling                                                         | Either Generic Operational Requirements or Specific Cases                    |
+| **Components:**     | Classes, Interfaces, Enums                                                   | Packages  or (at higher level) Application Tiers                        | Components, which are Individual Classes or a Structure built from Classes                                                       | Artifacts, Nodes, Execution Environments (DBs, Web Servers etc)              |
+| **Connectors:**     | Association, Aggregation, Composition, Generalization, Implementation, Usage | Import, Use, Templated By (a Package can be a template for similar Pkgs)| Provided Interface, Required Interface, Delegation, Assembly, Class, Port, Dependency, Usage                                     | Communication Paths, Deployment Paths                                        |
+| **Containers:**     | Components can contain Attributes and Methods                                | Packages contain Classes, Events, Types, Other Packages                 | Components can contain Classes and other Components. Both can have Roles. The 'Chip' icon signifies an Interchangeable Component | Environments contain Nodes, Nodes / Execution Environments contain Artifacts |
+
+###### Lesser Used Structural Diagrams ######
+
+| _Diagram:_          | Object Diagram                                                | Composite Structure Diagram+                                        | Profile Diagram+                                     |
+|---------------------|---------------------------------------------------------------|---------------------------------------------------------------------|------------------------------------------------------|
+| **Depicts:**        | Usage of Instances of Classes                                 | Internal Structure of a Composite Entity                            | Customised Adaptations of UML Semantics              |
+| **Concerns:**       | How to Cater for a particular Task / Function / Scenario      | Internal Details, plus External Communications Ports                | Extending / Specialising UML for a particular Domain |
+| **Components:**     | Instances of Classes / Enums                                  | Parts, Ports                                                        | Metaclasses, Stereotypes                             |
+| **Connectors:**     | References (Links / Pointers), maybe with Counts and Ordering | Associations / Lines of Communication                               | Extension, Profile Application                       |
+| **Containers:**     | Instances can be shown containing particular Attribute Values | Composite Entities have Ports and Parts, Parts have Names and Roles | Profiles                                             |
 
 ##### Dynamic / Behavioural / Doing / Does #####
 
-| _Diagram:_          | Activity Diagram | State Machine Diagram | Use Case Diagram |
-|---------------------|------------------|-----------------------|------------------|
-| **Depicts:**        |                  |                       |                  |
-| **Concerns:**       |                  |                       |                  |
-| **Components:**     |                  |                       |                  |
-| **Connectors:**     |                  |                       |                  |
-| **Containers:**     |                  |                       |                  |
+| _Diagram:_          | Activity Diagram                                                                                       | State Machine Diagram | Use Case Diagram                               |
+|---------------------|--------------------------------------------------------------------------------------------------------|-----------------------|------------------------------------------------|
+| **Depicts:**        | Paths between various activities within a functional area                                              |                       | Expected usages of the system                  |
+| **Concerns:**       | Control, Data and Decision Flow between activities                                                     |                       | Requirements and Functionality                 |
+| **Components:**     | Activity Nodes - may be User Activities or System Object Activities                                    |                       | Use Cases, Actors, External Systems / Services |
+| **Connectors:**     | Arrows denote Flows of information and choices between activities                                      |                       | Usages (association), Includes, Extends        |
+| **Containers:**     | Partitions (similar to swim lanes) correspond to Actors and contain Activities that the Actor performs |                       | Systems / Sub-systems contain Use Cases        |
 
-###### Interactions ######
-
-These are all derived from the more general **Behaviour** diagram
+###### Interaction Focused Diagrams ######
 
 | _Diagram:_          | Communication Diagram+ | Interaction Overview Diagram+ | Sequence Diagram | Timing Diagram |
 |---------------------|------------------------|-------------------------------|------------------|----------------|

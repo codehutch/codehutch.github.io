@@ -64,13 +64,13 @@ over actual comprehensibility, here's the full list anyway:
 
 ##### Dynamic / Behavioural / Doing / Does #####
 
-| _Diagram:_          | Activity Diagram                                                                                       | State Machine Diagram | Use Case Diagram                               |
-|---------------------|--------------------------------------------------------------------------------------------------------|-----------------------|------------------------------------------------|
-| **Depicts:**        | Paths between various activities within a functional area                                              |                       | Expected usages of the system                  |
-| **Concerns:**       | Control, Data and Decision Flow between activities                                                     |                       | Requirements and Functionality                 |
-| **Components:**     | Activity Nodes - may be User Activities or System Object Activities                                    |                       | Use Cases, Actors, External Systems / Services |
-| **Connectors:**     | Arrows denote Flows of information and choices between activities                                      |                       | Usages (association), Includes, Extends        |
-| **Containers:**     | Partitions (similar to swim lanes) correspond to Actors and contain Activities that the Actor performs |                       | Systems / Sub-systems contain Use Cases        |
+| _Diagram:_          | Activity Diagram                                                                                       | State Machine Diagram                                                  | Use Case Diagram                               |
+|---------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|------------------------------------------------|
+| **Depicts:**        | Paths between various activities within a functional area                                              | Internal States of a Component                                         | Expected usages of the system                  |
+| **Concerns:**       | Control, Data and Decision Flow between activities                                                     | Mapping Behaviour to States and Transitions                            | Requirements and Functionality                 |
+| **Components:**     | Activity Nodes - may be User Activities or System Object Activities                                    | States, Choices, Forks, Joins                                          | Use Cases, Actors, External Systems / Services |
+| **Connectors:**     | Arrows denote Flows of information and choices between activities                                      | Transitions (Events and Actions)                                       | Usages (association), Includes, Extends        |
+| **Containers:**     | Partitions (similar to swim lanes) correspond to Actors and contain Activities that the Actor performs | Composite States contain other state machines. Regions contain states. | Systems / Sub-systems contain Use Cases        |
 
 ###### Interaction Focused Diagrams ######
 

@@ -74,13 +74,13 @@ over actual comprehensibility, here's the full list anyway:
 
 ###### Interaction Focused Diagrams ######
 
-| _Diagram:_          | Communication Diagram+ | Interaction Overview Diagram+ | Sequence Diagram | Timing Diagram |
-|---------------------|------------------------|-------------------------------|------------------|----------------|
-| **Depicts:**        |                        |                               |                  |                |
-| **Concerns:**       |                        |                               |                  |                |
-| **Components:**     |                        |                               |                  |                |
-| **Connectors:**     |                        |                               |                  |                |
-| **Containers:**     |                        |                               |                  |                |
+| _Diagram:_          | Interaction Overview Diagram+                                              | Sequence Diagram                                                                  | Communication (Collaboration) Diagram+                                                                         | Timing Diagram                                                                                                              |
+|---------------------|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **Depicts:**        | Summary of high-level control flow within a system / activity              | Ordering of Communications between Components                                     | Communications between Components with more Relaxed Sequencing requirements                                    | Time taken for Components to Perform Tasks and Subtasks                                                                     |
+| **Concerns:**       | Control-flow overview. Higher-level version of activity diagram            | Exact Sequencing of Messages between Components                                   | Message Passing where the Order of Requests is important but Replies are implicitly Synchronous or Unimportant | Strict elapsed-time requirements                                                                                            |
+| **Components:**     | Initial node, Final node, Interaction References, Decision Nodes           | Lifelines of Components / Objects / Services / Actors. Execution Blocks           | Actors / Objects / Components / Services (called lifelines but drawn as boxes / circles)                       | Lifelines of components (as swimlanes, containing Sub-components)                                                           |
+| **Connectors:**     | Flow of control (calls, invocations) - sometimes with guards               | Sync Call / Async Call, Returns, Callbacks, Events, Object Creation / Destruction | Messages / Calls / Events with Sequence Numbers (e.g. 1, 2a, 2b, 2c, 3...)                                     | Sync call  / Async call, Events, Callbacks, Returns                                                                         |
+| **Containers:**     | Interaction References are boxes which refer to other Interaction Diagrams | Can contain summary blocks that reference another Interaction Diagram             | Can use boxes to refer to another Interaction Diagram                                                          | Each swimlane contains several tracks for sub-components, the lifelines 'step' up and down between tracks in their swimlane |
 
-[UML](http://www.uml.org) is _looked after_ by [**OMG**](http://www.omg.org). **OMG** stands for _Object Management Group_
-(a.k.a. **OMFG**). **Looked after** means _Allowed to grow with seemingly no limits_.
+[UML](http://www.uml.org) is _looked after_ by [**OMG**](http://www.omg.org). **OMG** stands for _Object Management Group_.
+**Looked after** means _Allowed to grow with seemingly no limits_.

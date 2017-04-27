@@ -249,6 +249,12 @@ table.pre td {
     background-color: inherit;
 }
 
+td p img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
 ul { list-style: none; }
 
 ul li::before {

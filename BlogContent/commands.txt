@@ -67,3 +67,13 @@ MAINTENANCE
 ===========
 
 Need to periodically copy some of /content and /source back over /themes/progletariat, or re-install of theme will wipe content
+
+IMAGES
+======
+
+imagemagick / potrace / http://gnuwin32.sourceforge.net/packages/netpbm.htm
+
+convert input.jpg -colorspace Gray -brightness-contrast 20x10 temp.bmp
+potrace -s -H 500pt -t 10 temp.bmp
+convert temp.svg PNG8:output.png
+pngtopnm -mix output.png > a.pnm && potrace a.pnm -s -o output.svg

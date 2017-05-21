@@ -45,13 +45,13 @@ function names in your head, so here's an attempt to provide a single page cheat
 > * stringReturn s {+CI}
 > * anyString n {+skip}
 > * restOfLine b {+skip}
+> * regex r
 > * charsTillString s b n {+skip}{+CI}
+> * identifier o
 > * many[1]Satisfy fcb {+skip}
 > * many[1]Satisfy2 fhcb ftcb {+skip}{+label}
 > * manyMinMaxSatisfy n m fcb {+skip}{+label}
 > * manyMinMaxSatisfy2 n m fhcb ftcp {+skip}{+label}
-> * regex r
-> * identifier o
 
 ---
 

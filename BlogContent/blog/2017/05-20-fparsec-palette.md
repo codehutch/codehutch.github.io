@@ -79,4 +79,48 @@ function names in your head, so here's an attempt to provide a single page cheat
 
 ---
 
+> ## Chaining Parsers ##
+> * preturn x
+> * p >>% x
+> * p |>> f
+> * p >>= f
+> * pl >>. pr (take right)
+> * pl .>> pr (take left)
+> * pl .>>. pr (take both)
+> * between pLeft pRight p
+> * tuple2/3/4/5 p1 p2 ...
+> * pipe2/3/4/5 p1 p2 ... f
+
+---
+
+> ## Sequence Parsers ##
+> * parray n p
+> * skipArray n p
+> * many[1] p {+skip}
+> * sepBy[1] p pSep {+skip}
+> * sepEndBy[1] p pSep {+skip}
+> * many[1]Till p pEnd {+skip}
+> * chainl[1] p pSepOp
+> * chainr[1] p pSepOp
+
+---
+
+> ## Optional Parsers ##
+> * p1 <|> p2
+> * choice seqOfParsers
+> * p <|>% x
+> * opt p
+> * optional p
+
+---
+
+> ## Backtracking Parsers ##
+> * attempt p
+> * p1 >>? p2
+> * p1 .>>? p2
+> * p1 .>>.? p2
+> * p1 >>=? p2
+
+---
+
 </div>

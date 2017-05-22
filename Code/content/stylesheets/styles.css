@@ -399,6 +399,7 @@ a:active {
   padding: 0.25em;
   margin: 0;
   line-height: 1.6em;
+  overflow: hidden;
 }
 
 .palette blockquote ul li {
@@ -478,10 +479,10 @@ a:active {
     columns: 3;
   }
   .fewerColumnsPalette {
-    -moz-column-count: 2;
-    -moz-columns: 2;
-    -webkit-columns: 2;
-    columns: 2;
+    -moz-column-count: 1;
+    -moz-columns: 1;
+    -webkit-columns: 1;
+    columns: 1;
   }
 }
 
@@ -517,6 +518,15 @@ a:active {
   }
 }
 
+@media screen and (min-width: 3000px) {
+  .fewerColumnsPalette {
+    -moz-column-count: 4;
+    -moz-columns: 4;
+    -webkit-columns: 4;
+    columns: 4;
+  }
+}
+
 h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul {
   max-width: 1200px;
   margin-left: auto;
@@ -529,3 +539,4 @@ h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul {
 @media screen and (min-width: 2350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2100px; } }
 @media screen and (min-width: 2850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2600px; } }
 @media screen and (min-width: 3350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 3100px; } }
+@media screen and (min-width: 3850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 90%; } }

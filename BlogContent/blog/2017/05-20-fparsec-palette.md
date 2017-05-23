@@ -123,4 +123,32 @@ function names in your head, so here's an attempt to provide a single page cheat
 
 ---
 
+> ## Conditional Look Ahead Parsers ##
+> * notEmpty p
+> * [not]followedBy p {+label}
+> * notFollowedByEof
+> * [not]followedByString[CI] s
+> * next[2]CharSatisfies[Not] fcb
+> * previousCharSatisfies[Not] fcb
+> * lookAhead p
+
+---
+
+> ## Error Messaging Parsers ##
+> * p <?> label
+> * p <??> label
+> * fail msg
+> * failFatally msg
+
+---
+
+> ## State Handling Parsers ##
+> * getUserState
+> * setUserState u
+> * updateUserState f
+> * userStateSatisfies f
+> * getPosition
+
+---
+
 </div>

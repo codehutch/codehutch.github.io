@@ -106,7 +106,7 @@ function names in your head, so here's an attempt to provide a single page cheat
 ---
 
 > ## Optional Parsers ##
-> * p1 <|> p2
+> * pMustFailOnFirstChar <|> p2
 > * choice seqOfParsers
 > * p <|>% x
 > * opt p
@@ -116,10 +116,10 @@ function names in your head, so here's an attempt to provide a single page cheat
 
 > ## Backtracking Parsers ##
 > * attempt p
-> * p1 >>? p2
-> * p1 .>>? p2
-> * p1 .>>.? p2
-> * p1 >>=? p2
+> * pBacktrackIfFails >>? pBacktrackIfFailsFirstChar
+> * pBacktrackIfFails .>>? pBacktrackIfFailsFirstChar
+> * pBacktrackIfFails .>>.? pBacktrackIfFailsFirstChar
+> * pBacktrackIfFails >>=? pfBacktrackIfFailsFirstChar
 
 ---
 

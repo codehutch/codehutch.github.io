@@ -83,7 +83,7 @@ function names in your head, so here's an attempt to provide a single page cheat
 > * preturn x
 > * p >>% x
 > * p |>> f
-> * p >>= f
+> * p >>= fp
 > * pl >>. pr (take right)
 > * pl .>> pr (take left)
 > * pl .>>. pr (take both)
@@ -119,7 +119,7 @@ function names in your head, so here's an attempt to provide a single page cheat
 > * pBacktrackIfFails >>? pBacktrackIfFailsFirstToken
 > * pBacktrackIfFails .>>? pBacktrackIfFailsFirstToken
 > * pBacktrackIfFails .>>.? pBacktrackIfFailsFirstToken
-> * pBacktrackIfFails >>=? pfBacktrackIfFailsFirstToken
+> * pBacktrackIfFails >>=? fpBacktrackIfFailsFirstToken
 
 ---
 
@@ -135,8 +135,8 @@ function names in your head, so here's an attempt to provide a single page cheat
 ---
 
 > ## Error Messaging Parsers ##
-> * p <?> label
-> * p <??> label
+> * p < ? > label
+> * p < ?? > label
 > * fail msg
 > * failFatally msg
 

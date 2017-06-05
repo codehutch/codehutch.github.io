@@ -9,9 +9,9 @@
 ** FParsec: _Palette_ **
 -------------------------------------------------
 
-[FParsec](http://www.quanttec.com/fparsec/) is a beautiful [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator)
-library for F# (based on Haskell's [Parsec](https://wiki.haskell.org/Parsec)). Learning it means holding quite a lot of different
-function names in your head, so here's an attempt to provide a single page cheat-sheet.
+[FParsec](http://www.quanttec.com/fparsec/) is an amazing [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator)
+library for F# written by Stephan Tolksdorf (and based on Haskell's [Parsec](https://wiki.haskell.org/Parsec)). Learning it means
+holding quite a lot of different function names in your head, so here's an attempt to provide a single page cheat-sheet.
 
 <div class="palette fewerColumnsPalette">
 
@@ -148,6 +148,28 @@ function names in your head, so here's an attempt to provide a single page cheat
 > * updateUserState f
 > * userStateSatisfies f
 > * getPosition
+
+---
+
+</div>
+
+### _FParsec **Pipes**_ ###
+
+[FParsec Pipes](https://github.com/rspeele/FParsec-Pipes) is an independant extension to FParsec, written by Robert Peele.
+It adds some new operators and combinators that make it (arguably) more intuitive to translate a grammar into a parser.
+The [documentation](http://rspeele.github.io/FParsec-Pipes/Intro.html) for Pipes is actually pretty concise, but I wanted
+a single page reference to both libraries so I've documented some of it below.
+
+<div class="palette fewerColumnsPalette">
+
+> ## Default Parsers ##
+> * %"a specific string" // pstring "a specific string"
+> * %ci "case insensitive" // pstringCI "case insensitive"
+> * %'c' // pchar 'c'
+> * %ci 'c' // pcharCI 'c'
+> * %['a'; 'b'] // choice [pchar 'a'; pchar 'b']
+> * %["hello"; "there"] // choice [pstring "hello"; pstring "there"]
+> * %[pint32; pMyParser] // choice [pint32; pMyParser]
 
 ---
 

@@ -163,14 +163,32 @@ a single page reference to both libraries so I've documented some of it below.
 <div class="palette fewerColumnsPalette">
 
 > ## Default Parsers ##
-> * %"a specific string" // pstring "a specific string"
-> * %ci "case insensitive" // pstringCI "case insensitive"
-> * %'c' // pchar 'c'
-> * %ci 'c' // pcharCI 'c'
-> * %['a'; 'b'] // choice [pchar 'a'; pchar 'b']
-> * %["hello"; "there"] // choice [pstring "hello"; pstring "there"]
-> * %[pint32; pMyParser] // choice [pint32; pMyParser]
+> * %"a specific string" // pstring ...
+> * %ci "case insensitive" // pstringCI ...
+> * %'c' // pchar ...
+> * %ci 'c' // pcharCI ...
+> * %['a'; 'b'] // choice [...]
+> * %["hello"; "there"] // choice [...]
+> * %[pint32; pMyParser] // choice [...]
 
 ---
+
+> ## Parsers For Types ##
+> * %p< int > // pint32
+> * %p< uint16 > // puint16
+> * %p< float > // pfloat
+> * %p< Position > // getPosition
+
+---
+
+> ## Pipes ##
+> * %% // start a pipe
+> * -- // build pipe
+> * +. // capture element
+> * -|> // empty captured pipe elements to func
+> * -%> auto // empty captured pipe elements to tuple
+
+---
+
 
 </div>

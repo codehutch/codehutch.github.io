@@ -9,6 +9,7 @@
 ** FParsec: _Palette_ **
 -------------------------------------------------
 
+At last, the single page reference to both FParsec and FParsec-Pipes that you've been waiting for.
 [FParsec](http://www.quanttec.com/fparsec/) is an amazing [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator)
 library for F# written by Stephan Tolksdorf (and based on Haskell's [Parsec](https://wiki.haskell.org/Parsec)). Learning it means
 holding quite a lot of different function names in your head, so here's an attempt to provide a single page cheat-sheet.
@@ -187,8 +188,16 @@ a single page reference to both libraries so I've documented some of it below.
 > * +. // capture element
 > * -|> // empty captured pipe elements to func
 > * -%> auto // empty captured pipe elements to tuple
+> * ?- // wrap left side in an attempt
+> * -? // attempts left side and then .>>.? right
 
 ---
 
+> ## Repeats and Separations ##
+> * pA * qty.[3..] // 3+ pAs
+> * qty.[2..4] / ',' * pA // 2 to 4 pAs - sepBy comma
+> * qty.[..5] / ',' * pA // up to 5 pAs - sepEndBy comma
+
+---
 
 </div>

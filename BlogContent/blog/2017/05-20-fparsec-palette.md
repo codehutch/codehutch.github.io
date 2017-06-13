@@ -3,13 +3,13 @@
     Title = "FParsec Palette";
     Date = "2017-05-20T08:20:41";
     Tags = "F# FParsec Parser Combinator Functional Programming";
-    Description = "A palette / cheat-sheet for FParsec";
+    Description = "The single page reference to both FParsec and FParsec-Pipes that you've been waiting your whole life for";
 }
 
 ** FParsec: _Palette_ **
 -------------------------------------------------
 
-At last, the single page reference to both FParsec and FParsec-Pipes that you've been waiting for.
+**At last, the single page reference to both FParsec and FParsec-Pipes that you've been waiting your whole life for**.
 [FParsec](http://www.quanttec.com/fparsec/) is an amazing [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator)
 library for F# written by Stephan Tolksdorf (and based on Haskell's [Parsec](https://wiki.haskell.org/Parsec)). Learning it means
 holding quite a lot of different function names in your head, so here's an attempt to provide a single page cheat-sheet.

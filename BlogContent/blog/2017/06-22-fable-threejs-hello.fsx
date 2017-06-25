@@ -5,10 +5,16 @@
     Tags = "";
     Description = "";
 *)
-let c = 1
-
 (**
-## Second-level heading
+
+** Fable ThreeJs: _Hello Cube_ **
+---------------------------------
+
+<div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
+<script src="/otherOutput/fable1/BlogFableThreeHelloWorldBuild.js"></script>
+
 With some more documentation
 
 yarn install
@@ -17,7 +23,6 @@ dotnet restore etc...
 *)
 
 (*** more ***)
-//module FabTemplate
 
 #r "../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
 #load "../node_modules/fable-import-three/Fable.Import.Three.fs"
@@ -44,7 +49,7 @@ let init() =
     scene.autoUpdate <- true
 
     let renderer = Three.WebGLRenderer()
-    renderer.setClearColor("#99ff99")
+    renderer.setClearColor("#0A1D2D")
     (renderer :> Three.Renderer).setSize(width(), height())
     // Set antialias tbd...
     container.innerHTML <- ""
@@ -62,7 +67,7 @@ let init() =
     let cubeStart = Three.BoxGeometry(1., 1., 1.)
 
     let matProps = createEmpty<Three.MeshLambertMaterialParameters>
-    matProps.color <- Some (U2.Case2 "#E443D1")
+    matProps.color <- Some (U2.Case2 "#9430B3")
 
     let cube = Three.BufferGeometry().fromGeometry(cubeStart);
 

@@ -3,11 +3,11 @@
     Title = "Fable / Three.js  - Hello Cube";
     Date = "2017-06-22T07:19:37";
     Tags = "";
-    Description = "";
+    Description = "Showcasing Fable's power with a spinning cube";
 *)
 (**
 
-** Fable ThreeJs: _Hello Cube_ **
+** Fable & ThreeJs: _Hello Cube_ **
 ---------------------------------
 
 <div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
@@ -15,17 +15,24 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
 <script src="/otherOutput/fable1/BlogFableThreeHelloWorldBuild.js"></script>
 
-With some more documentation
+**The F# to JS compiler [Fable](http://fable.io/) is looking ever more impressive. What better way to showcase its abilities than 
+by putting a spinning a cube on your screen?...** The official Fable ThreeJs / WebGL [demo](http://fable.io/samples/webGLTerrain/index.html) 
+is actually far superiour to my effort here. This is a much cut-down version of that, to show how little code is needed to get F#
+drawing 3D graphics in a browser.     
 
-yarn install
-dotnet restore etc...
+### _First things **first**_ ###
+
+Your machine will need .NET Core installed so you can use the dotnet command line tool. Assuming you have that, the quickest way to get started 
+is to clone the official Fable samples [repository](https://github.com/fable-compiler/samples-browser) and then run the `restore` script contained
+within that repository, which will install the fable extensions to the dotnet command line tool and then go on to run `yarn install` and 
+`dotnet restore` for you to pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies.  
 
 *)
 
 (*** more ***)
 
-#r "../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
-#load "../node_modules/fable-import-three/Fable.Import.Three.fs"
+#r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
+#load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
 
 open System
 open Fable.Core
@@ -55,14 +62,13 @@ let init() =
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
 
-    let ambientLight = Three.AmbientLight(U2.Case2 "#0C0C0C", 1.0)
+    let ambientLight = Three.AmbientLight(U2.Case2 "#3C3C3C", 1.0)
     scene.add(ambientLight)
 
     let spotLight = Three.SpotLight(U2.Case2 "#FFFFFF")
     spotLight.position.set(-30., 60., 60.) |> ignore
     spotLight.castShadow <- true
     scene.add(spotLight)
-
 
     let cubeStart = Three.BoxGeometry(1., 1., 1.)
 
@@ -77,23 +83,16 @@ let init() =
 
 let renderer, scene, camera, cube = init()
 
-let mutable crx: float = 0.0
-let mutable cry: float = 0.0
-
 let render() =
-    //controls.update(clock.getDelta())
-    crx <- crx + 0.000007
-    cry <- cry + 0.000003
-    cube.rotateX ( crx ) |> ignore
-    cube.rotateY ( cry ) |> ignore
-    //cube.verticesNeedUpdate <- true
+    cube.rotateX ( 0.003 ) |> ignore
+    cube.rotateY ( 0.007 ) |> ignore
+    cube.rotateZ ( 0.011 ) |> ignore
     renderer.render(scene, camera)
 
 let rec animate (dt:float) =
-    Browser.window.requestAnimationFrame(Func<_,_> animate)
-    |> ignore
+    Browser.window.requestAnimationFrame(Func<_,_> animate) |> ignore
     render()
 
-// kick it off
+(** Start it up *)
 animate(0.0)
 

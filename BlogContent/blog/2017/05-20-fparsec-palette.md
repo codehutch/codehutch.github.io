@@ -3,7 +3,7 @@
     Title = "FParsec Palette";
     Date = "2017-05-20T08:20:41";
     Tags = "F# FParsec Parser Combinator Functional Programming";
-    Description = "The single page reference to both FParsec and FParsec-Pipes that you've been waiting your whole life for";
+    Description = "The single page reference to both FParsec and FParsec-Pipes that you've been waiting so long for";
 }
 
 ** FParsec: _Palette_ **

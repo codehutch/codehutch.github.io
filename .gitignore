@@ -5,6 +5,10 @@
 [Oo]utput/
 [Dd]eploy/
 
+# Other tech stacks
+Other/Fable1/node_modules
+Other/Fable1/packages
+
 # User-specific files
 .vs
 *.suo

@@ -5,6 +5,7 @@
     Tags = "";
     Description = "Showcasing Fable's power with a spinning cube";
 *)
+(*** more ***)
 (**
 
 ** Fable & ThreeJs: _Hello Cube_ **
@@ -23,16 +24,18 @@ drawing 3D graphics in a browser.
 ### _First things **first**_ ###
 
 Your machine will need .NET Core installed so you can use the dotnet command line tool. Assuming you have that, the quickest way to get started 
-is to clone the official Fable samples [repository](https://github.com/fable-compiler/samples-browser) and then run the `restore` script contained
-within that repository, which will install the fable extensions to the dotnet command line tool and then go on to run `yarn install` and 
-`dotnet restore` for you to pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies.  
+is to clone the official Fable [samples-browser](https://github.com/fable-compiler/samples-browser) repository and then run the `restore` script 
+contained within that repository, which will install the fable extensions to the dotnet command line tool and then go on to run `yarn install` and 
+`dotnet restore` for you. This will pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies. You can then replace the
+code in the samples-browser/webGLTerrain/src/App.fs file with the below. _Note that you should comment out the first two lines of the below code 
+(which are necessary only as I'm writing an fsx script file for this blog, and you'll be writing a standard fs file)_.  Once you've copied, pasted 
+and commented the code, you can then run `dotnet fable npm-run start` to compile the code to javascript and launch a dev server, then browse to
+`http://localhost:8080/webGLTerrain` (which should actually now show you a plain spinning cube rather than fancy terrain).  
 
 *)
 
-(*** more ***)
-
-#r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
-#load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
+#r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"     // Comment out if you are writing an fs file
+#load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"  // Comment out if you are writing an fs file
 
 open System
 open Fable.Core

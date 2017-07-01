@@ -6,6 +6,8 @@
     Description = "Arithmetic operations compared in various functional languages";
 }
 
+<script>hljs.initHighlightingOnLoad();</script>
+
 ** _multifunctional:_ ARITHMETIC **
 ---------------------------------------------------------------------
 
@@ -86,3 +88,26 @@ let x:int64 = 64 // System.Int64
 ~~~~
 
 </div>
+
+<script>
+
+	function addCaption(ele) {
+
+		var table = ele.parentElement.parentElement.parentElement.parentElement.parentElement;
+		var caption = document.createElement("caption");
+		var codeClass = ele.className.replace('hljs', '');
+
+		caption.innerHTML = codeClass;
+		table.insertBefore(caption, table.firstChild);
+		table.className += ' ' + codeClass;
+	}
+
+	var codeBlocks = document.getElementsByTagName('code');
+
+	for (var i = 0; i < codeBlocks.length; i++) {
+		codeBlocks[i].className = codeBlocks[i].getAttribute('lang');
+		hljs.highlightBlock(codeBlocks[i]);
+		addCaption(codeBlocks[i]);
+	}
+
+</script>

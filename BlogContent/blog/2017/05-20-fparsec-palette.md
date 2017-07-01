@@ -156,7 +156,7 @@ holding quite a lot of different function names in your head, so here's an attem
 
 ### _FParsec **Pipes**_ ###
 
-[FParsec Pipes](https://github.com/rspeele/FParsec-Pipes) is an independant extension to FParsec, written by Robert Peele.
+[FParsec Pipes](https://github.com/rspeele/FParsec-Pipes) is an independent extension to FParsec, written by Robert Peele.
 It adds some new operators and combinators that make it (arguably) more intuitive to translate a grammar into a parser.
 The [documentation](http://rspeele.github.io/FParsec-Pipes/Intro.html) for Pipes is actually pretty concise, but I wanted
 a single page reference to both libraries so I've documented some of it below.

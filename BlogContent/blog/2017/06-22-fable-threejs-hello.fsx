@@ -16,23 +16,23 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
 <script src="/otherOutput/fable1/BlogFableThreeHelloWorldBuild.js"></script>
 
-**The F# to JS compiler [Fable](http://fable.io/) is looking ever more impressive. What better way to showcase its abilities than 
-by putting a spinning a cube on your screen?...** The official Fable ThreeJs / WebGL [demo](http://fable.io/samples/webGLTerrain/index.html) 
-is actually far superiour to my effort here. This is a much cut-down version of that, to show how little code is needed to get F#
-drawing 3D graphics in a browser.     
+**The F# to JS compiler [Fable](http://fable.io/) is looking ever more impressive. What better way to showcase its abilities than
+by putting a spinning a cube on your screen?...** The official Fable ThreeJs / WebGL [demo](http://fable.io/samples/webGLTerrain/index.html)
+is actually far superior to my effort here. This is a much cut-down version of that, to show how little code is needed to get F#
+drawing 3D graphics in a browser.
 
 ### _**First things** first_ ###
 
-Your machine will need .NET Core installed so you can use the dotnet command line tool. Assuming you have that, the quickest way to get started 
-is to clone the official Fable [samples-browser](https://github.com/fable-compiler/samples-browser) repository and then run the `restore` script 
-contained within that repository, which will install the fable extensions to the dotnet command line tool and then go on to run `yarn install` and 
+Your machine will need .NET Core installed so you can use the dotnet command line tool. Assuming you have that, the quickest way to get started
+is to clone the official Fable [samples-browser](https://github.com/fable-compiler/samples-browser) repository and then run the `restore` script
+contained within that repository, which will install the fable extensions to the dotnet command line tool and then go on to run `yarn install` and
 `dotnet restore` for you. This will pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies. You can then replace the
-code in the samples-browser/webGLTerrain/src/App.fs file with the below. _Note that you should comment out the first two lines of the below code 
-(which are necessary only as I'm writing an fsx script file for this blog, and you'll be writing a standard fs file)_. Once you've copied, pasted 
+code in the samples-browser/webGLTerrain/src/App.fs file with the below. _Note that you should comment out the first two lines of the below code
+(which are necessary only as I'm writing an fsx script file for this blog, and you'll be writing a standard fs file)_. Once you've copied, pasted
 and commented the code, you can then run `dotnet fable npm-run start` to compile the code to javascript and launch a dev server, then browse to
 `http://localhost:8080/webGLTerrain` (which should actually now show you a plain spinning cube rather than fancy terrain). Talking of the code,
 the first lines are below. Initially we just import the necessary namespaces and modules, then we define two functions to return the desired
-size of the graphics canvas. 
+size of the graphics canvas.
 
 *)
 
@@ -52,8 +52,8 @@ let height () = Browser.window.innerHeight / 2.0
 
 #### _**1:** Lights_ ####
 
-Our scene needs lights (so we can see stuff).The below function add a dim ambient light and 
-a bright spotslight to the scene.
+Our scene needs lights (so we can see stuff).The below function add a dim ambient light and
+a bright spotlight to the scene.
 
 *)
 
@@ -71,10 +71,10 @@ let initLights (scene:Scene) =
 
 ### _**2:** Camera_ ###
 
-We also need a camera, which sets the location that the scene is viewed from. We also need to set the 
+We also need a camera, which sets the location that the scene is viewed from. We also need to set the
 aspect ration of the field of view. We use the width and height functions we defined above so that the
-camera field's aspect will match the intended dimensions of our graphics output area. The last line of 
-the function is its return value; so the camera is returned back to the caller so that it can be used 
+camera field's aspect will match the intended dimensions of our graphics output area. The last line of
+the function is its return value; so the camera is returned back to the caller so that it can be used
 during rendering.
 
 *)
@@ -91,8 +91,8 @@ let initCamera () =
 
 #### _**3:** Renderer_ ####
 
-OK, so not quite a case of lights-camera-action, as we now need a renderer. A renderer is kind of 
-analagous to a screen, and embodies the output area for our graphics. We have to tell Three which 
+OK, so not quite a case of lights-camera-action, as we now need a renderer. A renderer is kind of
+analogous to a screen, and embodies the output area for our graphics. We have to tell Three which
 DOM element of our page to put the render target into. We also get to choose which kind of renderer
 to use. WebGLRenderer is the fastest, but Three does support other renderers that could be used on
 devices without WebGL support. The call to setClearColour sets the background colour for areas of
@@ -102,7 +102,7 @@ aspect ratio of the camera.
 
 *)
 
-let initRenderer () = 
+let initRenderer () =
 
     let container = Browser.document.getElementById("graphicsContainer")
     let renderer = Three.WebGLRenderer()
@@ -112,7 +112,7 @@ let initRenderer () =
     // Set antialias tbd...
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
-    
+
     renderer
 
 (**
@@ -123,7 +123,7 @@ Nearly there, but not quite like the movies. Now we have to create something to 
 We have only one cast member, a simple cube. Fortunately Three provides methods for defining most
 standard geometric shapes, so we don't have to build it up out of individual triangles. Each object
 also needs its surface properties defining (so that we know what it should look like). Here we say
-that our cube's surface is made from a Lambert type material (which would allow for some shinyness, 
+that our cube's surface is made from a Lambert type material (which would allow for some shininess,
 but we don't set that up here and just go for a plain purple matt surface). We buffer the cube's
 geometry, which moves it to a more compact internal representation (for better performance) and then
 combine it's shape and material definition together into a mesh. Finally we add the mesh to the scene
@@ -148,7 +148,7 @@ let initGeometry(scene:Scene) =
 
 #### _**5:** Action_ ####
 
-Finally we're there. We can create a Scene and initialise all required elements. We return a 
+Finally we're there. We can create a Scene and initialise all required elements. We return a
 4-tuple of the 4 key graphics elements back to the caller so that those elements can be used
 later on in rendering / animation.
 
@@ -170,12 +170,12 @@ let renderer, scene, camera, cube = action()
 
 (**
 
-### _**Make it** move_ ###
+### _**Making it** move_ ###
 
-Soo, as we're using the movies as an analogy, we actuall ought to add some movement to the scene, 
-a spinning cube is going to be much more impressive than a static one. Each frame we rotate the 
+So, as we're using the movies as an analogy, we actually ought to add some movement to the scene,
+a spinning cube is going to be much more impressive than a static one. Each frame we rotate the
 cube a little about each of its axes to make it appear to spin. The use of requestAnimationFrame
-(rather than a loop) ensures that the animation is paused if the render's target element isn't 
+(rather than a loop) ensures that the animation is paused if the render's target element isn't
 on screen.
 
 *)

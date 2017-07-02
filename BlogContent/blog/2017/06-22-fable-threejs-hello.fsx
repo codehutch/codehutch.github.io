@@ -36,7 +36,8 @@ size of the graphics canvas.
 
 *)
 
-// Comment out the below if you are writing a .fs (compiled) file rather than a .fsx (script) file
+// Comment out the below two lines if you are writing a .fs (compiled)
+// file rather than a .fsx (script) file
 #r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
 #load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
 
@@ -54,15 +55,15 @@ let height () = Browser.window.innerHeight / 2.0
 #### _**1:** Lights_ ####
 
 Our scene needs lights (so that we can see stuff).The below function adds a dim ambient light and
-a bright spotlight to the scene. Ambient light defines a base-level of illumination within the 
+a bright spotlight to the scene. Ambient light defines a base-level of illumination within the
 scene. It does not have a particular direction or position (hence it is easy to create). By contrast,
 a spotlight has an exact location and shines in a particular direction, illuminating objects within
-it's beam differently depending on the angle they meet it at. Here we just set the spotlight's 
-position and leave it shining at the origin (the center of our scene). Note that before we 
-specify a colour as a hex string, we have to use `U2.Case2` to create a union case. This is because 
+it's beam differently depending on the angle they meet it at. Here we just set the spotlight's
+position and leave it shining at the origin (the center of our scene). Note that before we
+specify a colour as a hex string, we have to use `U2.Case2` to create a union case. This is because
 the underlying javascript libraries are weakly typed, but F# is very much a strongly typed language.
 Therefore, where javascript functions are willing to accept various types of arguments, the F#
-translation of them has to wrap each of the javascript-acceptable types in a union to keep the F# 
+translation of them has to wrap each of the javascript-acceptable types in a union to keep the F#
 type-system happy.
 
 *)
@@ -102,11 +103,11 @@ let initCamera () =
 
 OK, so not quite a case of _lights-camera-action_, as we now need a renderer. A renderer is sort of
 analogous to a screen, and embodies the output area for our graphics. We have to tell Three which
-DOM element within our page to put the render target into (and out HTML page must contain an element
-called `graphicsContainer`. We also get to choose which kind of renderer to use. `WebGLRenderer` is 
-the fastest, but Three does support other renderers that could be used on devices without WebGL support. 
-The call to `setClearColour` sets the background colour for areas of the screen that are not otherwise 
-drawn on. Again we set the size of the output area using the `width()` and `height()` functions that we defined 
+DOM element within our page to put the render target into (and our HTML page must contain an element
+called `graphicsContainer`. We also get to choose which kind of renderer to use. `WebGLRenderer` is
+the fastest, but Three does support other renderers that could be used on devices without WebGL support.
+The call to `setClearColour` sets the background colour for areas of the screen that are not otherwise
+drawn on. Again we set the size of the output area using the `width()` and `height()` functions that we defined
 above, so that the output dimensions tie up with the aspect ratio of the camera.
 
 *)
@@ -117,7 +118,10 @@ let initRenderer () =
     renderer.setClearColor("#0A1D2D")
     (renderer :> Three.Renderer).setSize(width(), height())
 
-    let container = Browser.document.getElementById("graphicsContainer")
+    let container = if Browser.document.getElementById("graphicsContainer") <> null
+                    then Browser.document.getElementById("graphicsContainer")
+                    else Browser.document.body
+
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
 
@@ -157,9 +161,9 @@ let initGeometry(scene:Scene) =
 #### _**5:** Action_ ####
 
 Finally we're there. We can create a Scene and initialise all required elements by calling
-the functions we defined above. We return a 4-tuple of the 4 key graphics elements back to 
-the caller so that those elements can be used later on in rendering / animation. In-fact, 
-"the caller" is just the line of script at the bottom of the section, which creates top-level 
+the functions we defined above. We return a 4-tuple of the 4 key graphics elements back to
+the caller so that those elements can be used later on in rendering / animation. In-fact,
+"the caller" is just the line of script at the bottom of the section, which creates top-level
 bindings to each of the key graphics elements.
 
 *)

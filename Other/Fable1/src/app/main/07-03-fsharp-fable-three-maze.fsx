@@ -1,9 +1,9 @@
 (*@
     Layout = "post";
-    Title = "Fable / Three.js  - Hello Cube";
-    Date = "2017-06-22T07:19:37";
-    Tags = "fsharp threejs fable hello cube functional";
-    Description = "Showcasing Fable's power with a spinning cube";
+    Title = "FSharp / Fable / ThreeJs - Maze";
+    Date = "2017-07-03T08:48:31";
+    Tags = "fsharp threejs fable maze functional";
+    Description = "A graphical-code approach to maze generation, using F#, Fable and ThreeJs";
 *)
 (*** more ***)
 (**
@@ -14,7 +14,7 @@
 <div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
-<script src="/otherOutput/fable1/BlogFableThreeHelloWorldBuild.js"></script>
+<script src="/otherOutput/fable1/BlogFableThreeMazeBuild.js"></script>
 
 **The F# to JS compiler [Fable](http://fable.io/) is looking ever more impressive. What better way to showcase its abilities than
 by putting a spinning a cube on your screen?...** The official Fable ThreeJs / WebGL [demo](http://fable.io/samples/webGLTerrain/index.html)
@@ -148,7 +148,7 @@ let initGeometry(scene:Scene) =
     let cubeStart = Three.BoxGeometry(1., 1., 1.)
 
     let matProps = createEmpty<Three.MeshLambertMaterialParameters>
-    matProps.color <- Some (U2.Case2 "#9430B3")
+    matProps.color <- Some (U2.Case2 "#94FFB3")
 
     let cube = Three.BufferGeometry().fromGeometry(cubeStart);
     let mesh = Three.Mesh(cube, Three.MeshLambertMaterial(matProps))

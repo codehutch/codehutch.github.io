@@ -8,7 +8,7 @@
 (*** more ***)
 (**
 
-** F#, Fable & ThreeJs: _Hello Cube_ **
+** F#, Fable & ThreeJs: _Maze_ **
 ---------------------------------
 
 <div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
@@ -16,28 +16,52 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
 <script src="/otherOutput/fable1/BlogFableThreeMazeBuild.js"></script>
 
-**The F# to JS compiler [Fable](http://fable.io/) is looking ever more impressive. What better way to showcase its abilities than
-by putting a spinning a cube on your screen?...** The official Fable ThreeJs / WebGL [demo](http://fable.io/samples/webGLTerrain/index.html)
-is actually far superior to my effort here. This is a much cut-down version of that demo, showing how little code is needed to get F#
-drawing 3D graphics in a browser.
+**F# gives us considerable lee-way syntactically**. Let's see how far we can bend it to generate a maze from **code
+that looks like diagrams** of what we want to generate.
 
-### _**First things** first_ ###
+### _**Decisions** decisions_ ###
 
-To use Fable, your machine will need .NET Core installed - so you can use the `dotnet` command line tool. Assuming you have that, the quickest way to get started
-is to clone the official Fable [samples-browser](https://github.com/fable-compiler/samples-browser) repository and then run the `restore` script
-contained in its base directory, which will install the Fable extensions to the dotnet command line tool and will also then go on to run `yarn install` and
-`dotnet restore` for you. This will pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies. You can then replace the
-code in the samples-browser/webGLTerrain/src/App.fs file with the below. _Note that you should comment out the first two lines of the below code_
-(they are necessary only as I'm writing a fsx script file for this blog, whereas probably you would write a standard fs file, if not blogging). Once you've copied, pasted
-and commented the code, you can then run `dotnet fable npm-run start` to compile the code to javascript and launch a dev server, then browse to
-`http://localhost:8080/webGLTerrain` (which should actually now show you a plain spinning cube rather than fancy terrain). **Talking of the code,
-the first lines are below**. Initially we just import the necessary namespaces and modules, then we define two functions to return the desired
-size of the graphics canvas.
+The first question is... How do we want to represent a maze square? One way we could go is to use strings to draw
+little box diagrams. We're helped in drawing our ascii mazes by F#'s rather nice triple quoted multi-line string
+literals. However, whilst ascii art is undeniably masssively cool, using strings to draw mazes has some drawbacks...
+
+  * There's nothing to stop me being lazy and drawing one that's incomplete 
+  * There's nothing to stop me going crazy and using non-standard characters
+  * I'm going to have to parse the strings into something meaningful
+  * I'm going to have to handle potential extra white-space etc 
 
 *)
 
-// Comment out the below two lines if you are writing a .fs (compiled)
-// file rather than a .fsx (script) file
+// Option 1 - Use strings and ascii art - cool but not cool
+
+let stringMazes = """ 
+
+     +-+                      +-+                                   +-+-+
+     | | <= 1x1 square box    |   <= very simple 1x1 square maze    |     <= really complicated
+     +-+                      + +                                   + +-+    2x2 square maze
+                                                                        |
+                                                                    +-+-+
+"""
+
+(**
+
+### _**Philosophical** rethink_ ###
+
+So, ascii-art strings are looking like too much effort, how can we make it simpler? One way we could simplify
+things is to try and identify the minimum-possible representation of a 1x1 maze. An interesting philosophical 
+point here is that the 1x1 square box above required nine ascii characters to draw it (4 sides, 4 corners and
+the space in the middle). But that was representing the maze square in terms of it's boundaries and walls (man). 
+If we were to be all open minded and free thinking and glass-half-fullish then we could look at that square in 
+terms of it's connectivity to other squares, and realise there's only 4 possible ways out of a square, north, 
+south, east and west. That would require just 4 bools to represent it, which is lovely. Trouble is, how are we 
+going to hold those bools? In an 4-tuple? In a list? A record-type? All would work, but I don't like such ideas 
+as they seem like a 1-d flattening of what is really a 2-d problem. Also, when thinking about a 2x2 grid, the 
+connectivity approach becomes a bit non-intuitive (to me at least). So, let's stick with 2-d-ish solutions, but 
+see if we can get away from strings and introduce some type safety. What we can do is take inspiration from 
+noughts and crosses and introduce two distinct values, X and O to draw our mazes with.
+
+*)
+
 #r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
 #load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
 
@@ -46,6 +70,17 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
 open Fable.Import.Three
+
+// Here's our union-type for representing a maze.
+type Cell = 
+  | X // X is going to represent a wall
+  | O // O is going to represent open space.
+
+let o = O // Sneaky trick to get syntax-highlighting to work better
+
+type SmallSquare = Cell * Cell * Cell
+                 * Cell * Cell * Cell
+                 * Cell * Cell * Cell 
 
 let width () = Browser.window.innerWidth / 2.0;
 let height () = Browser.window.innerHeight / 2.0

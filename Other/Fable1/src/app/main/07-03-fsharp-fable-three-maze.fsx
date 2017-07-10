@@ -76,14 +76,171 @@ type Cell =
   | X // X is going to represent a wall
   | O // O is going to represent open space.
 
-let o = O // Sneaky trick to get syntax-highlighting to work better
+let o = O // Bit of a trick to get syntax-highlighting to show up better
+
+let rnd = System.Random()
+let r () = if (rnd.Next() &&& 0x1) = 0 then O else X
 
 type SmallSquare = Cell * Cell * Cell
                  * Cell * Cell * Cell
                  * Cell * Cell * Cell 
 
-let width () = Browser.window.innerWidth / 2.0;
-let height () = Browser.window.innerHeight / 2.0
+let ss a b c
+       d e f 
+       g h i : SmallSquare = a, b, c,
+                             d, e, f,
+                             g, h, i
+                             
+let randomSS () =
+    let b, d, f, h = r(), r(), r(), r() 
+    ss  X b X
+        d O f
+        X h X
+
+//let validSS                                
+
+let ss1 = ss X X X
+             o o o 
+             X X X
+
+let ss2 = ss X X X
+             X o o 
+             X o X
+
+type LargeSquare = Cell * Cell * Cell * Cell * Cell
+                 * Cell * Cell * Cell * Cell * Cell
+                 * Cell * Cell * Cell * Cell * Cell
+                 * Cell * Cell * Cell * Cell * Cell
+                 * Cell * Cell * Cell * Cell * Cell
+
+let ls a b c d e
+       f g h i j
+       k l m n o
+       p q r s t
+       u v w x y : LargeSquare = a, b, c, d, e,
+                                 f, g, h, i, j,
+                                 k, l, m, n, o,
+                                 p, q, r, s, t, 
+                                 u, v, w, x, y
+
+let ls1 = ls X X X X X 
+             X o X o o
+             X o X o X
+             X o o o X
+             X o X X X
+
+let randomLS () =
+    let b, d, f, h, j, l, n, p, r, t, v, x = r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r() 
+    ls  X b X d X
+        f O h O j
+        X l X n X
+        p O r O t
+        X v X x X
+        
+let adapt mf (a, b, c, d, e,
+              f, g, h, i, j,
+              k, l, m, n, o,
+              p, q, r, s, t,
+              u, v, w, x, y) = mf a b c d e
+                                  f g h i j
+                                  k l m n o
+                                  p q r s t
+                                  u v w x y
+
+let toList a b c d e
+           f g h i j
+           k l m n o
+           p q r s t
+           u v w x y = [a; b; c; d; e; f; g; h; i; j; k; l; m; n; o; p; q; r; s; t; u; v; w; x; y]
+        
+type LargeRow = Cell * Cell * Cell * Cell * Cell
+type LargeCol = LargeRow
+
+let row [a; b; c; d; e] = a, b, c, d, e 
+
+let topRow (ls:LargeSquare)      = adapt toList ls                 |> List.take 5 |> row
+let upperMidRow (ls:LargeSquare) = adapt toList ls |> List.skip  5 |> List.take 5 |> row
+let middleRow (ls:LargeSquare)   = adapt toList ls |> List.skip 10 |> List.take 5 |> row
+let lowerMidRow (ls:LargeSquare) = adapt toList ls |> List.skip 15 |> List.take 5 |> row
+let bottomRow (ls:LargeSquare)   = adapt toList ls |> List.skip 20 |> List.take 5 |> row
+
+let rss a b c
+        d e f
+        g h i : SmallSquare = ss g d a
+                                 h e b
+                                 i f c
+
+let rec a n = 
+    match n with
+    | 0 -> Seq.empty
+    | _ -> seq { yield O; yield X; yield! a (n - 1) }
+
+//let ss X X X
+//       o o o 
+//       X X X = ls X X X X X       ls X X X X X
+//                  o o o o o          o o o o X
+//                  X o X X X          X o X o X
+//                  o o o o X          X o X o o
+//                  X X X X X          X X X X X
+
+//   X   X
+// o s o s o 
+//   o   o
+// o s o s o 
+//   X   X  
+
+type Maze = 
+  | Square of LargeSquare 
+  | Grid of TopLeft:Maze    * TopRight:Maze 
+          * BottomLeft:Maze * BottomRight:Maze
+
+let renderCube (scene:Scene) xs xe ys ye =
+
+    let size = xe - xs
+    let cubeStart = Three.BoxGeometry(size, size, size)
+    let matProps = createEmpty<Three.MeshLambertMaterialParameters>
+    matProps.color <- Some (U2.Case2 "#94FFB3")
+    let cube = Three.BufferGeometry().fromGeometry(cubeStart);
+    let mesh = Three.Mesh(cube, Three.MeshLambertMaterial(matProps))
+    mesh.translateX (xs - size / 2.0) |> ignore
+    mesh.translateY (ys - size / 2.0) |> ignore
+    mesh.translateZ 0.0 |> ignore
+    scene.add(mesh)
+
+let renderRow (scene:Scene) xs xe ys ye (a, b, c, d, e) = 
+    let widthStep = (xe - xs) / 5.0
+    if a = X then renderCube scene (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
+    if b = X then renderCube scene (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
+    if c = X then renderCube scene (xs + 2.0 * widthStep) (xs + 3.0 * widthStep) ys ye
+    if d = X then renderCube scene (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
+    if e = X then renderCube scene (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
+
+let rec renderMaze (scene:Scene) tlx tly brx bry maze = 
+    match maze with
+    | Square s -> 
+        let heightStep = (bry - tly) / 5.0
+        renderRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) (topRow s)
+        renderRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) (upperMidRow s)
+        renderRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) (middleRow s)
+        renderRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) (lowerMidRow s)
+        renderRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) (bottomRow s)    
+    | Grid (tl, tr, bl, br) -> 
+        let heightStep, widthStep = (bry - tly) / 2.0, (brx - tlx) / 2.0
+        renderMaze scene (tlx + 0.0 * widthStep) (tly + 0.0 * heightStep) (tlx + 1.0 * widthStep) (tly + 1.0 * heightStep) tl
+        renderMaze scene (tlx + 1.0 * widthStep) (tly + 0.0 * heightStep) (tlx + 2.0 * widthStep) (tly + 1.0 * heightStep) tr
+        renderMaze scene (tlx + 0.0 * widthStep) (tly + 1.0 * heightStep) (tlx + 1.0 * widthStep) (tly + 2.0 * heightStep) bl
+        renderMaze scene (tlx + 1.0 * widthStep) (tly + 1.0 * heightStep) (tlx + 2.0 * widthStep) (tly + 2.0 * heightStep) br
+
+let rec randomGrid n =
+    let m = n - 1
+    match n with 
+    | n when n > 1 -> Grid (randomGrid m, randomGrid m,
+                            randomGrid m, randomGrid m)
+    | _ -> Square (randomLS())
+               
+    
+let width () = Browser.window.innerWidth * 0.75;
+let height () = Browser.window.innerHeight * 0.5
 
 (**
 
@@ -178,18 +335,6 @@ and also return the cube geometry for later use.
 
 *)
 
-let initGeometry(scene:Scene) =
-
-    let cubeStart = Three.BoxGeometry(1., 1., 1.)
-
-    let matProps = createEmpty<Three.MeshLambertMaterialParameters>
-    matProps.color <- Some (U2.Case2 "#94FFB3")
-
-    let cube = Three.BufferGeometry().fromGeometry(cubeStart);
-    let mesh = Three.Mesh(cube, Three.MeshLambertMaterial(matProps))
-
-    scene.add(mesh)
-    cube
 
 (**
 
@@ -211,11 +356,11 @@ let action() =
     initLights scene
     let camera = initCamera ()
     let renderer = initRenderer ()
-    let cube = initGeometry scene
+    renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 4) 
 
-    renderer, scene, camera, cube
+    renderer, scene, camera
 
-let renderer, scene, camera, cube = action()
+let renderer, scene, camera = action()
 
 (**
 
@@ -230,9 +375,6 @@ on screen.
 *)
 
 let render() =
-    cube.rotateX ( 0.003 ) |> ignore
-    cube.rotateY ( 0.007 ) |> ignore
-    cube.rotateZ ( 0.011 ) |> ignore
     renderer.render(scene, camera)
 
 let rec animate (dt:float) =

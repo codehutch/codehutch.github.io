@@ -304,7 +304,7 @@ above, so that the output dimensions tie up with the aspect ratio of the camera.
 
 *)
 
-let initRenderer () =
+let initRenderer (scene:Scene) =
 
     let renderer = Three.WebGLRenderer()
     renderer.setClearColor("#0A1D2D")
@@ -316,6 +316,18 @@ let initRenderer () =
 
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
+    
+    let buttonClick (b : Browser.MouseEvent) =
+        while(scene.children.Count > 0) do 
+            scene.remove(scene.children.Item(0)) 
+        initLights scene
+        renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 3) 
+        (Boolean() :> obj)
+    
+    let button = Browser.document.createElement("button")
+    button.innerText <- "Click me"
+    button.onclick <- Func<_,_> buttonClick
+    container.appendChild(button) |> ignore
 
     renderer
 
@@ -355,8 +367,8 @@ let action() =
 
     initLights scene
     let camera = initCamera ()
-    let renderer = initRenderer ()
-    renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 4) 
+    let renderer = initRenderer scene
+    renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 3) 
 
     renderer, scene, camera
 
@@ -377,9 +389,11 @@ on screen.
 let render() =
     renderer.render(scene, camera)
 
-let rec animate (dt:float) =
+let rec reqFrame (dt:float) =
     Browser.window.requestAnimationFrame(Func<_,_> animate) |> ignore
     render()
+and animate (dt:float) =
+    Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 30.0) |> ignore // 30 fps
 
 animate(0.0) // Start the animation going
 

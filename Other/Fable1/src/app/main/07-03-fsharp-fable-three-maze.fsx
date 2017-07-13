@@ -75,6 +75,7 @@ open Fable.Import.Three
 type Cell = 
   | X // X is going to represent a wall
   | O // O is going to represent open space.
+  | I // I represents intederminate / don't care
 
 let o = O // Bit of a trick to get syntax-highlighting to show up better
 
@@ -147,6 +148,8 @@ let adapt mf (a, b, c, d, e,
                                   p q r s t
                                   u v w x y
 
+let (|>>|) = adapt
+
 let toList a b c d e
            f g h i j
            k l m n o
@@ -188,6 +191,58 @@ let rec a n =
 //   o   o
 // o s o s o 
 //   X   X  
+
+
+(*
+let disallow a b c d e
+             f g h i j
+             k l m n o
+             p q r s t
+             u v w x y   a' b' c' d' e'
+                         f' g' h' i' j'
+                         k' l' m' n' o' 
+                         p' q' r' s' t' 
+                         u' v' w' x' y' = 
+    match m with
+    |
+*)     
+
+let (|=|) (a:Cell) (b:Cell) =
+    match a, b with
+    | X, I -> true
+    | O, I -> true
+    | I, X -> true
+    | I, O -> true
+    | _, _ -> a = b
+
+let (|<>|) (a:Cell) (b:Cell) =
+    match a, b with
+    | X, I -> false
+    | O, I -> false
+    | I, X -> false
+    | I, O -> false
+    | I, I -> false
+    | _, _ -> a <> b
+
+let (||=||) (a:LargeSquare) (b:LargeSquare) =
+    let al, bl = toList |>>| a, toList |>>| b
+    List.fold2 (fun s x y -> s && (x |=| y)) true al bl
+
+let (||<>||) (a:LargeSquare) (b:LargeSquare) =
+    let al, bl = toList |>>| a, toList |>>| b
+    List.fold2 (fun s x y -> s && (x |<>| y)) true al bl
+
+let aa = ls X X X X X
+            o o o o o 
+            X o X o X
+            X o o o X
+            X X X X X
+
+let at = ls I I I I I 
+            o o o o o 
+            I I I I I 
+            I I I I I 
+            I I I o I 
 
 type Maze = 
   | Square of LargeSquare 

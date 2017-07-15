@@ -148,7 +148,27 @@ let adapt mf (a, b, c, d, e,
                                   p q r s t
                                   u v w x y
 
-let (|>>|) = adapt
+let rotate a b c d e
+           f g h i j
+           k l m n o
+           p q r s t
+           u v w x y = ls u p k f a
+                          v q l g b
+                          w r m h c
+                          x s n i d
+                          y t o j e
+
+let flip a b c d e
+         f g h i j
+         k l m n o
+         p q r s t
+         u v w x y = ls e d c b a
+                        j i h g f
+                        o n m l k
+                        t s r q p
+                        y x w v u
+
+let (||>>||) = adapt
 
 let toList a b c d e
            f g h i j
@@ -172,6 +192,11 @@ let rss a b c
         g h i : SmallSquare = ss g d a
                                  h e b
                                  i f c
+let adaptSS sf (a, b, c,
+                d, e, f,
+                g, h, i) = sf a b c
+                              d e f
+                              g h i
 
 let rec a n = 
     match n with
@@ -217,20 +242,128 @@ let (|=|) (a:Cell) (b:Cell) =
 
 let (|<>|) (a:Cell) (b:Cell) =
     match a, b with
-    | X, I -> false
-    | O, I -> false
-    | I, X -> false
-    | I, O -> false
     | I, I -> false
     | _, _ -> a <> b
 
 let (||=||) (a:LargeSquare) (b:LargeSquare) =
-    let al, bl = toList |>>| a, toList |>>| b
+    let al, bl = toList ||>>|| a, toList ||>>|| b
     List.fold2 (fun s x y -> s && (x |=| y)) true al bl
 
 let (||<>||) (a:LargeSquare) (b:LargeSquare) =
-    let al, bl = toList |>>| a, toList |>>| b
+    let al, bl = toList ||>>|| a, toList ||>>|| b
     List.fold2 (fun s x y -> s && (x |<>| y)) true al bl
+
+let straightSS = ss X X X
+                    o o o 
+                    X X X
+
+let cornerSS = ss X X X
+                  X o o 
+                  X o X
+
+let isStraightSS s = 
+  s = straightSS || adaptSS rss s = straightSS 
+
+let isCornerSS s = 
+  let r90 = adaptSS rss s
+  let r180 = adaptSS rss r90
+  let r270 = adaptSS rss r180
+  s = cornerSS || r90 = cornerSS ||
+  r180 = cornerSS || r270 = cornerSS
+
+let isValidSS s = isCornerSS s || isStraightSS s
+
+let allRotationsAndFlips (s:LargeSquare) =
+  let r0 = s 
+  let r90 = rotate ||>>|| r0
+  let r180 = rotate ||>>|| r90
+  let r270 = rotate ||>>|| r180
+  let f0 = rotate ||>>|| s
+  let f90 = rotate ||>>|| f0
+  let f180 = rotate ||>>|| f90
+  let f270 = rotate ||>>|| f180
+  Set.ofList [r0; r90; r180; r270; f0; f90; f180; f270] |> List.ofSeq
+
+let all a b c d e 
+        f g h i j
+        k l m n o
+        p q r s t
+        u v w x y = allRotationsAndFlips <| ls a b c d e
+                                               f g h i j
+                                               k l m n o
+                                               p q r s t
+                                               u v w x y
+
+let validStraightReps = all X X X X X       
+                            o o o o o    
+                            I I I I I    
+                            I I I I I     
+                            X X X X X    
+                        @
+                        all X X X X X
+                            o o o o I
+                            I I I o I
+                            I I I o o
+                            X X X X X
+
+let neverValid = [ls  I I I I I 
+                      I o o o I
+                      I o I o I
+                      I o o o I
+                      I I I I I  ] // A loop isn't valid
+                 @  
+                 all X X X I I 
+                     X I X I I 
+                     X X X I I 
+                     I I I I I 
+                     I I I I I     // Small closed section isn't valid
+                 @    
+                 all X X X X X
+                     X I I I X 
+                     X X X X X
+                     I I I I I 
+                     I I I I I     // Medium closed section isn't valid
+                 @
+                 [ls X X X X X
+                     X I I I X
+                     X I I I X
+                     X I I I X
+                     X X X X X  ]  // Full closed square isn't valid
+                 @
+                 all X o X o X
+                     I I I I I 
+                     I I I I I 
+                     I I I I I 
+                     I I I I I     // Two entry points on any side aren't valid
+                 
+let alwaysRequired = ls  X I X I X
+                         I O I O I
+                         X I X I X
+                         I O I O I
+                         X I X I X  // Standard structure boundary walls
+
+let orthodoxLS [b; d; f; h; j; l; n; p; r; t; v; x] =
+    ls  X b X d X
+        f O h O j
+        X l X n X
+        p O r O t
+        X v X x X
+
+let makeAllLargeSquares () = 
+  let rec als n b = 
+    match n with
+    | 0 -> b
+    | n ->  als (n-1) <| (List.map (fun a -> X :: a) b) @ (List.map (fun a -> O :: a) b)
+  let allInputs = als 12 [[]]
+  List.map (fun l -> orthodoxLS l) allInputs
+
+Browser.console.log (sprintf "About to make all large squares")
+
+let allLargeSquares = makeAllLargeSquares ()
+
+Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
+
+//let conSS L R = getNE conSS L R  L1 R1 || conLS L1 R2 || conLS                             
 
 let aa = ls X X X X X
             o o o o o 
@@ -372,11 +505,14 @@ let initRenderer (scene:Scene) =
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
     
+    let mutable n = 0
+
     let buttonClick (b : Browser.MouseEvent) =
         while(scene.children.Count > 0) do 
             scene.remove(scene.children.Item(0)) 
         initLights scene
-        renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 3) 
+        n <- n + 1
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| Square (List.item n allLargeSquares) 
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")

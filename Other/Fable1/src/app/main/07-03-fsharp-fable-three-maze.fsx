@@ -168,8 +168,6 @@ let flip a b c d e
                         t s r q p
                         y x w v u
 
-let (||>>||) = adapt
-
 let toList a b c d e
            f g h i j
            k l m n o
@@ -242,16 +240,19 @@ let (|=|) (a:Cell) (b:Cell) =
 
 let (|<>|) (a:Cell) (b:Cell) =
     match a, b with
-    | I, I -> false
+    | I, _ -> false
+    | _, I -> false
     | _, _ -> a <> b
 
 let (||=||) (a:LargeSquare) (b:LargeSquare) =
-    let al, bl = toList ||>>|| a, toList ||>>|| b
+    let al = adapt toList a
+    let bl = adapt toList b
     List.fold2 (fun s x y -> s && (x |=| y)) true al bl
 
 let (||<>||) (a:LargeSquare) (b:LargeSquare) =
-    let al, bl = toList ||>>|| a, toList ||>>|| b
-    List.fold2 (fun s x y -> s && (x |<>| y)) true al bl
+    let al = adapt toList a
+    let bl = adapt toList b
+    List.fold2 (fun s x y -> s || (x |<>| y)) false al bl
 
 let straightSS = ss X X X
                     o o o 
@@ -275,14 +276,14 @@ let isValidSS s = isCornerSS s || isStraightSS s
 
 let allRotationsAndFlips (s:LargeSquare) =
   let r0 = s 
-  let r90 = rotate ||>>|| r0
-  let r180 = rotate ||>>|| r90
-  let r270 = rotate ||>>|| r180
-  let f0 = rotate ||>>|| s
-  let f90 = rotate ||>>|| f0
-  let f180 = rotate ||>>|| f90
-  let f270 = rotate ||>>|| f180
-  Set.ofList [r0; r90; r180; r270; f0; f90; f180; f270] |> List.ofSeq
+  let r90 = adapt rotate r0
+  let r180 = adapt rotate r90
+  let r270 = adapt rotate r180
+  let f0 = adapt flip s
+  let f90 = adapt rotate f0
+  let f180 = adapt rotate f90
+  let f270 = adapt rotate f180
+  [r0; r90; r180; r270; f0; f90; f180; f270]
 
 let all a b c d e 
         f g h i j
@@ -323,6 +324,12 @@ let neverValid = [ls  I I I I I
                      X X X X X
                      I I I I I 
                      I I I I I     // Medium closed section isn't valid
+                 @    
+                 all X X X X X
+                     X I I I X 
+                     X I X X X
+                     X I X I I 
+                     X X X I I     // Large closed section isn't valid
                  @
                  [ls X X X X X
                      X I I I X
@@ -357,9 +364,9 @@ let makeAllLargeSquares () =
   let allInputs = als 12 [[]]
   List.map (fun l -> orthodoxLS l) allInputs
 
-Browser.console.log (sprintf "About to make all large squares")
-
 let allLargeSquares = makeAllLargeSquares ()
+                      |> List.filter (fun x -> List.fold (fun a y -> a && x ||<>|| y) true neverValid)
+                      |> List.filter (fun x -> x ||=|| alwaysRequired)
 
 Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
 

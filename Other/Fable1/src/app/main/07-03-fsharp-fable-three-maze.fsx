@@ -383,6 +383,147 @@ let at = ls I I I I I
             I I I I I 
             I I I I I 
             I I I o I 
+(*
+let makeMatch  a b c  
+               d e f  
+               g h i  (lsl:LargeSquare list) = ()
+
+let sm = makeMatch  I I I    
+                    o o o         
+                    I I I  allFlipsAnd180Rots
+                              [ls I I I I I
+                                  o o o o o
+                                  I I I I I 
+                                  I I I I I
+                                  I I I I I  
+                           mOr
+                               ls I I I I I 
+                                  o o o o I 
+                                  I I I o I 
+                                  I I I o o 
+                                  I I I I I
+                          mOr
+                               ls I I I I I
+                                  o o I I I 
+                                  I o I I I 
+                                  I o o o o 
+                                  I I I I I 
+                          mOr
+                               ls I I I I I 
+                                  o o I o o 
+                                  I o I o I 
+                                  I o o o I  
+                                  I I I I I 
+                          ]
+
+let cm = makeMatch  I I I    
+                    o o I         
+                    I o I  exactly
+                              [ls I I I I I
+                                  o o I I I 
+                                  I o I I I 
+                                  I o I I I
+                                  I o I I I  
+                           mOr
+                               ls I I I I I 
+                                  o o o o I 
+                                  I I I o I 
+                                  I I I o I 
+                                  I I I o I
+                          mOr
+                               ls I I I I I
+                                  o o I I I 
+                                  I o I I I 
+                                  I o o o I 
+                                  I I I o I 
+                          mOr
+                               ls I I I I I 
+                                  o o o o I 
+                                  I I I o I 
+                                  I o o o I  
+                                  I o I I I  
+                          mOr  
+                               ls I I I I I 
+                                  I I I I I
+                                  I I I I I 
+                                  o o I I I 
+                                  I o I I I 
+                          mOr  
+                               ls I I I I I 
+                                  I I I I I
+                                  I I I I I 
+                                  o o o o I 
+                                  I I I o I 
+                          mOr  
+                               ls I I I I I 
+                                  I o o o I
+                                  I o I o I 
+                                  o o I o I 
+                                  I I I o I 
+                          ]
+
+let mo X X X 
+       o o X
+       X X X  vFlips 
+              [ ls X X X X X 
+                   o o I I X
+                   X I I I X 
+                   X I I I X 
+                   X X X X X                    
+                 ]
+       
+*)
+(*
+let rec combinations al = 
+    match al with
+    | [] -> [[]]
+    | X::[] -> [[X]]
+    | O::[] -> [[O]]
+    | I::[] -> [[X]; [O]]
+    | X::t -> [X] :: combinations t
+    | O::t -> [O] :: combinations t
+    | I::t -> [[X] :: combinations t; [O] :: combinations t]
+*)
+let rec combinations (l : Cell list) = 
+    match l with
+    | [] -> seq { yield [] }
+    | X::t -> seq { for tt in combinations t do
+                        yield X :: tt}
+    | O::t -> seq { for tt in combinations t do
+                        yield O :: tt}
+    | I::t -> seq { for tt in combinations t do
+                        yield X :: tt
+                        yield O :: tt}
+
+(*
+let mThree X o X
+           o o o 
+           X X X = [ ls X o X X X // +hflip
+                        o o o o o
+                        X I I I X 
+                        X I I I X 
+                        X X X X X
+                        
+                     ls X X X o X // hflip
+                        o o o o o
+                        X I I I X 
+                        X I I I X 
+                        X X X X X                                            
+                        
+                     ls X o X X X 
+                        o o I I X
+                        X o I I X 
+                        X o o o o
+                        X X X X X                                            
+                        
+                     ls X X X o X 
+                        o o X o o
+                        X o I o X 
+                        X o o o X 
+                        X X X X X                                            
+                 ]
+*)
+
 
 type Maze = 
   | Square of LargeSquare 

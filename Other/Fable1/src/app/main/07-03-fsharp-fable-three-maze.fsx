@@ -313,23 +313,17 @@ let neverValid = [ls  I I I I I
                       I o o o I
                       I I I I I  ] // A loop isn't valid
                  @  
-                 all X X X I I 
-                     X I X I I 
+                 all I I X I I 
+                     I I X I I 
                      X X X I I 
                      I I I I I 
                      I I I I I     // Small closed section isn't valid
                  @    
-                 all X X X X X
-                     X I I I X 
+                 all I I I I I
+                     I I I I I 
                      X X X X X
                      I I I I I 
                      I I I I I     // Medium closed section isn't valid
-                 @    
-                 all X X X X X
-                     X I I I X 
-                     X I X X X
-                     X I X I I 
-                     X X X I I     // Large closed section isn't valid
                  @
                  [ls X X X X X
                      X I I I X
@@ -473,17 +467,7 @@ let mo X X X
                  ]
        
 *)
-(*
-let rec combinations al = 
-    match al with
-    | [] -> [[]]
-    | X::[] -> [[X]]
-    | O::[] -> [[O]]
-    | I::[] -> [[X]; [O]]
-    | X::t -> [X] :: combinations t
-    | O::t -> [O] :: combinations t
-    | I::t -> [[X] :: combinations t; [O] :: combinations t]
-*)
+
 let rec combinations (l : Cell list) = 
     match l with
     | [] -> seq { yield [] }
@@ -498,30 +482,60 @@ let rec combinations (l : Cell list) =
 (*
 let mThree X o X
            o o o 
-           X X X = [ ls X o X X X // +hflip
-                        o o o o o
-                        X I I I X 
-                        X I I I X 
-                        X X X X X
-                        
-                     ls X X X o X // hflip
-                        o o o o o
-                        X I I I X 
-                        X I I I X 
-                        X X X X X                                            
-                        
-                     ls X o X X X 
-                        o o I I X
-                        X o I I X 
-                        X o o o o
-                        X X X X X                                            
-                        
-                     ls X X X o X 
-                        o o X o o
-                        X o I o X 
-                        X o o o X 
-                        X X X X X                                            
+           X X X = [ ls X o X X X   ls X o X X X   ls X X X o X   ls X X X o X 
+                        o o I o o      o o I o X      o o I o o      o o I o X
+                        X I X I X      X I X I X      X I X I X      X I X I X
+                        X o I o X      X o I o o      X o I o X      X o I o o
+                        X X X X X      X X X X X      X X X X X      X X X X X
+                                                
+                     ls X o X X X   ls X o X X X   ls X X X o X   ls X X X o X 
+                        X o I o o      X o I o X      X o I o o      X o I o X
+                        X I X I X      X I X I X      X I X I X      X I X I X
+                        o o I o X      o o I o o      o o I o X      o o I o o
+                        X X X X X      X X X X X      X X X X X      X X X X X
+                                            
                  ]
+*)
+
+
+(*
+
+X O X O X
+S A O B D
+X O X O X
+O C O D O 
+X O X O X
+
+let mFour = ls X O X X X
+               O O O O O
+               X O X O X
+               X O X O X
+               X O X X X
+
+             ls X O X X X   ls X O X X X   ls X O X X X   ls X O X X X   
+                O O X O O      O O X O O      O O O O O      O O O O O      
+                X O X O X      X O X O X      X O X O X      X O X O X     
+                X O O O X      X O O O X      X O X O X      X O X O X
+                X O X X X      X X X O X      X O X X X      X X X O X
+
+             ls X X X O X   ls X X X O X   ls X X X O X   ls X X X O X   
+                O O X O O      O O X O O      O O O O O      O O O O O      
+                X O X O X      X O X O X      X O X O X      X O X O X     
+                X O O O X      X O O O X      X O X O X      X O X O X
+                X O X X X      X X X O X      X O X X X      X X X O X
+
+             ls X O X X X   ls X O X X X   ls X O X X X   ls X O X X X   
+                O O X O X      O O X O X      O O O O X      O O O O X      
+                X O X O X      X O X O X      X O X O X      X O X O X     
+                X O O O O      X O O O O      X O X O O      X O X O O
+                X O X X X      X X X O X      X O X X X      X X X O X
+
+             ls X X X O X   ls X X X O X   ls X X X O X   ls X X X O X   
+                O O X O X      O O X O X      O O O O X      O O O O X      
+                X O X O X      X O X O X      X O X O X      X O X O X     
+                X O O O O      X O O O O      X O X O O      X O X O O
+                X O X X X      X X X O X      X O X X X      X X X O X
+
 *)
 
 

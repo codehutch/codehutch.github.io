@@ -173,6 +173,16 @@ let toList a b c d e
            k l m n o
            p q r s t
            u v w x y = [a; b; c; d; e; f; g; h; i; j; k; l; m; n; o; p; q; r; s; t; u; v; w; x; y]
+
+let ofList [a;b;c;d;e;
+            f;g;h;i;j;
+            k;l;m;n;o;
+            p;q;r;s;t;
+            u;v;w;x;y] = ls a b c d e
+                            f g h i j
+                            k l m n o
+                            p q r s t
+                            u v w x y
         
 type LargeRow = Cell * Cell * Cell * Cell * Cell
 type LargeCol = LargeRow
@@ -295,18 +305,6 @@ let all a b c d e
                                                p q r s t
                                                u v w x y
 
-let validStraightReps = all X X X X X       
-                            o o o o o    
-                            I I I I I    
-                            I I I I I     
-                            X X X X X    
-                        @
-                        all X X X X X
-                            o o o o I
-                            I I I o I
-                            I I I o o
-                            X X X X X
-
 let neverValid = [ls  I I I I I 
                       I o o o I
                       I o I o I
@@ -359,103 +357,106 @@ let makeAllLargeSquares () =
   List.map (fun l -> orthodoxLS l) allInputs
 
 let allLargeSquares = makeAllLargeSquares ()
-                      |> List.filter (fun x -> List.fold (fun a y -> a && x ||<>|| y) true neverValid)
-                      |> List.filter (fun x -> x ||=|| alwaysRequired)
 
-Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
+//Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
 
-//let conSS L R = getNE conSS L R  L1 R1 || conLS L1 R2 || conLS                             
+let combos (l : Cell list) = 
+  let rec possibles (m : Cell list) = 
+    match m with
+    | [] -> seq { yield [] }
+    | X::t -> seq { for tt in possibles t do
+                        yield X :: tt}
+    | O::t -> seq { for tt in possibles t do
+                        yield O :: tt}
+    | I::t -> seq { for tt in possibles t do
+                        yield X :: tt
+                        yield O :: tt}
+  possibles l 
+  |> Seq.map ofList
+  |> Seq.filter (fun x -> Seq.fold (fun a y -> a && x ||<>|| y) true neverValid)
+  |> Seq.filter (fun x -> x ||=|| alwaysRequired)
+  |> Seq.map allRotationsAndFlips
+  |> Seq.collect Seq.ofList
+  |> Set.ofSeq
+  |> Set.toSeq
 
-let aa = ls X X X X X
-            o o o o o 
-            X o X o X
-            X o o o X
-            X X X X X
+let cb a b c d e
+       f g h i j
+       k l m n o
+       p q r s t
+       u v w x y = combos (toList a b c d e
+                                  f g h i j
+                                  k l m n o
+                                  p q r s t
+                                  u v w x y) 
 
-let at = ls I I I I I 
-            o o o o o 
-            I I I I I 
-            I I I I I 
-            I I I o I 
+let makeMatch a b c  
+              d e f  
+              g h i 
+              
+              (replacements : LargeSquare seq list) 
+              
+              (filter : LargeSquare) = (ss a b c
+                                           d e f
+                                           g h i, replacements
+                                                  |> Seq.ofList
+                                                  |> Seq.collect id
+                                                  |> Seq.filter ((||=||) filter))
+
+let straightMatches = 
+  makeMatch X X X    
+            o o o         
+            X X X  [cb X X X X X
+                       o o o o o
+                       X I X I X 
+                       X O I O X
+                       X X X X X;  
+          
+                    cb X X X X X 
+                       o o o o X 
+                       X I X o X 
+                       X O I o o 
+                       X X X X X ]
+            
+            (ls X X X X X
+                I I I I I
+                I I I I I 
+                I I I I I 
+                X X X X X) 
+
+let cornerMatches = 
+  makeMatch X X X    
+            o o X         
+            X o X  [ cb X X X X X
+                        o o I O X 
+                        X o X I X 
+                        X o I O X
+                        X o X X X  ;  
+                       
+                     cb X X X X X 
+                        o o o o X 
+                        X I X o X 
+                        X O I o X 
+                        X X X o X  ;
+
+                     cb X X X X X 
+                        X O I O X 
+                        X I X I X 
+                        o o I O X 
+                        X o X X X  ;
+
+                     cb X X X X X 
+                        X O I O X 
+                        X I X I X 
+                        o o o o X 
+                        X X X o X ]
+            (ls X X X X X
+                I I I I X
+                I I I I X
+                I I I I X
+                I I I I X )
+
 (*
-let makeMatch  a b c  
-               d e f  
-               g h i  (lsl:LargeSquare list) = ()
-
-let sm = makeMatch  I I I    
-                    o o o         
-                    I I I  allFlipsAnd180Rots
-                              [ls I I I I I
-                                  o o o o o
-                                  I I I I I 
-                                  I I I I I
-                                  I I I I I  
-                           mOr
-                               ls I I I I I 
-                                  o o o o I 
-                                  I I I o I 
-                                  I I I o o 
-                                  I I I I I
-                          mOr
-                               ls I I I I I
-                                  o o I I I 
-                                  I o I I I 
-                                  I o o o o 
-                                  I I I I I 
-                          mOr
-                               ls I I I I I 
-                                  o o I o o 
-                                  I o I o I 
-                                  I o o o I  
-                                  I I I I I 
-                          ]
-
-let cm = makeMatch  I I I    
-                    o o I         
-                    I o I  exactly
-                              [ls I I I I I
-                                  o o I I I 
-                                  I o I I I 
-                                  I o I I I
-                                  I o I I I  
-                           mOr
-                               ls I I I I I 
-                                  o o o o I 
-                                  I I I o I 
-                                  I I I o I 
-                                  I I I o I
-                          mOr
-                               ls I I I I I
-                                  o o I I I 
-                                  I o I I I 
-                                  I o o o I 
-                                  I I I o I 
-                          mOr
-                               ls I I I I I 
-                                  o o o o I 
-                                  I I I o I 
-                                  I o o o I  
-                                  I o I I I  
-                          mOr  
-                               ls I I I I I 
-                                  I I I I I
-                                  I I I I I 
-                                  o o I I I 
-                                  I o I I I 
-                          mOr  
-                               ls I I I I I 
-                                  I I I I I
-                                  I I I I I 
-                                  o o o o I 
-                                  I I I o I 
-                          mOr  
-                               ls I I I I I 
-                                  I o o o I
-                                  I o I o I 
-                                  o o I o I 
-                                  I I I o I 
-                          ]
-
 let mo X X X 
        o o X
        X X X  vFlips 
@@ -465,21 +466,7 @@ let mo X X X
                    X I I I X 
                    X X X X X                    
                  ]
-       
-*)
 
-let rec combinations (l : Cell list) = 
-    match l with
-    | [] -> seq { yield [] }
-    | X::t -> seq { for tt in combinations t do
-                        yield X :: tt}
-    | O::t -> seq { for tt in combinations t do
-                        yield O :: tt}
-    | I::t -> seq { for tt in combinations t do
-                        yield X :: tt
-                        yield O :: tt}
-
-(*
 let mThree X o X
            o o o 
            X X X = [ ls X o X X X   ls X o X X X   ls X X X o X   ls X X X o X 
@@ -537,7 +524,6 @@ let mFour = ls X O X X X
                 X O X X X      X X X O X      X O X X X      X X X O X
 
 *)
-
 
 type Maze = 
   | Square of LargeSquare 
@@ -674,7 +660,7 @@ let initRenderer (scene:Scene) =
             scene.remove(scene.children.Item(0)) 
         initLights scene
         n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| Square (List.item n allLargeSquares) 
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| Square (Seq.item n (snd straightMatches)) 
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")

@@ -356,7 +356,12 @@ let makeAllLargeSquares () =
   let allInputs = als 12 [[]]
   List.map (fun l -> orthodoxLS l) allInputs
 
-let allLargeSquares = makeAllLargeSquares ()
+let allLargeSquares = 
+  makeAllLargeSquares ()
+  |> List.filter (fun x -> List.fold (fun a y -> a && x ||<>|| y) true neverValid)
+  |> List.filter (fun x -> x ||=|| alwaysRequired)
+  |> Set.ofList
+  |> Set.toList
 
 //Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
 
@@ -403,6 +408,61 @@ let makeMatch a b c
                                                   |> Seq.collect id
                                                   |> Seq.filter ((||=||) filter))
 
+type SideReq = (Cell * Cell * Cell * Cell * Cell) option
+
+let random = new System.Random ();
+
+let isMatch  a b c d e
+             f g h i j
+             k l m n o
+             p q r s t
+             u v w x y  a' b' c'
+                        d' e' f'
+                        g' h' i' 
+            
+            (topReq : SideReq)
+            (leftReq : SideReq) =
+
+  let l = ls a b c d e
+             f g h i j
+             k l m n o
+             p q r s t
+             u v w x y
+
+  let sideOK ssCell lsCellA lsCellB = 
+    if ssCell = X 
+    then lsCellA = X && lsCellB = X 
+    else lsCellA <> lsCellB
+
+  let reqOK (req:SideReq) a'' b'' c'' d'' e'' = 
+    match req with
+    | None -> true
+    | Some (a''', b''', c''', d''', e''') -> 
+        a'' = a''' && b'' = b''' && c'' = c''' && 
+        d'' = d''' && e'' = e'''
+
+  let topOK = sideOK b' b d
+  let bottomOK = sideOK h' v x
+  let leftOK = sideOK d' f p
+  let rightOK = sideOK f' j t
+  let topReqOK = reqOK topReq a b c d e
+  let leftReqOK = reqOK leftReq a f k p u
+  
+  topOK && bottomOK && leftOK && rightOK && topReqOK && leftReqOK
+
+let replace a b c
+            d e f
+            g h i = 
+  
+  let possibles = allLargeSquares 
+                  |> List.filter (fun s -> (adapt isMatch s) a b c
+                                                             d e f
+                                                             g h i
+                                                             None None)
+  let n = List.length possibles
+  List.item (int (double n * random.NextDouble ())) possibles                                                                 
+
+(*
 let straightMatches = 
   makeMatch X X X    
             o o o         
@@ -456,7 +516,6 @@ let cornerMatches =
                 I I I I X
                 I I I I X )
 
-(*
 let mo X X X 
        o o X
        X X X  vFlips 
@@ -525,10 +584,33 @@ let mFour = ls X O X X X
 
 *)
 
+let decompose a b c d e 
+              f g h i j
+              k l m n o
+              p q r s t
+              u v w x y  = (ss a b c
+                               f g h
+                               k l m, ss c d e
+                                         h i j
+                                         m n o,
+                            ss k l m
+                               p q r
+                               u v w, ss m n o
+                                         r s t
+                                         w x y)
+
 type Maze = 
   | Square of LargeSquare 
   | Grid of TopLeft:Maze    * TopRight:Maze 
           * BottomLeft:Maze * BottomRight:Maze
+
+let grow m = 
+  match m with
+  | Square s -> 
+      let (tl, tr, bl, br) = adapt decompose s 
+      Grid (Square <| adaptSS replace tl, Square <| adaptSS replace tr, 
+            Square <| adaptSS replace bl, Square <| adaptSS replace br)
+  | Grid (tl, tr, bl, br) -> failwith "note implemented"
 
 let renderCube (scene:Scene) xs xe ys ye =
 
@@ -660,7 +742,7 @@ let initRenderer (scene:Scene) =
             scene.remove(scene.children.Item(0)) 
         initLights scene
         n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| Square (Seq.item n (snd straightMatches)) 
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| grow (Square (randomLS())) 
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")

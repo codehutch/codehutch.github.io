@@ -410,7 +410,9 @@ let makeMatch a b c
 
 type SideReq = 
 | TopReq of (Cell * Cell * Cell * Cell * Cell) option
-| LeftReq of (Cell * Cell * Cell * Cell * Cell) option
+| TopPair of (SideReq * SideReq) 
+| LeftReq of (Cell * Cell * Cell * Cell * Cell) option 
+| LeftPair of (SideReq * SideReq)
 
 let random = new System.Random ();
 
@@ -468,7 +470,7 @@ let replace a b c
   let n = List.length possibles
   let choice = int (double n * random.NextDouble ())
 
-  Browser.console.log (sprintf "replace choosing %d from %d possibles" choice n)
+  //Browser.console.log (sprintf "replace choosing %d from %d possibles" choice n)
   List.item choice possibles                                                                 
 
 let getBottomAsTopReq a b c d e
@@ -625,25 +627,70 @@ type Maze =
   | Grid of TopLeft:Maze    * TopRight:Maze 
           * BottomLeft:Maze * BottomRight:Maze
 
+(*
+let rec getMazeRightAsLeftReqs m =
+    match m with 
+    | Grid (tl, tr,
+            bl, br) -> (getMazeRightAsLeftReqs tr) @ (getMazeRightAsLeftReqs br)
+    | Square s -> [adapt getRightAsLeftReq s]               
+
+let rec getMazeBottomAsTopReqs m =
+    match m with 
+    | Grid (tl, tr,
+            bl, br) -> (getMazeBottomAsTopReqs bl) @ (getMazeBottomAsTopReqs br)
+    | Square s -> [adapt getBottomAsTopReq s]               
+*)
+
 let grow m = 
-  match m with
-  | Square s -> 
+
+  let rec grow' treqs lreqs m =
+
+    match m, treqs, lreqs with
+
+    | Grid (tl, tr, 
+            bl, br), TopPair (treqsl, treqsr), LeftPair (lreqst, lreqsb) -> 
+            
+        let gtl, treqsTL, lreqsTL = grow' treqsl  lreqst  tl 
+        let gtr, treqsTR, lreqsTR = grow' treqsr  lreqsTL tr
+        let gbl, treqsBL, lreqsBL = grow' treqsTL lreqsb  bl
+        let gbr, treqsBR, lreqsBR = grow' treqsTR lreqsBL br
+
+        Grid (gtl, gtr,
+              gbl, gbr), TopPair  (treqsBL, treqsBR),
+                         LeftPair (lreqsTR, lreqsBR)
+
+    | Square s, treq, lreq ->
+    
+        let treqslu, treqsru = match treq with
+                               | TopPair (treqsl, treqsr) -> (treqsl, treqsr)
+                               | _ -> TopReq None, TopReq None
+                               
+        let lreqstu, lreqsbu = match lreq with
+                               | LeftPair (lreqst, lreqsb) -> (lreqst, lreqsb) 
+                               | _ -> LeftReq None, LeftReq None      
+
+        let (tl, tr, 
+             bl, br) = adapt decompose s
       
-      let (tl, tr, bl, br) = adapt decompose s
-      
-      let ntl = adaptSS replace tl (TopReq None) (LeftReq None)
-      let ntr = adaptSS replace tr (TopReq None) (adapt getRightAsLeftReq ntl)
-      let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) (LeftReq None)
-      let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr)
-                                     (adapt getRightAsLeftReq nbl)
-      Grid (Square ntl, Square ntr, 
-            Square nbl, Square nbr)
-  | Grid (tl, tr, bl, br) -> failwith "note implemented"
+        let ntl = adaptSS replace tl treqslu                       lreqstu
+        let ntr = adaptSS replace tr treqsru                       (adapt getRightAsLeftReq ntl)
+        let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) lreqsbu
+        let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr) (adapt getRightAsLeftReq nbl)
+        Grid (Square ntl, Square ntr, 
+              Square nbl, Square nbr), TopPair  (adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr),
+                                       LeftPair (adapt getBottomAsTopReq nbl, adapt getBottomAsTopReq nbr)
+
+    | aaa, bbb, ccc ->
+        Browser.console.log (sprintf "Unable to handle %A %A %A" aaa, bbb, ccc) 
+        (aaa, bbb, ccc)
+
+  let mz, trqs, lrqs = grow' (TopPair (TopReq None, TopReq None)) (LeftPair (LeftReq None, LeftReq None)) m
+  mz
 
 let renderCube (scene:Scene) xs xe ys ye =
 
     let size = xe - xs
-    let cubeStart = Three.BoxGeometry(size, size, size)
+    let cubeStart = Three.BoxGeometry(size, size, 0.25 * size)
     let matProps = createEmpty<Three.MeshLambertMaterialParameters>
     matProps.color <- Some (U2.Case2 "#94FFB3")
     let cube = Three.BufferGeometry().fromGeometry(cubeStart);
@@ -770,11 +817,13 @@ let initRenderer (scene:Scene) =
             scene.remove(scene.children.Item(0)) 
         initLights scene
         n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| grow (Square (replace X X X
-                                                                          o o o 
-                                                                          X X X 
-                                                                          (TopReq None) 
-                                                                          (LeftReq None))) 
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| //grow (
+                                                       grow                                                        
+                                                         (grow (Square (replace X X X
+                                                                                o o o 
+                                                                                X X X 
+                                                                                (TopReq None) 
+                                                                                (LeftReq None)))) //) 
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")

@@ -408,7 +408,9 @@ let makeMatch a b c
                                                   |> Seq.collect id
                                                   |> Seq.filter ((||=||) filter))
 
-type SideReq = (Cell * Cell * Cell * Cell * Cell) option
+type SideReq = 
+| TopReq of (Cell * Cell * Cell * Cell * Cell) option
+| LeftReq of (Cell * Cell * Cell * Cell * Cell) option
 
 let random = new System.Random ();
 
@@ -436,8 +438,10 @@ let isMatch  a b c d e
 
   let reqOK (req:SideReq) a'' b'' c'' d'' e'' = 
     match req with
-    | None -> true
-    | Some (a''', b''', c''', d''', e''') -> 
+    | TopReq None  
+    | LeftReq None -> true
+    | TopReq (Some (a''', b''', c''', d''', e'''))  
+    | LeftReq (Some (a''', b''', c''', d''', e''')) -> 
         a'' = a''' && b'' = b''' && c'' = c''' && 
         d'' = d''' && e'' = e'''
 
@@ -452,15 +456,32 @@ let isMatch  a b c d e
 
 let replace a b c
             d e f
-            g h i = 
+            g h i topReq
+                  leftReq = 
   
   let possibles = allLargeSquares 
                   |> List.filter (fun s -> (adapt isMatch s) a b c
                                                              d e f
                                                              g h i
-                                                             None None)
+                                                             topReq 
+                                                             leftReq)
   let n = List.length possibles
-  List.item (int (double n * random.NextDouble ())) possibles                                                                 
+  let choice = int (double n * random.NextDouble ())
+
+  Browser.console.log (sprintf "replace choosing %d from %d possibles" choice n)
+  List.item choice possibles                                                                 
+
+let getBottomAsTopReq a b c d e
+                      f g h i j
+                      k l m n o
+                      p q r s t
+                      u v w x y = TopReq (Some (u, v, w, x, y))
+
+let getRightAsLeftReq a b c d e
+                      f g h i j
+                      k l m n o
+                      p q r s t
+                      u v w x y = TopReq (Some (e, j, o, t, y))
 
 (*
 let straightMatches = 
@@ -607,9 +628,16 @@ type Maze =
 let grow m = 
   match m with
   | Square s -> 
-      let (tl, tr, bl, br) = adapt decompose s 
-      Grid (Square <| adaptSS replace tl, Square <| adaptSS replace tr, 
-            Square <| adaptSS replace bl, Square <| adaptSS replace br)
+      
+      let (tl, tr, bl, br) = adapt decompose s
+      
+      let ntl = adaptSS replace tl (TopReq None) (LeftReq None)
+      let ntr = adaptSS replace tr (TopReq None) (adapt getRightAsLeftReq ntl)
+      let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) (LeftReq None)
+      let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr)
+                                     (adapt getRightAsLeftReq nbl)
+      Grid (Square ntl, Square ntr, 
+            Square nbl, Square nbr)
   | Grid (tl, tr, bl, br) -> failwith "note implemented"
 
 let renderCube (scene:Scene) xs xe ys ye =
@@ -742,7 +770,11 @@ let initRenderer (scene:Scene) =
             scene.remove(scene.children.Item(0)) 
         initLights scene
         n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| grow (Square (randomLS())) 
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| grow (Square (replace X X X
+                                                                          o o o 
+                                                                          X X X 
+                                                                          (TopReq None) 
+                                                                          (LeftReq None))) 
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")

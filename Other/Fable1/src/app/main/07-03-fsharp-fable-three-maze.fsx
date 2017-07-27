@@ -210,36 +210,7 @@ let rec a n =
     match n with
     | 0 -> Seq.empty
     | _ -> seq { yield O; yield X; yield! a (n - 1) }
-
-//let ss X X X
-//       o o o 
-//       X X X = ls X X X X X       ls X X X X X
-//                  o o o o o          o o o o X
-//                  X o X X X          X o X o X
-//                  o o o o X          X o X o o
-//                  X X X X X          X X X X X
-
-//   X   X
-// o s o s o 
-//   o   o
-// o s o s o 
-//   X   X  
-
-
-(*
-let disallow a b c d e
-             f g h i j
-             k l m n o
-             p q r s t
-             u v w x y   a' b' c' d' e'
-                         f' g' h' i' j'
-                         k' l' m' n' o' 
-                         p' q' r' s' t' 
-                         u' v' w' x' y' = 
-    match m with
-    |
-*)     
-
+   
 let (|=|) (a:Cell) (b:Cell) =
     match a, b with
     | X, I -> true
@@ -485,127 +456,7 @@ let getRightAsLeftReq a b c d e
                       p q r s t
                       u v w x y = TopReq (Some (e, j, o, t, y))
 
-(*
-let straightMatches = 
-  makeMatch X X X    
-            o o o         
-            X X X  [cb X X X X X
-                       o o o o o
-                       X I X I X 
-                       X O I O X
-                       X X X X X;  
-          
-                    cb X X X X X 
-                       o o o o X 
-                       X I X o X 
-                       X O I o o 
-                       X X X X X ]
-            
-            (ls X X X X X
-                I I I I I
-                I I I I I 
-                I I I I I 
-                X X X X X) 
 
-let cornerMatches = 
-  makeMatch X X X    
-            o o X         
-            X o X  [ cb X X X X X
-                        o o I O X 
-                        X o X I X 
-                        X o I O X
-                        X o X X X  ;  
-                       
-                     cb X X X X X 
-                        o o o o X 
-                        X I X o X 
-                        X O I o X 
-                        X X X o X  ;
-
-                     cb X X X X X 
-                        X O I O X 
-                        X I X I X 
-                        o o I O X 
-                        X o X X X  ;
-
-                     cb X X X X X 
-                        X O I O X 
-                        X I X I X 
-                        o o o o X 
-                        X X X o X ]
-            (ls X X X X X
-                I I I I X
-                I I I I X
-                I I I I X
-                I I I I X )
-
-let mo X X X 
-       o o X
-       X X X  vFlips 
-              [ ls X X X X X 
-                   o o I I X
-                   X I I I X 
-                   X I I I X 
-                   X X X X X                    
-                 ]
-
-let mThree X o X
-           o o o 
-           X X X = [ ls X o X X X   ls X o X X X   ls X X X o X   ls X X X o X 
-                        o o I o o      o o I o X      o o I o o      o o I o X
-                        X I X I X      X I X I X      X I X I X      X I X I X
-                        X o I o X      X o I o o      X o I o X      X o I o o
-                        X X X X X      X X X X X      X X X X X      X X X X X
-                                                
-                     ls X o X X X   ls X o X X X   ls X X X o X   ls X X X o X 
-                        X o I o o      X o I o X      X o I o o      X o I o X
-                        X I X I X      X I X I X      X I X I X      X I X I X
-                        o o I o X      o o I o o      o o I o X      o o I o o
-                        X X X X X      X X X X X      X X X X X      X X X X X
-                                            
-                 ]
-*)
-
-
-(*
-
-X O X O X
-S A O B D
-X O X O X
-O C O D O 
-X O X O X
-
-let mFour = ls X O X X X
-               O O O O O
-               X O X O X
-               X O X O X
-               X O X X X
-
-             ls X O X X X   ls X O X X X   ls X O X X X   ls X O X X X   
-                O O X O O      O O X O O      O O O O O      O O O O O      
-                X O X O X      X O X O X      X O X O X      X O X O X     
-                X O O O X      X O O O X      X O X O X      X O X O X
-                X O X X X      X X X O X      X O X X X      X X X O X
-
-             ls X X X O X   ls X X X O X   ls X X X O X   ls X X X O X   
-                O O X O O      O O X O O      O O O O O      O O O O O      
-                X O X O X      X O X O X      X O X O X      X O X O X     
-                X O O O X      X O O O X      X O X O X      X O X O X
-                X O X X X      X X X O X      X O X X X      X X X O X
-
-             ls X O X X X   ls X O X X X   ls X O X X X   ls X O X X X   
-                O O X O X      O O X O X      O O O O X      O O O O X      
-                X O X O X      X O X O X      X O X O X      X O X O X     
-                X O O O O      X O O O O      X O X O O      X O X O O
-                X O X X X      X X X O X      X O X X X      X X X O X
-
-             ls X X X O X   ls X X X O X   ls X X X O X   ls X X X O X   
-                O O X O X      O O X O X      O O O O X      O O O O X      
-                X O X O X      X O X O X      X O X O X      X O X O X     
-                X O O O O      X O O O O      X O X O O      X O X O O
-                X O X X X      X X X O X      X O X X X      X X X O X
-
-*)
 
 let decompose a b c d e 
               f g h i j
@@ -654,54 +505,6 @@ let growMaze (lsll : Maze) =
   let dummyTopReqs = List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))      
   grl [] dummyTopReqs lsll               
   
-(*
-  let rec toRowLists m =
-    match m with
-    | Quad (tl, tr,
-            bl, br) -> [toRowLists tl]
-    | Leaf s -> [s]
-
-
-  let grow' m =
-    match m with
-
-    | Quad (tl, tr,
-            bl, br, parent, reqs) -> 
-            
-        let gtl = grow' tl 
-        let gtr, treqsTR, lreqsTR = grow' treqsr  lreqsTL tr
-        let gbl, treqsBL, lreqsBL = grow' treqsTL lreqsb  bl
-        let gbr, treqsBR, lreqsBR = grow' treqsTR lreqsBL br
-
-        Grid (gtl, gtr,
-              gbl, gbr), TopPair  (treqsBL, treqsBR),
-                         LeftPair (lreqsTR, lreqsBR)
-
-    | Leaf (sq, parent, reqs) ->
-    
-        let (tl, tr,  
-             bl, br) = adapt decompose sq
-
-        let p = match parent with 
-                | Some p -> p
-                | None -> dummyParent
-      
-        let ntl = adaptSS replace tl p
-        let ntr = adaptSS replace tr treqsru                       (adapt getRightAsLeftReq ntl)
-        let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) lreqsbu
-        let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr) (adapt getRightAsLeftReq nbl)
-        Grid (Square ntl, Square ntr, 
-              Square nbl, Square nbr), TopPair  (adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr),
-                                       LeftPair (adapt getBottomAsTopReq nbl, adapt getBottomAsTopReq nbr)
-
-    | aaa, bbb, ccc ->
-        Browser.console.log (sprintf "Unable to handle %A %A %A" aaa, bbb, ccc) 
-        (aaa, bbb, ccc)
-
-  let mz, trqs, lrqs = grow' (TopPair (TopReq None, TopReq None)) (LeftPair (LeftReq None, LeftReq None)) m
-  mz
-*)
-
 let renderCube (scene:Scene) xs xe ys ye =
 
     let size = xe - xs

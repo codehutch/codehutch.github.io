@@ -410,9 +410,9 @@ let makeMatch a b c
 
 type SideReq = 
 | TopReq of (Cell * Cell * Cell * Cell * Cell) option
-| TopPair of (SideReq * SideReq) 
 | LeftReq of (Cell * Cell * Cell * Cell * Cell) option 
-| LeftPair of (SideReq * SideReq)
+
+type Reqs = { Top : SideReq; Left : SideReq}
 
 let random = new System.Random ();
 
@@ -622,35 +622,53 @@ let decompose a b c d e
                                          r s t
                                          w x y)
 
-type Maze = 
-  | Square of LargeSquare 
-  | Grid of TopLeft:Maze    * TopRight:Maze 
-          * BottomLeft:Maze * BottomRight:Maze
+type Maze = LargeSquare list list
 
+let replaceSquare sq topReqL topReqR leftReqT leftReqB =
+  let (tl, tr,
+       bl, br) = adapt decompose sq    
+  let ntl = adaptSS replace tl topReqL                   leftReqT
+  let ntr = adaptSS replace tr topReqR                   (adapt getRightAsLeftReq ntl)
+  let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) leftReqB
+  let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr) (adapt getRightAsLeftReq nbl)  
+  (ntl, ntr,
+   nbl, nbr)
+
+let growMaze (lsll : Maze) =
+  let rec grl output prevOutputRowReqs (lsll : LargeSquare list list) =
+    match lsll with
+    | [] -> output
+    | row::tail ->  
+      let folder ((upper, lower), leftReqT, leftReqB) s (topReqL, topReqR) =
+        let (ntl, ntr,
+             nbl, nbr) = replaceSquare s topReqL topReqR leftReqT leftReqB
+        (upper @ [ntl; ntr], lower @ [nbl; nbr]), adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr
+      let (newTop, newBottom), _, _ = List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevOutputRowReqs
+      let prevRowReqs = newBottom 
+                        |> List.mapi (fun i b -> i, adapt getBottomAsTopReq b) 
+                        |> List.pairwise 
+                        |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
+                        |> List.map (fun ((i, r), (j, s)) -> (r, s))
+      let newOutput = output @ [newTop; newBottom]
+      grl newOutput prevRowReqs tail
+  let dummyTopReqs = List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))      
+  grl [] dummyTopReqs lsll               
+  
 (*
-let rec getMazeRightAsLeftReqs m =
-    match m with 
-    | Grid (tl, tr,
-            bl, br) -> (getMazeRightAsLeftReqs tr) @ (getMazeRightAsLeftReqs br)
-    | Square s -> [adapt getRightAsLeftReq s]               
+  let rec toRowLists m =
+    match m with
+    | Quad (tl, tr,
+            bl, br) -> [toRowLists tl]
+    | Leaf s -> [s]
 
-let rec getMazeBottomAsTopReqs m =
-    match m with 
-    | Grid (tl, tr,
-            bl, br) -> (getMazeBottomAsTopReqs bl) @ (getMazeBottomAsTopReqs br)
-    | Square s -> [adapt getBottomAsTopReq s]               
-*)
 
-let grow m = 
+  let grow' m =
+    match m with
 
-  let rec grow' treqs lreqs m =
-
-    match m, treqs, lreqs with
-
-    | Grid (tl, tr, 
-            bl, br), TopPair (treqsl, treqsr), LeftPair (lreqst, lreqsb) -> 
+    | Quad (tl, tr,
+            bl, br, parent, reqs) -> 
             
-        let gtl, treqsTL, lreqsTL = grow' treqsl  lreqst  tl 
+        let gtl = grow' tl 
         let gtr, treqsTR, lreqsTR = grow' treqsr  lreqsTL tr
         let gbl, treqsBL, lreqsBL = grow' treqsTL lreqsb  bl
         let gbr, treqsBR, lreqsBR = grow' treqsTR lreqsBL br
@@ -659,20 +677,16 @@ let grow m =
               gbl, gbr), TopPair  (treqsBL, treqsBR),
                          LeftPair (lreqsTR, lreqsBR)
 
-    | Square s, treq, lreq ->
+    | Leaf (sq, parent, reqs) ->
     
-        let treqslu, treqsru = match treq with
-                               | TopPair (treqsl, treqsr) -> (treqsl, treqsr)
-                               | _ -> TopReq None, TopReq None
-                               
-        let lreqstu, lreqsbu = match lreq with
-                               | LeftPair (lreqst, lreqsb) -> (lreqst, lreqsb) 
-                               | _ -> LeftReq None, LeftReq None      
+        let (tl, tr,  
+             bl, br) = adapt decompose sq
 
-        let (tl, tr, 
-             bl, br) = adapt decompose s
+        let p = match parent with 
+                | Some p -> p
+                | None -> dummyParent
       
-        let ntl = adaptSS replace tl treqslu                       lreqstu
+        let ntl = adaptSS replace tl p
         let ntr = adaptSS replace tr treqsru                       (adapt getRightAsLeftReq ntl)
         let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) lreqsbu
         let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr) (adapt getRightAsLeftReq nbl)
@@ -686,6 +700,7 @@ let grow m =
 
   let mz, trqs, lrqs = grow' (TopPair (TopReq None, TopReq None)) (LeftPair (LeftReq None, LeftReq None)) m
   mz
+*)
 
 let renderCube (scene:Scene) xs xe ys ye =
 
@@ -700,38 +715,46 @@ let renderCube (scene:Scene) xs xe ys ye =
     mesh.translateZ 0.0 |> ignore
     scene.add(mesh)
 
-let renderRow (scene:Scene) xs xe ys ye (a, b, c, d, e) = 
-    let widthStep = (xe - xs) / 5.0
-    if a = X then renderCube scene (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
-    if b = X then renderCube scene (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
-    if c = X then renderCube scene (xs + 2.0 * widthStep) (xs + 3.0 * widthStep) ys ye
-    if d = X then renderCube scene (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
-    if e = X then renderCube scene (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
+let renderSquareRow (scene:Scene) xs xe ys ye (a, b, c, d, e) = 
+  let widthStep = (xe - xs) / 5.0
+  if a = X then renderCube scene (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
+  if b = X then renderCube scene (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
+  if c = X then renderCube scene (xs + 2.0 * widthStep) (xs + 3.0 * widthStep) ys ye
+  if d = X then renderCube scene (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
+  if e = X then renderCube scene (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
 
-let rec renderMaze (scene:Scene) tlx tly brx bry maze = 
-    match maze with
-    | Square s -> 
+let rec renderSquare (scene:Scene) tlx tly brx bry sq = 
+
         let heightStep = (bry - tly) / 5.0
-        renderRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) (topRow s)
-        renderRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) (upperMidRow s)
-        renderRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) (middleRow s)
-        renderRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) (lowerMidRow s)
-        renderRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) (bottomRow s)    
-    | Grid (tl, tr, bl, br) -> 
-        let heightStep, widthStep = (bry - tly) / 2.0, (brx - tlx) / 2.0
-        renderMaze scene (tlx + 0.0 * widthStep) (tly + 0.0 * heightStep) (tlx + 1.0 * widthStep) (tly + 1.0 * heightStep) tl
-        renderMaze scene (tlx + 1.0 * widthStep) (tly + 0.0 * heightStep) (tlx + 2.0 * widthStep) (tly + 1.0 * heightStep) tr
-        renderMaze scene (tlx + 0.0 * widthStep) (tly + 1.0 * heightStep) (tlx + 1.0 * widthStep) (tly + 2.0 * heightStep) bl
-        renderMaze scene (tlx + 1.0 * widthStep) (tly + 1.0 * heightStep) (tlx + 2.0 * widthStep) (tly + 2.0 * heightStep) br
+        renderSquareRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) (topRow sq)
+        renderSquareRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) (upperMidRow sq)
+        renderSquareRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) (middleRow sq)
+        renderSquareRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) (lowerMidRow sq)
+        renderSquareRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) (bottomRow sq)    
 
-let rec randomGrid n =
-    let m = n - 1
-    match n with 
-    | n when n > 1 -> Grid (randomGrid m, randomGrid m,
-                            randomGrid m, randomGrid m)
-    | _ -> Square (randomLS())
+let rec renderMazeRow (scene:Scene) tlx tly brx bry row = 
+    let step = (brx - tlx) / (float <| List.length row)
+    row |> 
+    List.mapi (fun i sq -> 
+      let fi = float i
+      renderSquare scene (tlx + fi * step) tly (tlx + (fi + 1.0) * step) bry sq)
+
+let rec renderMaze(scene:Scene) tlx tly brx bry maze = 
+    let step = (bry - tly) / (float <| List.length maze)
+    maze |> 
+    List.mapi (fun i r -> 
+      let fi = float i
+      renderMazeRow scene tlx (tly + fi * step) brx (tly + (fi + 1.0) * step)  r)
+
+let rec randomMaze n =
+  match n with 
+  | n when n > 1 -> growMaze (randomMaze (n - 1))
+  | _ -> [[replace X X X
+                   o o o 
+                   X X X 
+                   (TopReq None)
+                   (LeftReq None)]]
                
-    
 let width () = Browser.window.innerWidth * 0.75;
 let height () = Browser.window.innerHeight * 0.5
 
@@ -817,13 +840,8 @@ let initRenderer (scene:Scene) =
             scene.remove(scene.children.Item(0)) 
         initLights scene
         n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| //grow (
-                                                       grow                                                        
-                                                         (grow (Square (replace X X X
-                                                                                o o o 
-                                                                                X X X 
-                                                                                (TopReq None) 
-                                                                                (LeftReq None)))) //) 
+        renderMaze scene -1.025 1.15 1.275 -1.15 <| randomMaze 4
+                                                                                                                                       
         (Boolean() :> obj)
     
     let button = Browser.document.createElement("button")
@@ -870,7 +888,7 @@ let action() =
     initLights scene
     let camera = initCamera ()
     let renderer = initRenderer scene
-    renderMaze scene -1.025 1.15 1.275 -1.15 (randomGrid 3) 
+    renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) 
 
     renderer, scene, camera
 

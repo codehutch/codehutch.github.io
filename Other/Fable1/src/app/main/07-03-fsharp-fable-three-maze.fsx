@@ -325,7 +325,7 @@ let makeAllLargeSquares () =
   let rec als n b = 
     match n with
     | 0 -> b
-    | n ->  als (n-1) <| (List.map (fun a -> X :: a) b) |.| (List.map (fun a -> O :: a) b)
+    | n ->  als (n-1) <| ((List.map (fun a -> X :: a) b) |.| (List.map (fun a -> O :: a) b))
   let allInputs = als 12 [[]]
   List.map (fun l -> orthodoxLS l) allInputs
 

@@ -276,30 +276,32 @@ let all a b c d e
                                                p q r s t
                                                u v w x y
 
+let (|.|) x y = List.append x y
+
 let neverValid = [ls  I I I I I 
                       I o o o I
                       I o I o I
                       I o o o I
                       I I I I I  ] // A loop isn't valid
-                 @  
+                 |.|
                  all I I X I I 
                      I I X I I 
                      X X X I I 
                      I I I I I 
                      I I I I I     // Small closed section isn't valid
-                 @    
+                 |.|    
                  all I I I I I
                      I I I I I 
                      X X X X X
                      I I I I I 
                      I I I I I     // Medium closed section isn't valid
-                 @
+                 |.|
                  [ls X X X X X
                      X I I I X
                      X I I I X
                      X I I I X
                      X X X X X  ]  // Full closed square isn't valid
-                 @
+                 |.|
                  all X o X o X
                      I I I I I 
                      I I I I I 
@@ -323,7 +325,7 @@ let makeAllLargeSquares () =
   let rec als n b = 
     match n with
     | 0 -> b
-    | n ->  als (n-1) <| (List.map (fun a -> X :: a) b) @ (List.map (fun a -> O :: a) b)
+    | n ->  als (n-1) <| (List.map (fun a -> X :: a) b) |.| (List.map (fun a -> O :: a) b)
   let allInputs = als 12 [[]]
   List.map (fun l -> orthodoxLS l) allInputs
 
@@ -493,14 +495,14 @@ let growMaze (lsll : Maze) =
       let folder ((upper, lower), leftReqT, leftReqB) s (topReqL, topReqR) =
         let (ntl, ntr,
              nbl, nbr) = replaceSquare s topReqL topReqR leftReqT leftReqB
-        (upper @ [ntl; ntr], lower @ [nbl; nbr]), adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr
+        (upper |.| [ntl; ntr], lower |.| [nbl; nbr]), adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr
       let (newTop, newBottom), _, _ = List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevOutputRowReqs
       let prevRowReqs = newBottom 
                         |> List.mapi (fun i b -> i, adapt getBottomAsTopReq b) 
                         |> List.pairwise 
                         |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
                         |> List.map (fun ((i, r), (j, s)) -> (r, s))
-      let newOutput = output @ [newTop; newBottom]
+      let newOutput = output |.| [newTop; newBottom]
       grl newOutput prevRowReqs tail
   let dummyTopReqs = List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))      
   grl [] dummyTopReqs lsll               

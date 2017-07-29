@@ -638,21 +638,34 @@ let initRenderer (scene:Scene) =
     container.innerHTML <- ""
     container.appendChild((renderer :> Three.Renderer).domElement) |> ignore
     
-    let mutable n = 0
+    let makeButton text difficulty cssClass =    
 
-    let buttonClick (b : Browser.MouseEvent) =
-        while(scene.children.Count > 0) do 
-            scene.remove(scene.children.Item(0)) 
-        initLights scene
-        n <- n + 1
-        renderMaze scene -1.025 1.15 1.275 -1.15 <| randomMaze 4
-                                                                                                                                       
-        (Boolean() :> obj)
-    
-    let button = Browser.document.createElement("button")
-    button.innerText <- "Click me"
-    button.onclick <- Func<_,_> buttonClick
-    container.appendChild(button) |> ignore
+        let button = Browser.document.createElement("button")
+        button.innerText <- text
+        button.className <- cssClass
+
+        let buttonClick (b : Browser.MouseEvent) =
+            while(scene.children.Count > 0) do 
+                scene.remove(scene.children.Item(0)) 
+            initLights scene
+            renderMaze scene -1.025 1.15 1.275 -1.15 <| randomMaze difficulty
+            (Boolean() :> obj)
+
+        button.onclick <- Func<_,_> buttonClick
+        button
+
+    let buttonContainer = Browser.document.createElement("div")
+    container.appendChild(buttonContainer) |> ignore
+
+    buttonContainer.appendChild(makeButton "Easy" 2 "violet") |> ignore
+    buttonContainer.appendChild(makeButton "Medium" 3 "blueViolet") |> ignore
+    buttonContainer.appendChild(makeButton "Hard" 4 "blueGreen") |> ignore
+    buttonContainer.appendChild(makeButton "Crazy" 5 "yellowGreen") |> ignore
+
+    let solveButton = Browser.document.createElement("button")
+    solveButton.innerText <- "Solve!"
+    solveButton.className <- "yellowOrange" 
+    buttonContainer.appendChild(solveButton) |> ignore
 
     renderer
 

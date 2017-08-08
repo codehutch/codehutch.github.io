@@ -79,9 +79,6 @@ type Cell =
 
 let o = O // Bit of a trick to get syntax-highlighting to show up better
 
-let rnd = System.Random()
-let r () = if (rnd.Next() &&& 0x1) = 0 then O else X
-
 type SmallSquare = Cell * Cell * Cell
                  * Cell * Cell * Cell
                  * Cell * Cell * Cell 
@@ -92,22 +89,6 @@ let ss a b c
                              d, e, f,
                              g, h, i
                              
-let randomSS () =
-    let b, d, f, h = r(), r(), r(), r() 
-    ss  X b X
-        d O f
-        X h X
-
-//let validSS                                
-
-let ss1 = ss X X X
-             o o o 
-             X X X
-
-let ss2 = ss X X X
-             X o o 
-             X o X
-
 type LargeSquare = Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
@@ -123,31 +104,7 @@ let ls a b c d e
                                  k, l, m, n, o,
                                  p, q, r, s, t, 
                                  u, v, w, x, y
-
-let ls1 = ls X X X X X 
-             X o X o o
-             X o X o X
-             X o o o X
-             X o X X X
-
-let randomLS () =
-    let b, d, f, h, j, l, n, p, r, t, v, x = r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r() 
-    ls  X b X d X
-        f O h O j
-        X l X n X
-        p O r O t
-        X v X x X
         
-let adapt mf (a, b, c, d, e,
-              f, g, h, i, j,
-              k, l, m, n, o,
-              p, q, r, s, t,
-              u, v, w, x, y) = mf a b c d e
-                                  f g h i j
-                                  k l m n o
-                                  p q r s t
-                                  u v w x y
-
 let rotate a b c d e
            f g h i j
            k l m n o
@@ -183,34 +140,23 @@ let ofList [a;b;c;d;e;
                             k l m n o
                             p q r s t
                             u v w x y
-        
-type LargeRow = Cell * Cell * Cell * Cell * Cell
-type LargeCol = LargeRow
-
-let row [a; b; c; d; e] = a, b, c, d, e 
-
-let topRow (ls:LargeSquare)      = adapt toList ls                 |> List.take 5 |> row
-let upperMidRow (ls:LargeSquare) = adapt toList ls |> List.skip  5 |> List.take 5 |> row
-let middleRow (ls:LargeSquare)   = adapt toList ls |> List.skip 10 |> List.take 5 |> row
-let lowerMidRow (ls:LargeSquare) = adapt toList ls |> List.skip 15 |> List.take 5 |> row
-let bottomRow (ls:LargeSquare)   = adapt toList ls |> List.skip 20 |> List.take 5 |> row
-
-let rss a b c
-        d e f
-        g h i : SmallSquare = ss g d a
-                                 h e b
-                                 i f c
-let adaptSS sf (a, b, c,
-                d, e, f,
-                g, h, i) = sf a b c
-                              d e f
-                              g h i
-
-let rec a n = 
-    match n with
-    | 0 -> Seq.empty
-    | _ -> seq { yield O; yield X; yield! a (n - 1) }
+       
+let (|>>|) sf (a, b, c,
+               d, e, f,
+               g, h, i) = sf a b c
+                             d e f
+                             g h i
    
+let (||>>||) mf (a, b, c, d, e,
+                 f, g, h, i, j,
+                 k, l, m, n, o,
+                 p, q, r, s, t,
+                 u, v, w, x, y) = mf a b c d e
+                                     f g h i j
+                                     k l m n o
+                                     p q r s t
+                                     u v w x y
+
 let (|=|) (a:Cell) (b:Cell) =
     match a, b with
     | X, I -> true
@@ -226,44 +172,32 @@ let (|<>|) (a:Cell) (b:Cell) =
     | _, _ -> a <> b
 
 let (||=||) (a:LargeSquare) (b:LargeSquare) =
-    let al = adapt toList a
-    let bl = adapt toList b
+    let al = toList ||>>|| a
+    let bl = toList ||>>|| b
     List.fold2 (fun s x y -> s && (x |=| y)) true al bl
 
 let (||<>||) (a:LargeSquare) (b:LargeSquare) =
-    let al = adapt toList a
-    let bl = adapt toList b
+    let al = toList ||>>|| a
+    let bl = toList ||>>|| b
     List.fold2 (fun s x y -> s || (x |<>| y)) false al bl
 
-let straightSS = ss X X X
-                    o o o 
-                    X X X
+let row [a; b; c; d; e] = a, b, c, d, e 
 
-let cornerSS = ss X X X
-                  X o o 
-                  X o X
-
-let isStraightSS s = 
-  s = straightSS || adaptSS rss s = straightSS 
-
-let isCornerSS s = 
-  let r90 = adaptSS rss s
-  let r180 = adaptSS rss r90
-  let r270 = adaptSS rss r180
-  s = cornerSS || r90 = cornerSS ||
-  r180 = cornerSS || r270 = cornerSS
-
-let isValidSS s = isCornerSS s || isStraightSS s
+let topRow (ls:LargeSquare)      = toList ||>>|| ls                 |> List.take 5 |> row
+let upperMidRow (ls:LargeSquare) = toList ||>>|| ls |> List.skip  5 |> List.take 5 |> row
+let middleRow (ls:LargeSquare)   = toList ||>>|| ls |> List.skip 10 |> List.take 5 |> row
+let lowerMidRow (ls:LargeSquare) = toList ||>>|| ls |> List.skip 15 |> List.take 5 |> row
+let bottomRow (ls:LargeSquare)   = toList ||>>|| ls |> List.skip 20 |> List.take 5 |> row
 
 let allRotationsAndFlips (s:LargeSquare) =
-  let r0 = s 
-  let r90 = adapt rotate r0
-  let r180 = adapt rotate r90
-  let r270 = adapt rotate r180
-  let f0 = adapt flip s
-  let f90 = adapt rotate f0
-  let f180 = adapt rotate f90
-  let f270 = adapt rotate f180
+  let r0   = s 
+  let r90  = rotate ||>>|| r0
+  let r180 = rotate ||>>|| r90
+  let r270 = rotate ||>>|| r180
+  let f0   = flip   ||>>|| s
+  let f90  = rotate ||>>|| f0
+  let f180 = rotate ||>>|| f90
+  let f270 = rotate ||>>|| f180
   [r0; r90; r180; r270; f0; f90; f180; f270]
 
 let all a b c d e 
@@ -336,51 +270,6 @@ let allLargeSquares =
   |> Set.ofList
   |> Set.toList
 
-//Browser.console.log (sprintf "All large squares is %d long" <| List.length allLargeSquares)
-
-let combos (l : Cell list) = 
-  let rec possibles (m : Cell list) = 
-    match m with
-    | [] -> seq { yield [] }
-    | X::t -> seq { for tt in possibles t do
-                        yield X :: tt}
-    | O::t -> seq { for tt in possibles t do
-                        yield O :: tt}
-    | I::t -> seq { for tt in possibles t do
-                        yield X :: tt
-                        yield O :: tt}
-  possibles l 
-  |> Seq.map ofList
-  |> Seq.filter (fun x -> Seq.fold (fun a y -> a && x ||<>|| y) true neverValid)
-  |> Seq.filter (fun x -> x ||=|| alwaysRequired)
-  |> Seq.map allRotationsAndFlips
-  |> Seq.collect Seq.ofList
-  |> Set.ofSeq
-  |> Set.toSeq
-
-let cb a b c d e
-       f g h i j
-       k l m n o
-       p q r s t
-       u v w x y = combos (toList a b c d e
-                                  f g h i j
-                                  k l m n o
-                                  p q r s t
-                                  u v w x y) 
-
-let makeMatch a b c  
-              d e f  
-              g h i 
-              
-              (replacements : LargeSquare seq list) 
-              
-              (filter : LargeSquare) = (ss a b c
-                                           d e f
-                                           g h i, replacements
-                                                  |> Seq.ofList
-                                                  |> Seq.collect id
-                                                  |> Seq.filter ((||=||) filter))
-
 type SideReq = 
 | TopReq of (Cell * Cell * Cell * Cell * Cell) option
 | LeftReq of (Cell * Cell * Cell * Cell * Cell) option 
@@ -435,15 +324,14 @@ let replace a b c
                   leftReq = 
   
   let possibles = allLargeSquares 
-                  |> List.filter (fun s -> (adapt isMatch s) a b c
-                                                             d e f
-                                                             g h i
-                                                             topReq 
-                                                             leftReq)
+                  |> List.filter (fun s -> (isMatch ||>>|| s) a b c
+                                                              d e f
+                                                              g h i
+                                                              topReq 
+                                                              leftReq)
   let n = List.length possibles
   let choice = int (double n * random.NextDouble ())
 
-  //Browser.console.log (sprintf "replace choosing %d from %d possibles" choice n)
   List.item choice possibles                                                                 
 
 let getBottomAsTopReq a b c d e
@@ -479,11 +367,11 @@ type Maze = LargeSquare list list
 
 let replaceSquare sq topReqL topReqR leftReqT leftReqB =
   let (tl, tr,
-       bl, br) = adapt decompose sq    
-  let ntl = adaptSS replace tl topReqL                   leftReqT
-  let ntr = adaptSS replace tr topReqR                   (adapt getRightAsLeftReq ntl)
-  let nbl = adaptSS replace bl (adapt getBottomAsTopReq ntl) leftReqB
-  let nbr = adaptSS replace br (adapt getBottomAsTopReq ntr) (adapt getRightAsLeftReq nbl)  
+       bl, br) = decompose ||>>|| sq    
+  let ntl = (replace |>>| tl) topReqL                        leftReqT
+  let ntr = (replace |>>| tr) topReqR                        (getRightAsLeftReq ||>>|| ntl)
+  let nbl = (replace |>>| bl) (getBottomAsTopReq ||>>|| ntl) leftReqB
+  let nbr = (replace |>>| br) (getBottomAsTopReq ||>>|| ntr) (getRightAsLeftReq ||>>|| nbl)  
   (ntl, ntr,
    nbl, nbr)
 
@@ -495,10 +383,10 @@ let growMaze (lsll : Maze) =
       let folder ((upper, lower), leftReqT, leftReqB) s (topReqL, topReqR) =
         let (ntl, ntr,
              nbl, nbr) = replaceSquare s topReqL topReqR leftReqT leftReqB
-        (upper |.| [ntl; ntr], lower |.| [nbl; nbr]), adapt getRightAsLeftReq ntr, adapt getRightAsLeftReq nbr
+        (upper |.| [ntl; ntr], lower |.| [nbl; nbr]), getRightAsLeftReq ||>>|| ntr, getRightAsLeftReq ||>>|| nbr
       let (newTop, newBottom), _, _ = List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevOutputRowReqs
       let prevRowReqs = newBottom 
-                        |> List.mapi (fun i b -> i, adapt getBottomAsTopReq b) 
+                        |> List.mapi (fun i b -> i, getBottomAsTopReq ||>>|| b) 
                         |> List.pairwise 
                         |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
                         |> List.map (fun ((i, r), (j, s)) -> (r, s))
@@ -661,6 +549,7 @@ let initRenderer (scene:Scene) =
     buttonContainer.appendChild(makeButton "Medium" 3 "blueViolet") |> ignore
     buttonContainer.appendChild(makeButton "Hard" 4 "blueGreen") |> ignore
     buttonContainer.appendChild(makeButton "Crazy" 5 "yellowGreen") |> ignore
+    buttonContainer.appendChild(makeButton "Insane 05" 6 "yellowGreen") |> ignore
 
     let solveButton = Browser.document.createElement("button")
     solveButton.innerText <- "Solve!"
@@ -668,23 +557,6 @@ let initRenderer (scene:Scene) =
     buttonContainer.appendChild(solveButton) |> ignore
 
     renderer
-
-(**
-
-### _**4:** Geometry_ ###
-
-Nearly there, but not quite like the movies. Now we have to create something to star in our scene.
-We have only one cast member, a simple cube. Fortunately Three provides methods for defining most
-standard geometric shapes, so we don't have to build the cube up out of individual triangles. Each object
-also needs its surface properties defining (so that we know what it should look like). Here we say
-that our cube's surface is made from a Lambert type material (which would allow for some shininess,
-but we don't set that up here and just go for a plain purple matt surface). We buffer the cube's
-geometry, which moves it to a more compact internal representation (for better performance) and then
-combine it's shape and material definition together into a mesh. Finally we add the mesh to the scene
-and also return the cube geometry for later use.
-
-*)
-
 
 (**
 

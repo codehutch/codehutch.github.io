@@ -120,16 +120,6 @@ let toList a b c d e
            k l m n o
            p q r s t
            u v w x y = [a; b; c; d; e; f; g; h; i; j; k; l; m; n; o; p; q; r; s; t; u; v; w; x; y]
-
-let ofList [a;b;c;d;e;
-            f;g;h;i;j;
-            k;l;m;n;o;
-            p;q;r;s;t;
-            u;v;w;x;y] = ls a b c d e
-                            f g h i j
-                            k l m n o
-                            p q r s t
-                            u v w x y
        
 let (|>>|) sf (a, b, c,
                d, e, f,
@@ -245,20 +235,17 @@ let orthodoxLS [b; d; f; h; j; l; n; p; r; t; v; x] =
         p O r O t
         X v X x X
 
-let makeAllLargeSquares () = 
+let allLargeSquares = 
   let rec als n b = 
     match n with
     | 0 -> b
     | n ->  als (n-1) <| ((List.map (fun a -> X :: a) b) |.| (List.map (fun a -> O :: a) b))
   let allInputs = als 12 [[]]
   List.map (fun l -> orthodoxLS l) allInputs
-
-let allLargeSquares = 
-  makeAllLargeSquares ()
   |> List.filter (fun x -> List.fold (fun a y -> a && x ||<>|| y) true neverValid)
   |> List.filter (fun x -> x ||=|| alwaysRequired)
   |> Set.ofList
-  |> Set.toList
+  |> Set.toArray
 
 type SideReq = 
 | TopReq of (Cell * Cell * Cell * Cell * Cell) option
@@ -314,15 +301,15 @@ let replace a b c
                   leftReq = 
   
   let possibles = allLargeSquares 
-                  |> List.filter (fun s -> (isMatch ||>>|| s) a b c
-                                                              d e f
-                                                              g h i
-                                                              topReq 
-                                                              leftReq)
-  let n = List.length possibles
+                  |> Array.filter (fun s -> (isMatch ||>>|| s) a b c
+                                                               d e f
+                                                               g h i
+                                                               topReq 
+                                                               leftReq)
+  let n = Array.length possibles
   let choice = int (double n * random.NextDouble ())
 
-  List.item choice possibles                                                                 
+  Array.item choice possibles                                                                 
 
 let getBottomAsTopReq a b c d e
                       f g h i j
@@ -388,10 +375,9 @@ let growMaze (lsll : Maze) =
 let renderCube (scene:Scene) xs xe ys ye =
 
     let size = xe - xs
-    let cubeStart = Three.BoxGeometry(size, size, 0.25 * size)
+    let cube = Three.BoxBufferGeometry(size, size, 0.25 * size)
     let matProps = createEmpty<Three.MeshLambertMaterialParameters>
-    matProps.color <- Some (U2.Case2 "#94FFB3")
-    let cube = Three.BufferGeometry().fromGeometry(cubeStart);
+    matProps.color <- Some (U2.Case2 "#9430B3")
     let mesh = Three.Mesh(cube, Three.MeshLambertMaterial(matProps))
     mesh.translateX (xs - size / 2.0) |> ignore
     mesh.translateY (ys - size / 2.0) |> ignore
@@ -418,14 +404,14 @@ let rec renderSquare (scene:Scene) tlx tly brx bry sq =
 let rec renderMazeRow (scene:Scene) tlx tly brx bry row = 
     let step = (brx - tlx) / (float <| List.length row)
     row |> 
-    List.mapi (fun i sq -> 
+    List.iteri (fun i sq -> 
       let fi = float i
       renderSquare scene (tlx + fi * step) tly (tlx + (fi + 1.0) * step) bry sq)
 
 let rec renderMaze(scene:Scene) tlx tly brx bry maze = 
     let step = (bry - tly) / (float <| List.length maze)
     maze |> 
-    List.mapi (fun i r -> 
+    List.iteri (fun i r -> 
       let fi = float i
       renderMazeRow scene tlx (tly + fi * step) brx (tly + (fi + 1.0) * step)  r)
 
@@ -451,8 +437,6 @@ the caller so that those elements can be used later on in rendering / animation.
 bindings to each of the key graphics elements.
 
 *)
-
-let mutable spin = false
 
 let action() =
 
@@ -496,16 +480,12 @@ let action() =
         button.className <- cssClass
 
         let buttonClick (b : Browser.MouseEvent) =
-            spin <- true
-            Async.Start (async {
-                do! async { while(scene.children.Count > 0) do 
-                              scene.remove(scene.children.Item(0)) 
-                            initLights () } 
-                let! maze = async { return randomMaze difficulty } 
-                renderMaze scene -1.025 1.15 1.275 -1.15  maze |> ignore
-                spin <- false
-            }) |> ignore 
-            (Boolean() :> obj)
+          let maze = randomMaze difficulty  
+          while(scene.children.Count > 0) do 
+            scene.remove(scene.children.Item(0)) 
+          initLights ()  
+          renderMaze scene -1.025 1.15 1.275 -1.15  maze
+          (Boolean() :> obj)
 
         button.onclick <- Func<_,_> buttonClick
         button
@@ -513,19 +493,12 @@ let action() =
     let buttonContainer = Browser.document.createElement("div")
     container.appendChild(buttonContainer) |> ignore
 
-    buttonContainer.appendChild(makeButton "Easy" 2 "violet") |> ignore
+    buttonContainer.appendChild(makeButton "Simple" 1 "yellowGreen") |> ignore
+    buttonContainer.appendChild(makeButton "Easy" 2 "blueGreen") |> ignore
     buttonContainer.appendChild(makeButton "Medium" 3 "blueViolet") |> ignore
-    buttonContainer.appendChild(makeButton "Hard" 4 "blueGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Crazy" 5 "yellowGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Insane 17" 6 "yellowGreen") |> ignore
-
-    let solveButton = Browser.document.createElement("button")
-    solveButton.innerText <- "Solve!"
-    solveButton.className <- "yellowOrange" 
-    buttonContainer.appendChild(solveButton) |> ignore
+    buttonContainer.appendChild(makeButton "Hard!" 4 "yellowOrange") |> ignore
 
     renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) 
-
     renderer, scene, camera
 
 let renderer, scene, camera = action()
@@ -542,12 +515,8 @@ on screen.
 
 *)
 
-
 let rec reqFrame (dt:float) =
     Browser.window.requestAnimationFrame(Func<_,_> animate) |> ignore
-    if spin 
-    then camera.rotateZ ( 0.07 ) |> ignore
-    else camera.rotation.z <- 0.0
     renderer.render(scene, camera)
 and animate (dt:float) =
     Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 20.0) |> ignore // aim for 20 fps

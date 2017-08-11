@@ -491,12 +491,12 @@ let action() =
         button
 
     let buttonContainer = Browser.document.createElement("div")
+    buttonContainer.className <- "buttonContainer"
     container.appendChild(buttonContainer) |> ignore
 
-    buttonContainer.appendChild(makeButton "Simple" 1 "yellowGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Easy" 2 "blueGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Medium" 3 "blueViolet") |> ignore
-    buttonContainer.appendChild(makeButton "Hard!" 4 "yellowOrange") |> ignore
+    buttonContainer.appendChild(makeButton "Easy" 2 "yellowGreen") |> ignore
+    buttonContainer.appendChild(makeButton "Medium" 3 "blueGreen") |> ignore
+    buttonContainer.appendChild(makeButton "Hard" 4 "yellowOrange") |> ignore
 
     renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) 
     renderer, scene, camera

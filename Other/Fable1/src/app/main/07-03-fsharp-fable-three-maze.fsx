@@ -22,7 +22,8 @@ compiled to javascript by the wonderful [Fable](http://fable.io), maze building 
 simple mind. The **demo above** has been _built entirely_ from the [F#](http://fsharp.org) _code in this webpage_, using 
 [Fable](http://fable.io). Graphics are courtesy of Fable's bindings to [ThreeJs](https://threejs.org). (You can also view the 
 complete code on my [GitHub repo](https://github.com/codehutch/codehutch.github.io/blob/source/Other/Fable1/src/app/main/07-03-fsharp-fable-three-maze.fsx) 
-if you prefer)
+if you prefer). As a disclaimer, nicer and shorter maze generation algorithms are available than the one described here, but this 
+one does illustrate quite a few F# concepts...
    
 ### _**Building** blocks_ ###
 
@@ -184,6 +185,25 @@ let (||>>||) sf (a, b, c, d, e,
                                      p q r s t
                                      u v w x y
 
+(**
+
+### _**All things being** equal_ ###
+
+We need to be able to work out if a `Cell` is the same as another `Cell`. F# helps us out here by 
+implementing [structural-equality](https://blogs.msdn.microsoft.com/dsyme/2009/11/08/equality-and-comparison-constraints-in-f/)
+by default on tuple, union and record types. However, if you remember back to the initial definition
+of the `Cell` type, we included `I` type cells to represent cases where the type of a cell can be
+_indeterminate_ (i.e. when it doesn't matter if the `Cell` finally becomes an `X` or an `O`). So, we
+need to define _equals_ (|=|) and not-equals (|<>|) operators for `Cell` type that take the 
+unimportance of `I` cells into account. We can also scale _equals_ and _not-equals_ up to work on 
+LargeSqaures. To do this we convert the squares in question to Lists (via our `||>>||` adapter
+function / operator) and use the 
+[List.fold2](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/list.fold2%5B't1,'t2,'state%5D-function-%5Bfsharp%5D) 
+function to combine the results of comparing each `Cell`.
+
+*)
+
+// Equals operator for Cells
 let (|=|) (a:Cell) (b:Cell) =
     match a, b with
     | X, I -> true
@@ -192,17 +212,20 @@ let (|=|) (a:Cell) (b:Cell) =
     | I, O -> true
     | _, _ -> a = b
 
+// Not-Equals operator for Cells
 let (|<>|) (a:Cell) (b:Cell) =
     match a, b with
     | I, _ -> false
     | _, I -> false
     | _, _ -> a <> b
 
+// Equals operator for LargeSquares
 let (||=||) (a:LargeSquare) (b:LargeSquare) =
     let al = toList ||>>|| a
     let bl = toList ||>>|| b
     List.fold2 (fun s x y -> s && (x |=| y)) true al bl
 
+// Not-Equals operator for LargeSquares
 let (||<>||) (a:LargeSquare) (b:LargeSquare) =
     let al = toList ||>>|| a
     let bl = toList ||>>|| b

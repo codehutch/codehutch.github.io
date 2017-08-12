@@ -438,6 +438,8 @@ bindings to each of the key graphics elements.
 
 *)
 
+let mutable rotation = 0.0;
+
 let action() =
 
     let width () = Browser.window.innerWidth * 0.75;
@@ -484,6 +486,7 @@ let action() =
           while(scene.children.Count > 0) do 
             scene.remove(scene.children.Item(0)) 
           initLights ()  
+          rotation <- -2.0 * Math.PI
           renderMaze scene -1.025 1.15 1.275 -1.15  maze
           (Boolean() :> obj)
 
@@ -495,8 +498,8 @@ let action() =
     container.appendChild(buttonContainer) |> ignore
 
     buttonContainer.appendChild(makeButton "Easy" 2 "yellowGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Medium" 3 "blueGreen") |> ignore
-    buttonContainer.appendChild(makeButton "Hard" 4 "yellowOrange") |> ignore
+    buttonContainer.appendChild(makeButton "Medium" 3 "yellowOrange") |> ignore
+    buttonContainer.appendChild(makeButton "Hard" 4 "blueViolet") |> ignore
 
     renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) 
     renderer, scene, camera
@@ -517,6 +520,10 @@ on screen.
 
 let rec reqFrame (dt:float) =
     Browser.window.requestAnimationFrame(Func<_,_> animate) |> ignore
+    if rotation < 0.0 
+    then rotation <- rotation + 0.03
+    else rotation <- 0.0
+    camera.rotation.z <- rotation
     renderer.render(scene, camera)
 and animate (dt:float) =
     Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 20.0) |> ignore // aim for 20 fps

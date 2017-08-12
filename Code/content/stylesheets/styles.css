@@ -315,7 +315,7 @@ button {
 	display: inline-block;
 	height: 36px;
 	line-height: 36px;
-	padding: 0 2rem;
+	padding: 0 1rem;
 	vertical-align: middle;
 	color: white;
 	font-family: 'Open Sans', sans-serif;
@@ -327,10 +327,12 @@ button {
 button:hover {
     -webkit-box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
+    outline: 0;
 }
 
-button:active, button:hover {
+button:active {
     outline: 0;
+	opacity: 0.5;
 }
 
 .definitionTerm  {
@@ -364,6 +366,11 @@ button:active, button:hover {
 	margin-top: 1em;
 }
 
+#graphicsContainer {
+	margin: 0;
+	padding: 0;
+}
+
 .buttonContainer {
     width: 100%;
 	padding: 0;
@@ -371,8 +378,8 @@ button:active, button:hover {
 
 .buttonContainer button {
 	margin-top: 1em;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
 }
 
 .violet {

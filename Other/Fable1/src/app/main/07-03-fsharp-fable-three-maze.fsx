@@ -3,54 +3,30 @@
     Title = "FSharp / Fable / ThreeJs - Maze";
     Date = "2017-07-03T08:48:31";
     Tags = "fsharp threejs fable maze functional";
-    Description = "A graphical-code approach to maze generation, using F#, Fable and ThreeJs";
+    Description = "Interactive maze generation using f#, fable, threejs and NOT javascript";
 *)
 (*** more ***)
 (**
 
-** F#, Fable & ThreeJs: _Maze_ **
----------------------------------
+** Fabled F# _Maze_ **
+----------------------
 
 <div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
 <script src="/otherOutput/fable1/BlogFableThreeMazeBuild.js"></script>
 
-**F# gives us considerable lee-way syntactically**. Let's see how far we can bend it to generate a maze from **code
-that looks like diagrams** of what we want to generate.
-
-### _**Decisions** decisions_ ###
-
-The first question is... How do we want to represent a maze square? One way we could go is to use strings to draw
-little box diagrams. We're helped in drawing our ascii mazes by F#'s rather nice triple quoted multi-line string
-literals. However, whilst ascii art is undeniably masssively cool, using strings to draw mazes has some drawbacks...
-
-  * There's nothing to stop me being lazy and drawing one that's incomplete 
-  * There's nothing to stop me going crazy and using non-standard characters
-  * I'm going to have to parse the strings into something meaningful
-  * I'm going to have to handle potential extra white-space etc 
-
+**I love mazes, and I wanted to try and generate them in a webpage. Trouble was, maze generation was way too complicated for my 
+javascript skills. But I was sure I could do better in a more idiot-proof language like F#...** Fortunately, now that F# can be 
+compiled to javascript by the wonderful [Fable](http://fable.io), maze building is (just about) achievable for my limited brain! 
+The **demo above** has been _built entirely_ from the [F#](http://fsharp.org) _code in this webpage_, using [Fable](http://fable.io). 
+Graphics are courtesy of Fable's bindings to [ThreeJs](https://threejs.org). (You can also view the complete code on my 
+[GitHub repo](https://github.com/codehutch/codehutch.github.io/blob/source/Other/Fable1/src/app/main/07-03-fsharp-fable-three-maze.fsx) 
+if you prefer)
+   
 *)
 
-
-(**
-
-### _**Philosophical** rethink_ ###
-
-So, ascii-art strings are looking like too much effort, how can we make it simpler? One way we could simplify
-things is to try and identify the minimum-possible representation of a 1x1 maze. An interesting philosophical 
-point here is that the 1x1 square box above required nine ascii characters to draw it (4 sides, 4 corners and
-the space in the middle). But that was representing the maze square in terms of it's boundaries and walls (man). 
-If we were to be all open minded and free thinking and glass-half-fullish then we could look at that square in 
-terms of it's connectivity to other squares, and realise there's only 4 possible ways out of a square, north, 
-south, east and west. That would require just 4 bools to represent it, which is lovely. Trouble is, how are we 
-going to hold those bools? In an 4-tuple? In a list? A record-type? All would work, but I don't like such ideas 
-as they seem like a 1-d flattening of what is really a 2-d problem. Also, when thinking about a 2x2 grid, the 
-connectivity approach becomes a bit non-intuitive (to me at least). So, let's stick with 2-d-ish solutions, but 
-see if we can get away from strings and introduce some type safety. What we can do is take inspiration from 
-noughts and crosses and introduce two distinct values, X and O to draw our mazes with.
-
-*)
+(*** hide ***)
 
 #r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
 #load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
@@ -60,6 +36,14 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
 open Fable.Import.Three
+
+(**
+
+### _**Building** blocks_ ###
+
+The first lines of code we need are below, which 
+
+*)
 
 // Here's our union-type for representing a maze.
 type Cell = 
@@ -160,14 +144,6 @@ let (||<>||) (a:LargeSquare) (b:LargeSquare) =
     let al = toList ||>>|| a
     let bl = toList ||>>|| b
     List.fold2 (fun s x y -> s || (x |<>| y)) false al bl
-
-let row [a; b; c; d; e] = a, b, c, d, e 
-
-let topRow (ls:LargeSquare)      = toList ||>>|| ls                 |> List.take 5 |> row
-let upperMidRow (ls:LargeSquare) = toList ||>>|| ls |> List.skip  5 |> List.take 5 |> row
-let middleRow (ls:LargeSquare)   = toList ||>>|| ls |> List.skip 10 |> List.take 5 |> row
-let lowerMidRow (ls:LargeSquare) = toList ||>>|| ls |> List.skip 15 |> List.take 5 |> row
-let bottomRow (ls:LargeSquare)   = toList ||>>|| ls |> List.skip 20 |> List.take 5 |> row
 
 let allRotationsAndFlips (s:LargeSquare) =
   let r0   = s 
@@ -384,7 +360,7 @@ let renderCube (scene:Scene) xs xe ys ye =
     mesh.translateZ 0.0 |> ignore
     scene.add(mesh)
 
-let renderSquareRow (scene:Scene) xs xe ys ye (a, b, c, d, e) = 
+let renderSquareRow (scene:Scene) xs xe ys ye a b c d e = 
   let widthStep = (xe - xs) / 5.0
   if a = X then renderCube scene (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
   if b = X then renderCube scene (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
@@ -392,21 +368,24 @@ let renderSquareRow (scene:Scene) xs xe ys ye (a, b, c, d, e) =
   if d = X then renderCube scene (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
   if e = X then renderCube scene (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
 
-let rec renderSquare (scene:Scene) tlx tly brx bry sq = 
-
+let rec renderSquare (scene:Scene) tlx tly brx bry a b c d e
+                                                   f g h i j
+                                                   k l m n o
+                                                   p q r s t
+                                                   u v w x y = 
         let heightStep = (bry - tly) / 5.0
-        renderSquareRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) (topRow sq)
-        renderSquareRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) (upperMidRow sq)
-        renderSquareRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) (middleRow sq)
-        renderSquareRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) (lowerMidRow sq)
-        renderSquareRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) (bottomRow sq)    
+        renderSquareRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) a b c d e 
+        renderSquareRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) f g h i j
+        renderSquareRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) k l m n o
+        renderSquareRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) p q r s t
+        renderSquareRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) u v w x y    
 
 let rec renderMazeRow (scene:Scene) tlx tly brx bry row = 
     let step = (brx - tlx) / (float <| List.length row)
     row |> 
     List.iteri (fun i sq -> 
       let fi = float i
-      renderSquare scene (tlx + fi * step) tly (tlx + (fi + 1.0) * step) bry sq)
+      (renderSquare scene (tlx + fi * step) tly (tlx + (fi + 1.0) * step) bry) ||>>|| sq)
 
 let rec renderMaze(scene:Scene) tlx tly brx bry maze = 
     let step = (bry - tly) / (float <| List.length maze)
@@ -424,8 +403,6 @@ let rec randomMaze n =
                    (TopReq None)
                    (LeftReq None)]]
                
-
-
 (**
 
 #### _**5:** Action_ ####
@@ -437,8 +414,6 @@ the caller so that those elements can be used later on in rendering / animation.
 bindings to each of the key graphics elements.
 
 *)
-
-let mutable rotation = 0.0;
 
 let action() =
 
@@ -452,7 +427,6 @@ let action() =
 
     camera.matrixAutoUpdate <- true
     camera.rotationAutoUpdate <- true
-    camera.position.z <- 2.0
 
     let initLights () =
       
@@ -486,7 +460,7 @@ let action() =
           while(scene.children.Count > 0) do 
             scene.remove(scene.children.Item(0)) 
           initLights ()  
-          rotation <- -2.0 * Math.PI
+          camera.position.z <- 0.0
           renderMaze scene -1.025 1.15 1.275 -1.15  maze
           (Boolean() :> obj)
 
@@ -518,15 +492,16 @@ on screen.
 
 *)
 
+let cameraPositionZ = 2.0
+
 let rec reqFrame (dt:float) =
     Browser.window.requestAnimationFrame(Func<_,_> animate) |> ignore
-    if rotation < 0.0 
-    then rotation <- rotation + 0.03
-    else rotation <- 0.0
-    camera.rotation.z <- rotation
+    if camera.position.z < cameraPositionZ 
+    then camera.position.z <- camera.position.z + 0.25
+    else camera.position.z <- cameraPositionZ
     renderer.render(scene, camera)
 and animate (dt:float) =
     Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 20.0) |> ignore // aim for 20 fps
 
-animate(0.0) // Start the animation going
+animate(0.0) // Start!
 

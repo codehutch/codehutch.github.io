@@ -1,9 +1,9 @@
 (*@
     Layout = "post";
-    Title = "FSharp / Fable / ThreeJs - Maze";
+    Title = "Fabled F# Mazes";
     Date = "2017-07-03T08:48:31";
     Tags = "fsharp threejs fable maze functional";
-    Description = "Interactive maze generation using f#, fable, threejs and NOT javascript";
+    Description = "Interactive maze generation using F#, Fable, ThreeJs and NOT javascript";
 *)
 (*** more ***)
 (**
@@ -18,15 +18,25 @@
 
 **I love mazes, and I wanted to try and generate them in a webpage. Trouble was, maze generation was way too complicated for my 
 javascript skills. But I was sure I could do better in a more idiot-proof language like F#...** Fortunately, now that F# can be 
-compiled to javascript by the wonderful [Fable](http://fable.io), maze building is (just about) achievable for my limited brain! 
-The **demo above** has been _built entirely_ from the [F#](http://fsharp.org) _code in this webpage_, using [Fable](http://fable.io). 
-Graphics are courtesy of Fable's bindings to [ThreeJs](https://threejs.org). (You can also view the complete code on my 
-[GitHub repo](https://github.com/codehutch/codehutch.github.io/blob/source/Other/Fable1/src/app/main/07-03-fsharp-fable-three-maze.fsx) 
+compiled to javascript by the wonderful [Fable](http://fable.io), maze building in the browser is (just about) achievable for my 
+simple mind. The **demo above** has been _built entirely_ from the [F#](http://fsharp.org) _code in this webpage_, using 
+[Fable](http://fable.io). Graphics are courtesy of Fable's bindings to [ThreeJs](https://threejs.org). (You can also view the 
+complete code on my [GitHub repo](https://github.com/codehutch/codehutch.github.io/blob/source/Other/Fable1/src/app/main/07-03-fsharp-fable-three-maze.fsx) 
 if you prefer)
    
-*)
+### _**Building** blocks_ ###
 
-(*** hide ***)
+So we're going to need to generate a maze, and then render it graphically. My 3D graphics skills are pretty much limited to drawing
+[cubes](http://www.progletariat.com/blog/2017/06-22-fable-threejs-hello/index.html), so we'll base our representation of a maze
+around single _cells_, that either do or don't get drawn as a cube. If a `Cell` is drawn as a cube, it's part of a wall in the maze. 
+If a `Cell` is not drawn, then it's a gap or passage in the maze. So a `Cell` is effectively a thing that can exist as one of several
+possible forms (but an individual `Cell` can only ever be one of these possible forms). In F#, a 
+[discriminated union](https://fsharpforfunandprofit.com/posts/discriminated-unions/) type fits the bill when we need to encompass 
+several independent possibilities within the same type. I'll use `X` to represent a `Cell` that is part of a maze-wall and `O` to 
+represent a `Cell` that is open-space in the maze. I'll also throw in `I` to represent a `Cell` who's type is either as yet indeterminate 
+or not important (more on that later when we generate mazes).
+
+*)
 
 #r "../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll"
 #load "../../../node_modules/fable-import-three/Fable.Import.Three.fs"
@@ -37,38 +47,53 @@ open Fable.Core.JsInterop
 open Fable.Import
 open Fable.Import.Three
 
+// Here's our union-type for representing a maze.
+type Cell = 
+  | X // X is going to represent a wall.
+  | O // O is going to represent open space / gap / a passage.
+  | I // I represents intederminate / unknown / don't care.
+
+let o = O // Sneaky trick to get syntax-highlighting to show open space better.
+
 (**
 
-### _**Building** blocks_ ###
+#### _**Bigger bits** and pieces_ ####
 
-The first lines of code we need are below, which 
+Now that we have established the `Cell` union type for representing the lowest level building blocks of our maze, we
+need to move up a level. The simpest possible maze is a _3 x 3 grid_ of Cells. We'll call this a `SmallSquare`. I've 
+used a [tuple](https://fsharpforfunandprofit.com/posts/tuples/) with 9 members to represent a `SmallSquare`. Arguably
+I could have attempted to represent the _3x3-ness_ better using a 2d array or a 3-tuple of 3-tuples etc, but they 
+would generally introduce more syntactic noise (which F# does a pretty good job of minimizing) in the form of additional
+brackets etc, so I'll stick with a tuple. Although the syntax for creating a tuple is pretty minimal, the code will be
+clearer (in our case of needing to represent 2-dimensional mazes) if we can omit tuple-syntax (brackets and commas) from 
+the source. What we can do is create `ss` which is a [curried function](https://fsharpforfunandprofit.com/posts/currying/)
+_that requires no commas or brackets around its arguments_ for creating a `SmallSquare`. When we are generating mazes, 
+we will want to replace a 3 x 3 `SmallSquare` with an equivalent (but more complex) _5 x 5 grid_ of Cells which we'll
+call `LargeSquare`. I've also added `ls` for creating a `LargeSquare` in a syntactically-minimal way (like `ss`).
 
 *)
 
-// Here's our union-type for representing a maze.
-type Cell = 
-  | X // X is going to represent a wall
-  | O // O is going to represent open space.
-  | I // I represents intederminate / don't care
-
-let o = O // Bit of a trick to get syntax-highlighting to show up better
-
+// SmallSquare is a 3x3 grid of Cells
 type SmallSquare = Cell * Cell * Cell
                  * Cell * Cell * Cell
                  * Cell * Cell * Cell 
 
+// ss gives us a nice-looking way to create a small square
+// without needing to type lots, of, commas.
 let ss a b c
        d e f 
        g h i : SmallSquare = a, b, c,
                              d, e, f,
                              g, h, i
                              
+// LargeSquare is a 5x5 grid of Cells
 type LargeSquare = Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
                  * Cell * Cell * Cell * Cell * Cell
 
+// ls creates LargeSquares in a visually pleasing (i.e. comma-free) way.                 
 let ls a b c d e
        f g h i j
        k l m n o
@@ -78,17 +103,22 @@ let ls a b c d e
                                  k, l, m, n, o,
                                  p, q, r, s, t, 
                                  u, v, w, x, y
-        
-let rotate a b c d e
-           f g h i j
-           k l m n o
-           p q r s t
-           u v w x y = ls u p k f a
-                          v q l g b
-                          w r m h c
-                          x s n i d
-                          y t o j e
 
+(**
+
+### _**Flipping** functions_ ###
+
+When we're generating mazes, we'll want to be able to come up with new squares, based on existing ones.
+One of the ways we can derive a new square from an existing one is to _flip_ or _rotate_ the existing
+square. We can achieve this pretty easily by taking each `Cell` from a `LargeSquare` and rearranging 
+the cells as required. It's reasonably easy to see just by looking at the code how the flip or rotation
+transforms the input square's cells. Whilst we're writing utility functions, we'll also include one to
+convert the cells from a large square into F# [list](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lists) 
+form, which will be useful later. As you can see, the F# syntax for creating a list is pretty minimal.
+
+*)
+        
+// Flip a large square horizontally
 let flip a b c d e
          f g h i j
          k l m n o
@@ -99,23 +129,56 @@ let flip a b c d e
                         t s r q p
                         y x w v u
 
+// Rotate a large square clockwise by 90 degrees
+let rotate a b c d e
+           f g h i j
+           k l m n o
+           p q r s t
+           u v w x y = ls u p k f a
+                          v q l g b
+                          w r m h c
+                          x s n i d
+                          y t o j e
+
+// Convert a large square to list representation 
 let toList a b c d e
            f g h i j
            k l m n o
            p q r s t
-           u v w x y = [a; b; c; d; e; f; g; h; i; j; k; l; m; n; o; p; q; r; s; t; u; v; w; x; y]
+           u v w x y = [a; b; c; d; e; 
+                        f; g; h; i; j; 
+                        k; l; m; n; o; 
+                        p; q; r; s; t; 
+                        u; v; w; x; y]
+
+(**
+
+#### _**Adapting** as necessary_ ####
+
+Although the above functions are (in my eyes) quite elegant, we can't actually use them at the moment, 
+as they take each cell _individually_ from a square as input, **but** we have defined `SmallSquare` and
+`LargeSquare` as tuples, which group up 9 or 25 Cells into _singular entities_. To be able to `rotate` or
+`flip` a square, we will need adapter function that takes a _nice-syntax_ function and an _ugly-tuple-syntax_
+square then extracts each `Cell` from the square and then passes each `Cell` individually to the _nice-syntax_
+function. As we will need to use these adapter functions an aweful lot, we'll make them 
+[custom infix operators](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/operator-overloading) so
+that we can use them in an intuitive way (intuitive if you like that kind of thing, anyway). 
+
+*)
        
+// Adapt a 'nice-syntax' function (sf) to work with an actual SmallSquare.
 let (|>>|) sf (a, b, c,
                d, e, f,
                g, h, i) = sf a b c
                              d e f
                              g h i
    
-let (||>>||) mf (a, b, c, d, e,
+// Adapt a 'nice-syntax' function (sf) to work with an actual LargeSquare.
+let (||>>||) sf (a, b, c, d, e,
                  f, g, h, i, j,
                  k, l, m, n, o,
                  p, q, r, s, t,
-                 u, v, w, x, y) = mf a b c d e
+                 u, v, w, x, y) = sf a b c d e
                                      f g h i j
                                      k l m n o
                                      p q r s t

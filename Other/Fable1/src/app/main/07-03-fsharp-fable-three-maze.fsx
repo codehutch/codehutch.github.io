@@ -231,6 +231,23 @@ let (||<>||) (a:LargeSquare) (b:LargeSquare) =
     let bl = toList ||>>|| b
     List.fold2 (fun s x y -> s || (x |<>| y)) false al bl
 
+(**
+
+#### _**I'll tell you what I** don't **want**_ ####
+
+To generate mazes, we need a collection of all possible maze squares. We'll approach this by
+generating all possible combinations of cells and then filtering out ones which aren't valid
+for some reason (such as ones that contain loops or don't have entry/exit points). To avoid 
+having to manually specify hundreds of invalid squares, we can write an `allRotationsAndFlips`
+function that takes an (invalid) square and generates all possible rotated and flipped versions
+of it (the idea being that if a square is invalid in one orientation then it is invalid in all
+orientations). Our `allRotationsAndFlips` function accepts a `LargeSquare` to work on, but it
+would also be nice if it accepted individual cells that would form a square, so `all` is an
+adapter function for that. We can use `all` to help build up a `neverValid` list of squares that 
+are not valid in any maze that we generate.
+
+*)
+
 let allRotationsAndFlips (s:LargeSquare) =
   let r0   = s 
   let r90  = rotate ||>>|| r0
@@ -242,6 +259,7 @@ let allRotationsAndFlips (s:LargeSquare) =
   let f270 = rotate ||>>|| f180
   [r0; r90; r180; r270; f0; f90; f180; f270]
 
+// adapter function for allRotationsAndFlips
 let all a b c d e 
         f g h i j
         k l m n o
@@ -252,8 +270,11 @@ let all a b c d e
                                                p q r s t
                                                u v w x y
 
+// Using the ampersand operator for list.append is a problem
+// for my blogging framework (this is a work-around). 
 let (|.|) x y = List.append x y
 
+// Specifies characteristics that make squares invalid
 let neverValid = [ls  I I I I I 
                       I o o o I
                       I o I o I
@@ -284,11 +305,29 @@ let neverValid = [ls  I I I I I
                      I I I I I 
                      I I I I I     // Two entry points on any side aren't valid
                  
+// In a 5x5 cell - corners and certain dividing cells are always required.
 let alwaysRequired = ls  X I X I X
                          I O I O I
                          X I X I X
                          I O I O I
                          X I X I X  // Standard structure boundary walls
+
+(**
+
+### _**Give me** everything_ ###
+
+To actually generate all *valid* squares, we can write a [recursive](https://en.wikibooks.org/wiki/F_Sharp_Programming/Recursion)
+function (`als`) that builds all possible squares (in list form) by starting with an empty list and adding both an `X` and `O` 
+to the empty list and then (recursively) to each list that has already been generated. Rather than generate 25^2 candidate squares,
+we note that in a valid (_orthodox_) square that wall-cells must always be present in each corner, in the center and in the mid-point
+of each side. Similarly, certain cells always have to be open. This means that we only need to generate 12^2 candidates as less
+than half the cells are actually variable within a large square. The `orthodoxLS` function enforces this principal - when given
+the variable parts of a square as inputs. We build `allLargeSquares` by filtering 12^2 possible candidates and filtering out
+ones matching `neverValid` squares with undesirable characteristics. I also put the squares into a set to eliminate any duplicates,
+again this is helped by F# implementing [structural-equality](https://blogs.msdn.microsoft.com/dsyme/2009/11/08/equality-and-comparison-constraints-in-f/)
+by default.
+
+*)
 
 let orthodoxLS [b; d; f; h; j; l; n; p; r; t; v; x] =
     ls  X b X d X

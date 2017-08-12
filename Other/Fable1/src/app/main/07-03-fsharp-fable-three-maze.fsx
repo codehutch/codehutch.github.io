@@ -493,17 +493,22 @@ let decompose a b c d e
 
 ### _**Growing** mazes_ ###
 
-Each time a maze needs _growing_ a 3x3 `SmallSquare` needs replacing with an equivalent 5x5
-`LargeSquare`. To do this, we can take our collection of all known large squares - `allLargeSquares` and
-filter is to eliminate ones that don't match (i.e. aren't equivalent to) the small 3x3 square (also
-checking that the replacement meets any requirements imposed by its neighbours). It's likely that there
-will be more than one candidate replacement square, so we make a random choice to ensure that we 
-generate different mazes each time.
+The below section has the final steps in this implementation of maze growing. The `replaceSquare` function takes
+a 5x5 `LargeSquare`, decomposes it into 4 overlapping 3x3 small squares, and then replaces each of those with
+5x5 squares. A `Maze` is defined as a list (rows) of lists of LargeSquares (each individual row also being a list
+of squares). This means that each time `growMaze` is called, it takes each row list of squares and replaces it
+with two rows, each of which is twice as long as the input row. Most of `growMaze` is concerned with extracting
+neighbour requirements from rows of squares and passing these requirements into the next row of squares to be
+generated. Quite a few list functions are needed, including my personal favourite;
+[pairwise](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/seq.pairwise%5B't%5D-function-%5Bfsharp%5D).
+The starting point for generating mazes in this demo is the `randomMaze` function. It starts with the simplest 
+possible 3x3 Cell (SmallSquare) maze, replaces it with a random 5x5 (LargeSquare) equivalent and then grows that maze 
+randomly as many times as requested. 
 
 *)
 
-type Maze = LargeSquare list list
-
+// Replace a large square with 4 equivalent large squares, taking into account
+// requirements from neighbours that have already been similarly replaced.
 let replaceSquare sq topReqL topReqR leftReqT leftReqB =
   let (tl, tr,
        bl, br) = decompose ||>>|| sq    
@@ -514,26 +519,44 @@ let replaceSquare sq topReqL topReqR leftReqT leftReqB =
   (ntl, ntr,
    nbl, nbr)
 
+type Maze = LargeSquare list list
+
+// Grow a maze by one increment, i.e. replacing each LargeSquare in it with a 
+// 2x2 arrangement of LargeSquares (i.e. growth is quadratic)
 let growMaze (lsll : Maze) =
-  let rec grl output prevOutputRowReqs (lsll : LargeSquare list list) =
+  let rec grl output (lsll : LargeSquare list list) =
+    // Get intra-row requirements so that the new row matches the preceeding new row
+    let prevRowReqs = 
+      match output with 
+      | [] -> List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))
+      | _ ->  List.last output 
+              |> List.mapi (fun i b -> i, getBottomAsTopReq ||>>|| b) 
+              |> List.pairwise 
+              |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
+              |> List.map (fun ((i, r), (j, s)) -> (r, s))
     match lsll with
     | [] -> output
-    | row::tail ->  
+    | row::tail ->  // Take one row from input
+      // Replace each square in the row with 4 replacements, which means
+      // we replace each row with an new upper row and a new lower row.
       let folder ((upper, lower), leftReqT, leftReqB) s (topReqL, topReqR) =
         let (ntl, ntr,
              nbl, nbr) = replaceSquare s topReqL topReqR leftReqT leftReqB
-        (upper |.| [ntl; ntr], lower |.| [nbl; nbr]), getRightAsLeftReq ||>>|| ntr, getRightAsLeftReq ||>>|| nbr
-      let (newTop, newBottom), _, _ = List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevOutputRowReqs
-      let prevRowReqs = newBottom 
-                        |> List.mapi (fun i b -> i, getBottomAsTopReq ||>>|| b) 
-                        |> List.pairwise 
-                        |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
-                        |> List.map (fun ((i, r), (j, s)) -> (r, s))
+        let newUpperRow, newLowerRow = upper |.| [ntl; ntr], lower |.| [nbl; nbr]
+        let lReqForNextUpperSquare = getRightAsLeftReq ||>>|| ntr
+        let lReqForNextLowerSquare = getRightAsLeftReq ||>>|| nbr
+        ((newUpperRow, newLowerRow), lReqForNextUpperSquare, lReqForNextLowerSquare)
+      // Replace current row with two rows, using above folder func    
+      let (newTop, newBottom), _, _ = 
+        List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevRowReqs
+      // Input row has been processed, move it to the output
       let newOutput = output |.| [newTop; newBottom]
-      grl newOutput prevRowReqs tail
-  let dummyTopReqs = List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))      
-  grl [] dummyTopReqs lsll               
-  
+      grl newOutput tail // Process next input row (tail)
+  grl [] lsll               
+
+// Take the simplest possible 3x3 Cell (SmallSquare) maze, replace it with
+// a random 5x5 (LargeSquare) equivalent (as a single LargeSquare maze) and then
+// grow that maze randomly as many times as requested. 
 let rec randomMaze n =
   match n with 
   | n when n > 1 -> growMaze (randomMaze (n - 1))
@@ -543,10 +566,23 @@ let rec randomMaze n =
                    (TopReq None)
                    (LeftReq None)]]
 
+(**
+
+#### _**Drawing** mazes_ ####
+
+I'm not going to go into detail of how the rendering code works, as it's secondary to how the maze is
+generated. The approach is basically hierarchical, breaking a `Maze` back down into rows, the each row
+into a list of `LargeSquare`s, and then then breaking each `LargeSquare` down into rows of `Cell`s. If 
+a `Cell` is an `X` then it is rendered individually as a cube, if it is an `O` (open space in the maze)
+then it is not rendered. The available width and height of the canvas is broken down and allocated to
+each row, then square and then cell during rendering to position the elements correctly on screen.
+
+*)
+
 let renderCube (scene:Scene) xs xe ys ye =
 
     let size = xe - xs
-    let cube = Three.BoxBufferGeometry(size, size, 0.25 * size)
+    let cube = Three.BoxBufferGeometry(size, size, 0.3 * size)
     let matProps = createEmpty<Three.MeshLambertMaterialParameters>
     matProps.color <- Some (U2.Case2 "#9430B3")
     let mesh = Three.Mesh(cube, Three.MeshLambertMaterial(matProps))
@@ -591,17 +627,21 @@ let rec renderMaze(scene:Scene) tlx tly brx bry maze =
                
 (**
 
-#### _**5:** Action_ ####
+### _**Graphics** time_ ###
 
-Finally we're there. We can create a Scene and initialise all required elements by calling
-the functions we defined above. We return a 4-tuple of the 4 key graphics elements back to
-the caller so that those elements can be used later on in rendering / animation. In-fact,
-"the caller" is just the line of script at the bottom of the section, which creates top-level
-bindings to each of the key graphics elements.
+Again I won't dwell on how the graphics setup is done (see my earlier post 
+[here](http://www.progletariat.com/blog/2017/06-22-fable-threejs-hello/index.html) for general details
+of how to initialise ThreeJs. Probably worth pointing out that as this involves interacting with a
+javascript graphics library we see lots of mutable properties being accessed (with the `<-` operator).
+Mutable state is generally avoided where possible when writing _functional_ programs, however, when
+needed F# can handle mutability, to our benefit here. We also create the _Easy_, _Medium_, _Hard_ 
+buttons in this block and attach event handlers to them so that a new maze will be generated when they
+are clicked. I use the mutibility of the camera object's properties to implement a zoom-out effect to
+add some visual interest when the maze is regenerated.
 
 *)
 
-let action() =
+let initGraphics() =
 
     let width () = Browser.window.innerWidth * 0.75;
     let height () = Browser.window.innerHeight * 0.5
@@ -659,12 +699,12 @@ let action() =
 
     buttonContainer.appendChild(makeButton "Easy" 2 "yellowGreen") |> ignore
     buttonContainer.appendChild(makeButton "Medium" 3 "yellowOrange") |> ignore
-    buttonContainer.appendChild(makeButton "Hard" 4 "blueViolet") |> ignore
+    buttonContainer.appendChild(makeButton "Hard!" 4 "blueViolet") |> ignore
 
     renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) // New random maze on start-up
     renderer, scene, camera
 
-let renderer, scene, camera = action()
+let renderer, scene, camera = initGraphics()
 
 let cameraPositionZ = 2.0
 

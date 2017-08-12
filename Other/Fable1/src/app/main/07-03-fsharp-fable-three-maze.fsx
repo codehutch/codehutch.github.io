@@ -348,14 +348,36 @@ let allLargeSquares =
   |> Set.ofList
   |> Set.toArray
 
+(**
+
+#### _**Mixing and** matching_ ####
+
+When we generate a maze, we will start off with a simple 3x3 `Cell` maze and generate an equivalent
+(in terms of ways in and out of it) 5x5 `Cell` maze. Then, after that, we'll break the 5x5 maze down
+into 4 overlapping 3x3 mazes and then generate equivalent 5x5 mazes for each 3x3 (and so on...). This
+means that we need to be able to judge if a 5x5 `Cell` maze is equivalent to a 3x3 `Cell` maze, which is what
+`isMatch` does for us. The other factor that comes into play is that in larger mazes, if we do the 3x3 to
+5x5 replacement left to right, top to bottom, then preceeding Squares place requirements on ones that
+come after them. For example, the left side of a square must match the right side of the preceeding 
+square. I've called these constraints a `SideReq`, which come in two varieties; `TopReq` and `LeftReq`.
+Additionally, if a square is on the top row or the left column of a maze, it doesn't have any constraints
+on it's sides from neighbouring squares, so requirements are an `option` (see Scott's excellent page on 
+the [F# option type](https://fsharpforfunandprofit.com/posts/the-option-type/) for more details. Whilst 
+you're looking you could also check out his notes on [F# record types](https://fsharpforfunandprofit.com/posts/records/)
+which I've used to wrap up a TopReq and a LeftReq as a pair of `Reqs`). 
+
+*)
+
 type SideReq = 
 | TopReq of (Cell * Cell * Cell * Cell * Cell) option
 | LeftReq of (Cell * Cell * Cell * Cell * Cell) option 
 
 type Reqs = { Top : SideReq; Left : SideReq}
 
-let random = new System.Random ();
-
+// Is a more-complex 5x5 Cell LargeSquare equivalent (in terms of
+// ways in and ways out) to a simpler 3x3 Cell SmallSquare (and
+// does the larger square meet additional requirements imposed by
+// its neighbours)
 let isMatch  a b c d e
              f g h i j
              k l m n o
@@ -373,11 +395,21 @@ let isMatch  a b c d e
              p q r s t
              u v w x y
 
+  // Nested function, used to decide if a Cell from a side 
+  // of the small square is equivalent to 2 cells from the
+  // same side of the larger square
   let sideOK ssCell lsCellA lsCellB = 
     if ssCell = X 
     then lsCellA = X && lsCellB = X 
-    else lsCellA <> lsCellB
+    else lsCellA <> lsCellB 
 
+  let topOK = sideOK b' b d
+  let bottomOK = sideOK h' v x
+  let leftOK = sideOK d' f p
+  let rightOK = sideOK f' j t
+
+  // Do the cells on the side of a large square meet the 
+  // requirements imposed by its neighbour
   let reqOK (req:SideReq) a'' b'' c'' d'' e'' = 
     match req with
     | TopReq None  
@@ -387,15 +419,28 @@ let isMatch  a b c d e
         a'' = a''' && b'' = b''' && c'' = c''' && 
         d'' = d''' && e'' = e'''
 
-  let topOK = sideOK b' b d
-  let bottomOK = sideOK h' v x
-  let leftOK = sideOK d' f p
-  let rightOK = sideOK f' j t
   let topReqOK = reqOK topReq a b c d e
   let leftReqOK = reqOK leftReq a f k p u
   
   topOK && bottomOK && leftOK && rightOK && topReqOK && leftReqOK
 
+(**
+
+### _**Making a** random **selection**_ ###
+
+Each time a maze needs _growing_ a 3x3 `SmallSquare` needs replacing with an equivalent 5x5
+`LargeSquare`. To do this, we can take our collection of all known large squares - `allLargeSquares` and
+filter is to eliminate ones that don't match (i.e. aren't equivalent to) the small 3x3 square (also
+checking that the replacement meets any requirements imposed by its neighbours). It's likely that there
+will be more than one candidate replacement square, so `replace` makes a random choice to ensure that we 
+generate different mazes each time.
+
+*)
+
+let random = new System.Random ();
+
+// Get a (randomly selected) LargeSquare that is a valid replacement for
+// the given small square, and that also meets the given neighbour requirements. 
 let replace a b c
             d e f
             g h i topReq
@@ -412,20 +457,23 @@ let replace a b c
 
   Array.item choice possibles                                                                 
 
+// Utility to take the bottom row of a square and turn it into 
+// 'top' requirements for a prospective neighbour below it.
 let getBottomAsTopReq a b c d e
                       f g h i j
                       k l m n o
                       p q r s t
                       u v w x y = TopReq (Some (u, v, w, x, y))
 
+// Utility to take the right column of a square and turn it into 
+// 'left' requirements for a prospective neighbour to its right.
 let getRightAsLeftReq a b c d e
                       f g h i j
                       k l m n o
                       p q r s t
                       u v w x y = TopReq (Some (e, j, o, t, y))
 
-
-
+// Break a 5x5 LargeSquare down into 4 overlapping 3x3 SmallSquares.
 let decompose a b c d e 
               f g h i j
               k l m n o
@@ -440,6 +488,19 @@ let decompose a b c d e
                                u v w, ss m n o
                                          r s t
                                          w x y)
+
+(**
+
+### _**Growing** mazes_ ###
+
+Each time a maze needs _growing_ a 3x3 `SmallSquare` needs replacing with an equivalent 5x5
+`LargeSquare`. To do this, we can take our collection of all known large squares - `allLargeSquares` and
+filter is to eliminate ones that don't match (i.e. aren't equivalent to) the small 3x3 square (also
+checking that the replacement meets any requirements imposed by its neighbours). It's likely that there
+will be more than one candidate replacement square, so we make a random choice to ensure that we 
+generate different mazes each time.
+
+*)
 
 type Maze = LargeSquare list list
 
@@ -473,6 +534,15 @@ let growMaze (lsll : Maze) =
   let dummyTopReqs = List.init (List.length <| List.item 0 lsll) (fun x -> (TopReq None, TopReq None))      
   grl [] dummyTopReqs lsll               
   
+let rec randomMaze n =
+  match n with 
+  | n when n > 1 -> growMaze (randomMaze (n - 1))
+  | _ -> [[replace X X X
+                   o o o 
+                   X X X 
+                   (TopReq None)
+                   (LeftReq None)]]
+
 let renderCube (scene:Scene) xs xe ys ye =
 
     let size = xe - xs
@@ -485,25 +555,25 @@ let renderCube (scene:Scene) xs xe ys ye =
     mesh.translateZ 0.0 |> ignore
     scene.add(mesh)
 
-let renderSquareRow (scene:Scene) xs xe ys ye a b c d e = 
+let renderSquareRow (gs:Scene) xs xe ys ye a b c d e = 
   let widthStep = (xe - xs) / 5.0
-  if a = X then renderCube scene (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
-  if b = X then renderCube scene (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
-  if c = X then renderCube scene (xs + 2.0 * widthStep) (xs + 3.0 * widthStep) ys ye
-  if d = X then renderCube scene (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
-  if e = X then renderCube scene (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
+  if a = X then renderCube gs (xs + 0.0 * widthStep) (xs + 1.0 * widthStep) ys ye
+  if b = X then renderCube gs (xs + 1.0 * widthStep) (xs + 2.0 * widthStep) ys ye
+  if c = X then renderCube gs (xs + 2.0 * widthStep) (xs + 3.0 * widthStep) ys ye
+  if d = X then renderCube gs (xs + 3.0 * widthStep) (xs + 4.0 * widthStep) ys ye
+  if e = X then renderCube gs (xs + 4.0 * widthStep) (xs + 5.0 * widthStep) ys ye
 
-let rec renderSquare (scene:Scene) tlx tly brx bry a b c d e
-                                                   f g h i j
-                                                   k l m n o
-                                                   p q r s t
-                                                   u v w x y = 
+let rec renderSquare (gs:Scene) tlx tly brx bry a b c d e
+                                                f g h i j
+                                                k l m n o
+                                                p q r s t
+                                                u v w x y = 
         let heightStep = (bry - tly) / 5.0
-        renderSquareRow scene tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) a b c d e 
-        renderSquareRow scene tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) f g h i j
-        renderSquareRow scene tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) k l m n o
-        renderSquareRow scene tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) p q r s t
-        renderSquareRow scene tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) u v w x y    
+        renderSquareRow gs tlx brx (tly + 0.0 * heightStep) (tly + 1.0 * heightStep) a b c d e 
+        renderSquareRow gs tlx brx (tly + 1.0 * heightStep) (tly + 2.0 * heightStep) f g h i j
+        renderSquareRow gs tlx brx (tly + 2.0 * heightStep) (tly + 3.0 * heightStep) k l m n o
+        renderSquareRow gs tlx brx (tly + 3.0 * heightStep) (tly + 4.0 * heightStep) p q r s t
+        renderSquareRow gs tlx brx (tly + 4.0 * heightStep) (tly + 5.0 * heightStep) u v w x y    
 
 let rec renderMazeRow (scene:Scene) tlx tly brx bry row = 
     let step = (brx - tlx) / (float <| List.length row)
@@ -518,15 +588,6 @@ let rec renderMaze(scene:Scene) tlx tly brx bry maze =
     List.iteri (fun i r -> 
       let fi = float i
       renderMazeRow scene tlx (tly + fi * step) brx (tly + (fi + 1.0) * step)  r)
-
-let rec randomMaze n =
-  match n with 
-  | n when n > 1 -> growMaze (randomMaze (n - 1))
-  | _ -> [[replace X X X
-                   o o o 
-                   X X X 
-                   (TopReq None)
-                   (LeftReq None)]]
                
 (**
 
@@ -581,7 +642,7 @@ let action() =
         button.className <- cssClass
 
         let buttonClick (b : Browser.MouseEvent) =
-          let maze = randomMaze difficulty  
+          let maze = randomMaze difficulty // Create new random maze on button click
           while(scene.children.Count > 0) do 
             scene.remove(scene.children.Item(0)) 
           initLights ()  
@@ -600,22 +661,10 @@ let action() =
     buttonContainer.appendChild(makeButton "Medium" 3 "yellowOrange") |> ignore
     buttonContainer.appendChild(makeButton "Hard" 4 "blueViolet") |> ignore
 
-    renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) 
+    renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) // New random maze on start-up
     renderer, scene, camera
 
 let renderer, scene, camera = action()
-
-(**
-
-### _**Making it** move_ ###
-
-So, as we're using the movies as an analogy, we actually ought to add some movement to the scene,
-a spinning cube is going to be much more impressive than a static one. Each frame we rotate the
-cube a little about each of its axes to make it appear to spin. The use of requestAnimationFrame
-(rather than a loop) ensures that the animation is paused if the render's target element isn't
-on screen.
-
-*)
 
 let cameraPositionZ = 2.0
 
@@ -629,4 +678,3 @@ and animate (dt:float) =
     Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 20.0) |> ignore // aim for 20 fps
 
 animate(0.0) // Start!
-

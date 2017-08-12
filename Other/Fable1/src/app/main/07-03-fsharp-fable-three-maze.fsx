@@ -699,7 +699,7 @@ let initGraphics() =
 
     buttonContainer.appendChild(makeButton "Easy" 2 "yellowGreen") |> ignore
     buttonContainer.appendChild(makeButton "Medium" 3 "yellowOrange") |> ignore
-    buttonContainer.appendChild(makeButton "Hard!" 4 "blueViolet") |> ignore
+    buttonContainer.appendChild(makeButton "Hard" 4 "blueViolet") |> ignore
 
     renderMaze scene -1.025 1.15 1.275 -1.15 (randomMaze 3) // New random maze on start-up
     renderer, scene, camera
@@ -718,3 +718,5 @@ and animate (dt:float) =
     Browser.window.setTimeout(Func<_,_> reqFrame, 1000.0 / 20.0) |> ignore // aim for 20 fps
 
 animate(0.0) // Start!
+
+Browser.console.log "maze v21"

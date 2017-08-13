@@ -16,14 +16,14 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
 <script src="/otherOutput/fable1/BlogFableThreeMazeBuild.js"></script>
 
-**I love mazes, and I wanted to try and generate them in a webpage. Trouble was, maze generation was way too complicated for my 
+My son likes mazes. He asked me for a webpage that does mazes... **Trouble is, maze generation is way too complicated for my 
 javascript skills. But I was sure I could do better in a more idiot-proof language like F#...** Fortunately, now that F# can be 
 compiled to javascript by the wonderful [Fable](http://fable.io), maze building in the browser is (just about) achievable for my 
 simple mind. The **demo above** has been _built entirely_ from the [F#](http://fsharp.org) _code in this webpage_, using 
 [Fable](http://fable.io). Graphics are courtesy of Fable's bindings to [ThreeJs](https://threejs.org). (You can also view the 
 complete code on my [GitHub repo](https://github.com/codehutch/codehutch.github.io/blob/source/Other/Fable1/src/app/main/07-03-fsharp-fable-three-maze.fsx) 
 if you prefer). As a disclaimer, nicer and shorter maze generation algorithms are available than the one described here, but this 
-one does illustrate quite a few F# concepts...
+is what I ended up with and it does illustrate quite a few F# concepts...
    
 ### _**Building** blocks_ ###
 
@@ -54,7 +54,8 @@ type Cell =
   | O // O is going to represent open space / gap / a passage.
   | I // I represents intederminate / unknown / don't care.
 
-let o = O // Sneaky trick to get syntax-highlighting to show open space better.
+let o = O // Sneaky trick to get syntax-highlighting to show the difference
+let x = X // betweeen different cell categories more noticably sometimes.
 
 (**
 
@@ -69,7 +70,7 @@ brackets etc, so I'll stick with a tuple. Although the syntax for creating a tup
 clearer (in our case of needing to represent 2-dimensional mazes) if we can omit tuple-syntax (brackets and commas) from 
 the source. What we can do is create `ss` which is a [curried function](https://fsharpforfunandprofit.com/posts/currying/)
 _that requires no commas or brackets around its arguments_ for creating a `SmallSquare`. When we are generating mazes, 
-we will want to replace a 3 x 3 `SmallSquare` with an equivalent (but more complex) _5 x 5 grid_ of Cells which we'll
+we will want to replace a 3 x 3 `SmallSquare` with an equivalent (but more complex) _5 x 5 grid_ of Cells, which we'll
 call `LargeSquare`. I've also added `ls` for creating a `LargeSquare` in a syntactically-minimal way (like `ss`).
 
 *)
@@ -115,7 +116,7 @@ square. We can achieve this pretty easily by taking each `Cell` from a `LargeSqu
 the cells as required. It's reasonably easy to see just by looking at the code how the flip or rotation
 transforms the input square's cells. Whilst we're writing utility functions, we'll also include one to
 convert the cells from a large square into F# [list](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lists) 
-form, which will be useful later. As you can see, the F# syntax for creating a list is pretty minimal.
+form, which will be useful later. As you can see, the F# syntax for creating a list is pretty neat.
 
 *)
         
@@ -163,7 +164,7 @@ as they take each cell _individually_ from a square as input, **but** we have de
 square then extracts each `Cell` from the square and then passes each `Cell` individually to the _nice-syntax_
 function. As we will need to use these adapter functions an aweful lot, we'll make them 
 [custom infix operators](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/operator-overloading) so
-that we can use them in an intuitive way (intuitive if you like that kind of thing, anyway). 
+that we can use them in an intuitive way (well, intuitive if you like that kind of thing). 
 
 *)
        
@@ -199,7 +200,7 @@ unimportance of `I` cells into account. We can also scale _equals_ and _not-equa
 LargeSqaures. To do this we convert the squares in question to Lists (via our `||>>||` adapter
 function / operator) and use the 
 [List.fold2](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/list.fold2%5B't1,'t2,'state%5D-function-%5Bfsharp%5D) 
-function to combine the results of comparing each `Cell`.
+function to compare cells from corresponding positions in each square's list and combine the results into a single bool.
 
 *)
 
@@ -239,7 +240,7 @@ To generate mazes, we need a collection of all possible maze squares. We'll appr
 generating all possible combinations of cells and then filtering out ones which aren't valid
 for some reason (such as ones that contain loops or don't have entry/exit points). To avoid 
 having to manually specify hundreds of invalid squares, we can write an `allRotationsAndFlips`
-function that takes an (invalid) square and generates all possible rotated and flipped versions
+function that takes an square and generates all possible rotated and flipped versions
 of it (the idea being that if a square is invalid in one orientation then it is invalid in all
 orientations). Our `allRotationsAndFlips` function accepts a `LargeSquare` to work on, but it
 would also be nice if it accepted individual cells that would form a square, so `all` is an
@@ -281,23 +282,23 @@ let neverValid = [ls  I I I I I
                       I o o o I
                       I I I I I  ] // A loop isn't valid
                  |.|
-                 all I I X I I 
-                     I I X I I 
-                     X X X I I 
+                 all I I x I I 
+                     I I x I I 
+                     x x x I I 
                      I I I I I 
                      I I I I I     // Small closed section isn't valid
                  |.|    
                  all I I I I I
                      I I I I I 
-                     X X X X X
+                     x x x x x
                      I I I I I 
                      I I I I I     // Medium closed section isn't valid
                  |.|
-                 [ls X X X X X
-                     X I I I X
-                     X I I I X
-                     X I I I X
-                     X X X X X  ]  // Full closed square isn't valid
+                 [ls x x x x x
+                     x I I I x
+                     x I I I x
+                     x I I I x
+                     x x x x x  ]  // Full closed square isn't valid
                  |.|
                  all X o X o X
                      I I I I I 
@@ -307,9 +308,9 @@ let neverValid = [ls  I I I I I
                  
 // In a 5x5 cell - corners and certain dividing cells are always required.
 let alwaysRequired = ls  X I X I X
-                         I O I O I
+                         I o I o I
                          X I X I X
-                         I O I O I
+                         I o I o I
                          X I X I X  // Standard structure boundary walls
 
 (**
@@ -318,14 +319,15 @@ let alwaysRequired = ls  X I X I X
 
 To actually generate all *valid* squares, we can write a [recursive](https://en.wikibooks.org/wiki/F_Sharp_Programming/Recursion)
 function (`als`) that builds all possible squares (in list form) by starting with an empty list and adding both an `X` and `O` 
-to the empty list and then (recursively) to each list that has already been generated. Rather than generate 25^2 candidate squares,
-we note that in a valid (_orthodox_) square that wall-cells must always be present in each corner, in the center and in the mid-point
+to the empty list and then (recursively) to each list that has already been generated. Rather than generate (5x5)^2 candidate squares,
+we note that in a valid (_orthodox_) square certain wall-cells must always be present in each corner, in the center and in the mid-point
 of each side. Similarly, certain cells always have to be open. This means that we only need to generate 12^2 candidates as less
 than half the cells are actually variable within a large square. The `orthodoxLS` function enforces this principal - when given
 the variable parts of a square as inputs. We build `allLargeSquares` by filtering 12^2 possible candidates and filtering out
-ones matching `neverValid` squares with undesirable characteristics. I also put the squares into a set to eliminate any duplicates,
+ones matching `neverValid` squares with undesirable characteristics. We also put the squares into a set to eliminate any duplicates,
 again this is helped by F# implementing [structural-equality](https://blogs.msdn.microsoft.com/dsyme/2009/11/08/equality-and-comparison-constraints-in-f/)
-by default.
+by default (rather than using reference equality by default - which is one of the inherent flaws in C#, Java, Javascript...
+[Kotlin](https://github.com/JetBrains/kotlin) looks better on that but not totally great either!).
 
 *)
 
@@ -354,14 +356,15 @@ let allLargeSquares =
 
 When we generate a maze, we will start off with a simple 3x3 `Cell` maze and generate an equivalent
 (in terms of ways in and out of it) 5x5 `Cell` maze. Then, after that, we'll break the 5x5 maze down
-into 4 overlapping 3x3 mazes and then generate equivalent 5x5 mazes for each 3x3 (and so on...). This
+into 4 overlapping 3x3 mazes and then generate equivalent 5x5 mazes for each 3x3 maze (and so on...). This
 means that we need to be able to judge if a 5x5 `Cell` maze is equivalent to a 3x3 `Cell` maze, which is what
 `isMatch` does for us. The other factor that comes into play is that in larger mazes, if we do the 3x3 to
-5x5 replacement left to right, top to bottom, then preceeding Squares place requirements on ones that
-come after them. For example, the left side of a square must match the right side of the preceeding 
+5x5 replacement from left to right and from top to bottom, then we must take into account that the edges of
+preceeding squares place requirements on the edges of squares that come after them (i.e. squares must match
+where they meet each other). For example, the left side of a square must match the right side of the preceeding 
 square. I've called these constraints a `SideReq`, which come in two varieties; `TopReq` and `LeftReq`.
 Additionally, if a square is on the top row or the left column of a maze, it doesn't have any constraints
-on it's sides from neighbouring squares, so requirements are an `option` (see Scott's excellent page on 
+on it's sides from neighbouring squares, so requirements are an `option` (see Scott Wlaschin's excellent page on 
 the [F# option type](https://fsharpforfunandprofit.com/posts/the-option-type/) for more details. Whilst 
 you're looking you could also check out his notes on [F# record types](https://fsharpforfunandprofit.com/posts/records/)
 which I've used to wrap up a TopReq and a LeftReq as a pair of `Reqs`). 
@@ -433,7 +436,8 @@ Each time a maze needs _growing_ a 3x3 `SmallSquare` needs replacing with an equ
 filter is to eliminate ones that don't match (i.e. aren't equivalent to) the small 3x3 square (also
 checking that the replacement meets any requirements imposed by its neighbours). It's likely that there
 will be more than one candidate replacement square, so `replace` makes a random choice to ensure that we 
-generate different mazes each time.
+generate different mazes each time. The last function in this section, `decompose` does the work of breaking
+a 5x5 `Cell` `LargeSquare` into a 2x2 arrangement of (partially overlapping) 3x3 `Cell` `SmallSquares`.
 
 *)
 
@@ -494,7 +498,7 @@ let decompose a b c d e
 ### _**Growing** mazes_ ###
 
 The below section has the final steps in this implementation of maze growing. The `replaceSquare` function takes
-a 5x5 `LargeSquare`, decomposes it into 4 overlapping 3x3 small squares, and then replaces each of those with
+a 5x5 `LargeSquare`, `decomposes` it into 4 overlapping 3x3 small squares, and then replaces each of those with
 5x5 squares. A `Maze` is defined as a list (rows) of lists of LargeSquares (each individual row also being a list
 of squares). This means that each time `growMaze` is called, it takes each row list of squares and replaces it
 with two rows, each of which is twice as long as the input row. Most of `growMaze` is concerned with extracting
@@ -508,7 +512,7 @@ randomly as many times as requested.
 *)
 
 // Replace a large square with 4 equivalent large squares, taking into account
-// requirements from neighbours that have already been similarly replaced.
+// edge requirements from neighbours that have already been similarly replaced.
 let replaceSquare sq topReqL topReqR leftReqT leftReqB =
   let (tl, tr,
        bl, br) = decompose ||>>|| sq    
@@ -519,6 +523,7 @@ let replaceSquare sq topReqL topReqR leftReqT leftReqB =
   (ntl, ntr,
    nbl, nbr)
 
+// Mazes are list of rows. Each row is a list of the LargeSquares in it.
 type Maze = LargeSquare list list
 
 // Grow a maze by one increment, i.e. replacing each LargeSquare in it with a 
@@ -532,8 +537,8 @@ let growMaze (lsll : Maze) =
       | _ ->  List.last output 
               |> List.mapi (fun i b -> i, getBottomAsTopReq ||>>|| b) 
               |> List.pairwise 
-              |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0)
-              |> List.map (fun ((i, r), (j, s)) -> (r, s))
+              |> List.filter (fun ((i, r), (j, s)) -> i % 2 = 0) // Only need half of them
+              |> List.map (fun ((i, r), (j, s)) -> (r, s)) // Keep reqs, lose numbering
     match lsll with
     | [] -> output
     | row::tail ->  // Take one row from input
@@ -546,7 +551,9 @@ let growMaze (lsll : Maze) =
         let lReqForNextUpperSquare = getRightAsLeftReq ||>>|| ntr
         let lReqForNextLowerSquare = getRightAsLeftReq ||>>|| nbr
         ((newUpperRow, newLowerRow), lReqForNextUpperSquare, lReqForNextLowerSquare)
-      // Replace current row with two rows, using above folder func    
+      // Replace current row with two rows, using above folder func to take account 
+      // of the current input row and the requirements placed on it by the preceeding
+      // new row, generating two new longer rows to replace the one current input row.
       let (newTop, newBottom), _, _ = 
         List.fold2 folder (([],[]), LeftReq None, LeftReq None) row prevRowReqs
       // Input row has been processed, move it to the output
@@ -631,13 +638,13 @@ let rec renderMaze(scene:Scene) tlx tly brx bry maze =
 
 Again I won't dwell on how the graphics setup is done (see my earlier post 
 [here](http://www.progletariat.com/blog/2017/06-22-fable-threejs-hello/index.html) for general details
-of how to initialise ThreeJs. Probably worth pointing out that as this involves interacting with a
-javascript graphics library we see lots of mutable properties being accessed (with the `<-` operator).
+of how to initialise ThreeJs). Probably worth pointing out that as this involves interacting with a
+javascript graphics library so we see lots of mutable properties being accessed (with the `<-` operator).
 Mutable state is generally avoided where possible when writing _functional_ programs, however, when
-needed F# can handle mutability, to our benefit here. We also create the _Easy_, _Medium_, _Hard_ 
-buttons in this block and attach event handlers to them so that a new maze will be generated when they
-are clicked. I use the mutibility of the camera object's properties to implement a zoom-out effect to
-add some visual interest when the maze is regenerated.
+needed F# can handle (mutability)[https://en.wikibooks.org/wiki/F_Sharp_Programming/Mutable_Data], 
+to our benefit here. We also create the _Easy_, _Medium_, _Hard_ buttons in this block and attach event 
+handlers to them so that a new maze will be generated when they are clicked. We use the mutibility of the 
+camera object's properties to implement a zoom-out effect to add some visual interest when the maze is regenerated.
 
 *)
 
@@ -719,4 +726,4 @@ and animate (dt:float) =
 
 animate(0.0) // Start!
 
-Browser.console.log "maze v21"
+Browser.console.log "maze v22"

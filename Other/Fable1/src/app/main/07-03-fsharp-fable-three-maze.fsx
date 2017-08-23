@@ -730,9 +730,9 @@ Browser.console.log "maze v22"
 
 (**
 
-### _**In** conclusion_ ###
+#### _**In** conclusion_ ####
 
-<div class="imageWrapper"><div class="imageContainer"><img src="/images/exampleMaze.png" alt="Example maze"></div></div>
+<div class="imageWrapper"><div class="imageContainer"><img src="/images/mazeExample.png" alt="Example maze"></div></div>
 
 So, the image above shows what you should have seen (if anything went wrong with the actual demo at the top of the page).
 You might have noticed that the maze generation algorithm could be better; there's only ever one path between each 

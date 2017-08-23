@@ -361,7 +361,14 @@ button:active {
 	text-indent: 4rem;
 }
 
-#graphicsWrapper {
+#graphicsContainer,
+.imageContainer {
+	margin: 0;
+	padding: 0;
+}
+
+#graphicsWrapper,
+.imageWrapper {
     text-align: center;
 	margin-top: 1em;
 }

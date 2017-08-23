@@ -727,3 +727,17 @@ and animate (dt:float) =
 animate(0.0) // Start!
 
 Browser.console.log "maze v22"
+
+(**
+
+### _**In** conclusion_ ###
+
+<div class="imageWrapper"><div class="imageContainer"><img src="/images/exampleMaze.png" alt="Example maze"></div></div>
+
+So, the image above shows what you should have seen (if anything went wrong with the actual demo at the top of the page).
+You might have noticed that the maze generation algorithm could be better; there's only ever one path between each 
+quadrant (and sub-quadrant etc...). This makes the maze easier to solve that it might otherwise be, it's a drawback of the
+kind of algorithm that I used. Don't worry, many different approaches to maze generation are available - if you can take
+some of the above but implement a different kind of maze then I'd be really interested to see the results.
+
+*)

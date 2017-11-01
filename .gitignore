@@ -8,6 +8,8 @@
 # Other tech stacks
 Other/Fable1/node_modules
 Other/Fable1/packages
+Other/Fable2/node_modules
+Other/Fable2/packages
 
 # User-specific files
 .vs

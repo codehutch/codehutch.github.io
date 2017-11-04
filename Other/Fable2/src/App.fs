@@ -4,35 +4,52 @@ open System
 open Fable.Import.Browser
 open Fable.Core
 open Fable.Core.JsInterop
-
-// Types
-type Model = CurrentTime of DateTime
-type Messages = Tick of DateTime
-
+open Fable.Helpers.React.Props
 open Elmish
 open Elmish.React
 
+// Types
+
+type Digit = 
+| D of int
+
+type Position = 
+| First | Second | Third | Forth
+
+type Model = Digit * Digit * Digit * Digit
+
+type Message = 
+| Increment of Position
+| Decrement of Position
+
+let increment (m:Digit) =
+  match m with
+  | D n when n > -1 && n < 9 -> D (n + 1)
+  | D _ -> D 0  
+
+let decrement =
+  increment >> increment >> increment >> increment >> increment >>
+  increment >> increment >> increment >> increment
+  
+let applyToPosition f ((a, b, c, d):Model) (p:Position) =
+  match p with
+  | First ->  (f a, b, c, d) 
+  | Second -> (a, f b, c, d)
+  | Third ->  (a, b, f c, d)
+  | Forth ->  (a, b, c, f d)
+
 // State
-let initialState() = CurrentTime DateTime.Now, Cmd.none
-let update (Tick next) (CurrentTime time) = CurrentTime next, Cmd.none
+let initialState () = (D 2, D 4, D 1, D 2), Cmd.none
+
+let update (msg:Message) (model:Model) = 
+  match msg with
+  | Increment pos -> applyToPosition increment model pos, Cmd.none
+  | Decrement pos -> applyToPosition decrement model pos, Cmd.none
     
-let timerTick dispatch =
-    window.setInterval(fun _ -> 
-        dispatch (Tick DateTime.Now)
-    , 1000) |> ignore
-
-
-let subscription _ = Cmd.ofSub timerTick
-
-// View
-type Time = 
-    | Hour of int
-    | Minute of int
-    | Second of int
-
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 
+(*
 let clockHand time color width length = 
     let clockPercentage = 
         match time with 
@@ -51,15 +68,23 @@ let handTop n color length fullRound =
     let handY = (50.0 + length * sin (angle - Math.PI / 2.0))
     circle [ Cx (!! (string handX)); Cy (!! (string handY)); R (!! "2"); !! ("fill", color) ] []
 
-let view (CurrentTime time) dispatch =
+*)
+module D = Fable.Helpers.React
+
+let view (a, b, c, d) dispatch =
+  D.div []
+      [ D.button [ OnClick (fun _ -> dispatch <| Decrement First) ] [ D.str "-" ]
+        D.div [] [ D.str (sprintf "%A %A %A %A" a b c d) ]
+        D.button [ OnClick (fun _ -> dispatch <| Increment First) ] [ D.str "+" ] ]
+    (*
     svg 
       [ ViewBox "0 0 100 100"; unbox ("width", "350px") ]
       [ circle 
           [ Cx (!! "50"); Cy (!! "50"); R (!! "45"); !! ("fill", "#0B79CE") ] 
           []
         // Hours
-        clockHand (Hour time.Hour) "yellow" "2" 25.0
-        handTop time.Hour "yellow" 25.0 12.0
+        clockHand (Hour time.Hour) "orange" "2" 25.0
+        handTop time.Hour "orange" 25.b, c0 12.0
         // Minutes
         clockHand (Minute time.Minute) "purple" "2" 35.0
         handTop time.Minute "purple" 35.0 60.0
@@ -71,9 +96,10 @@ let view (CurrentTime time) dispatch =
           [ Cx (!! "50"); Cy (!! "50"); R (!! "3"); !! ("fill", "#0B79CE") ; Stroke "#023963"; !! ("stroke-width", 1.0) ] 
           []
       ]
+    *)  
 
 // App
 Program.mkProgram initialState update view
-|> Program.withSubscription subscription 
+|> Program.withConsoleTrace
 |> Program.withReact "elmish-app"
 |> Program.run

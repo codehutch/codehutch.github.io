@@ -11,7 +11,7 @@ open Elmish.React
 // Types
 
 type Digit = 
-| D of int
+| Dgt of int
 
 type Position = 
 | First | Second | Third | Forth
@@ -24,8 +24,8 @@ type Message =
 
 let increment (m:Digit) =
   match m with
-  | D n when n > -1 && n < 9 -> D (n + 1)
-  | D _ -> D 0  
+  | Dgt n when n > -1 && n < 9 -> Dgt (n + 1)
+  | Dgt _ -> Dgt 0  
 
 let decrement =
   increment >> increment >> increment >> increment >> increment >>
@@ -39,7 +39,7 @@ let applyToPosition f ((a, b, c, d):Model) (p:Position) =
   | Forth ->  (a, b, c, f d)
 
 // State
-let initialState () = (D 2, D 4, D 1, D 2), Cmd.none
+let initialState () = (Dgt 2, Dgt 4, Dgt 1, Dgt 2), Cmd.none
 
 let update (msg:Message) (model:Model) = 
   match msg with
@@ -71,17 +71,26 @@ let handTop n color length fullRound =
 *)
 module D = Fable.Helpers.React
 
-let view (a, b, c, d) dispatch =
+let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
   D.div []
-      [ D.button [ OnClick (fun _ -> dispatch <| Decrement First) ] [ D.str "-" ]
+   [
+    D.div []
+      [ D.button [ OnClick (fun _ -> dispatch <| Decrement First)  ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Second) ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Third)  ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Forth)  ] [ D.str "-" ]
         D.div [] [ D.str (sprintf "%A %A %A %A" a b c d) ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment First) ] [ D.str "+" ] ]
-    (*
+        D.button [ OnClick (fun _ -> dispatch <| Increment First)  ] [ D.str "+" ]
+        D.button [ OnClick (fun _ -> dispatch <| Increment Second) ] [ D.str "+" ]
+        D.button [ OnClick (fun _ -> dispatch <| Increment Third)  ] [ D.str "+" ]
+        D.button [ OnClick (fun _ -> dispatch <| Increment Forth)  ] [ D.str "+" ] ]
+    
     svg 
       [ ViewBox "0 0 100 100"; unbox ("width", "350px") ]
       [ circle 
           [ Cx (!! "50"); Cy (!! "50"); R (!! "45"); !! ("fill", "#0B79CE") ] 
           []
+        (*  
         // Hours
         clockHand (Hour time.Hour) "orange" "2" 25.0
         handTop time.Hour "orange" 25.b, c0 12.0
@@ -91,12 +100,13 @@ let view (a, b, c, d) dispatch =
         // Seconds
         clockHand (Second time.Second) "#023963" "1" 40.0 
         handTop time.Second "#023963" 40.0 60.0
+        *)
         // circle in the center
         circle 
           [ Cx (!! "50"); Cy (!! "50"); R (!! "3"); !! ("fill", "#0B79CE") ; Stroke "#023963"; !! ("stroke-width", 1.0) ] 
           []
       ]
-    *)  
+   ]  
 
 // App
 Program.mkProgram initialState update view

@@ -8,6 +8,8 @@ open Fable.Helpers.React.Props
 open Elmish
 open Elmish.React
 
+open AirfoilF.Core
+
 // Types
 
 type Digit = 
@@ -69,9 +71,24 @@ let handTop n color length fullRound =
     circle [ Cx (!! (string handX)); Cy (!! (string handY)); R (!! "2"); !! ("fill", color) ] []
 
 *)
+
+let example2412 = myNaca2412
+
 module D = Fable.Helpers.React
 
 let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
+  let m = (float a) / 100.0
+  let p = (float b) / 10.0
+  let tt = ((float c) * 10.0 + (float d)) / 100.0
+  let coords = naca4 100 m p tt
+  let pairs = List.pairwise coords
+  let makeLine x1 y1 x2 y2 = line 
+                               [ X1 (!! (string x1)); Y1 (!! (string (y1 * -1.0))); 
+                                 X2 (!! (string x2)); Y2 (!! (string (y2 * -1.0))); 
+                                 Stroke "orange"; !! ("stroke-width", string 0.01) ] 
+                               []
+  let lines = pairs 
+              |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2)                             
   D.div []
    [
     D.div []
@@ -83,29 +100,19 @@ let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
         D.button [ OnClick (fun _ -> dispatch <| Increment First)  ] [ D.str "+" ]
         D.button [ OnClick (fun _ -> dispatch <| Increment Second) ] [ D.str "+" ]
         D.button [ OnClick (fun _ -> dispatch <| Increment Third)  ] [ D.str "+" ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment Forth)  ] [ D.str "+" ] ]
+        D.button [ OnClick (fun _ -> dispatch <| Increment Forth)  ] [ D.str "+" ]
+        //D.div [] [ D.str (sprintf "%A" coords) ] 
+      ]
     
     svg 
-      [ ViewBox "0 0 100 100"; unbox ("width", "350px") ]
-      [ circle 
-          [ Cx (!! "50"); Cy (!! "50"); R (!! "45"); !! ("fill", "#0B79CE") ] 
-          []
-        (*  
-        // Hours
-        clockHand (Hour time.Hour) "orange" "2" 25.0
-        handTop time.Hour "orange" 25.b, c0 12.0
-        // Minutes
-        clockHand (Minute time.Minute) "purple" "2" 35.0
-        handTop time.Minute "purple" 35.0 60.0
-        // Seconds
-        clockHand (Second time.Second) "#023963" "1" 40.0 
-        handTop time.Second "#023963" 40.0 60.0
-        *)
+      [ ViewBox "-0.1 -0.6 1.2 1.2"; unbox ("width", "350px") ]
+      lines 
+
         // circle in the center
-        circle 
-          [ Cx (!! "50"); Cy (!! "50"); R (!! "3"); !! ("fill", "#0B79CE") ; Stroke "#023963"; !! ("stroke-width", 1.0) ] 
-          []
-      ]
+        //circle 
+        //  [ Cx (!! "50"); Cy (!! "50"); R (!! "3"); !! ("fill", "#0B79CE") ; Stroke "#023963"; !! ("stroke-width", 1.0) ] 
+        //  []
+      
    ]  
 
 // App

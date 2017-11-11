@@ -10,4 +10,6 @@ nuget Fable.Elmish.React
 nuget Fable.Elmish.Browser
 nuget Fable.Elmish.Debugger
 
+github codehutch/fairfoil Sample.fs
+
 clitool dotnet-fable

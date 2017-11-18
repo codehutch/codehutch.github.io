@@ -85,27 +85,28 @@ let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
   let makeLine x1 y1 x2 y2 = line 
                                [ X1 (!! (string x1)); Y1 (!! (string (y1 * -1.0))); 
                                  X2 (!! (string x2)); Y2 (!! (string (y2 * -1.0))); 
-                                 Stroke "orange"; !! ("stroke-width", string 0.01) ] 
+                                 Stroke "orange"; !! ("stroke-width", string 0.005) ] 
                                []
-  let lines = pairs 
-              |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2)                             
+  let lines = (pairs |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2))
+              //needs end! @ [makeLine List.first pairs]
+                                           
   D.div []
    [
     D.div []
-      [ D.button [ OnClick (fun _ -> dispatch <| Decrement First)  ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Second) ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Third)  ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Forth)  ] [ D.str "-" ]
-        D.div [] [ D.str (sprintf "%A %A %A %A" a b c d) ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment First)  ] [ D.str "+" ]
+      [ D.button [ OnClick (fun _ -> dispatch <| Increment First)  ] [ D.str "+" ]
         D.button [ OnClick (fun _ -> dispatch <| Increment Second) ] [ D.str "+" ]
         D.button [ OnClick (fun _ -> dispatch <| Increment Third)  ] [ D.str "+" ]
         D.button [ OnClick (fun _ -> dispatch <| Increment Forth)  ] [ D.str "+" ]
+        D.div [] [ D.str (sprintf "%A %A %A %A 2303" a b c d) ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement First)  ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Second) ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Third)  ] [ D.str "-" ]
+        D.button [ OnClick (fun _ -> dispatch <| Decrement Forth)  ] [ D.str "-" ]        
         //D.div [] [ D.str (sprintf "%A" coords) ] 
       ]
     
     svg 
-      [ ViewBox "-0.1 -0.6 1.2 1.2"; unbox ("width", "350px") ]
+      [ ViewBox "-0.1 -0.6 1.2 1.2"; unbox ("width", "50%") ]
       lines 
 
         // circle in the center

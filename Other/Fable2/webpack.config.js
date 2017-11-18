@@ -23,7 +23,7 @@ console.log("Bundling for " + (isProduction ? "production" : "development") + ".
 
 module.exports = {
 //  devtool: "source-map",
-  entry: resolve('./src/Elmofoil.fsproj'),
+  entry: resolve('./srcElmofoil/Elmofoil.fsproj'),
   output: {
     filename: 'bundle.js',
     path: resolve('./public'),

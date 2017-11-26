@@ -1,15 +1,15 @@
 (*@
     Layout = "post";
-    Title = "Fable / Three.js  - Hello Cube";
-    Date = "2017-06-22T07:19:37";
-    Tags = "fsharp threejs fable hello cube functional";
-    Description = "Showcasing Fable's power with a spinning cube";
+    Title = "F# / Fable / Elmish / SVG - Fairfoil";
+    Date = "2017-12-22T07:19:37";
+    Tags = "fsharp fable f# svg airfoil naca fairfoil functional";
+    Description = "";
 *)
 (*** more ***)
 (**
 
-** F#, _Elmish_, SVG **
----------------------------------
+** F#, _Elmish_, SVG - Airfoils! **
+-----------------------------------
 
 <script src="https://cdn.polyfill.io/v2/polyfill.js?features=default,fetch"></script>
 <script src="/otherOutput/fable2/elmofoil.js"></script>
@@ -36,7 +36,7 @@ size of the graphics canvas.
 
 *)
 
-// Comment out the below two lines if you are writing a .fs (compiled)
+// Comment out the below six lines if you are writing a .fs (compiled)
 // file rather than a .fsx (script) file
 #r "/home/hutch/.nuget/packages/fable.core/1.2.4/lib/netstandard1.6/Fable.Core.dll"
 #r "/home/hutch/.nuget/packages/fable.elmish/1.0.0/lib/netstandard1.6/Fable.Elmish.dll"
@@ -63,14 +63,22 @@ open AirfoilF.Core
 type Digit = 
 | Dgt of int
 
-type Position = 
+type DigitPosition = 
 | First | Second | Third | Forth
 
-type Model = Digit * Digit * Digit * Digit
+type NacaNum = Digit * Digit * Digit * Digit
+
+type AirfoilColour = string
+type AirfoilSpecifier = NacaNum * AirfoilColour 
+
+type Model = AirfoilSpecifier * AirfoilSpecifier 
+type SubModelIndicator = 
+| A
+| B
 
 type Message = 
-| Increment of Position
-| Decrement of Position
+| Increment of SubModelIndicator * DigitPosition
+| Decrement of SubModelIndicator * DigitPosition
 
 let increment (m:Digit) =
   match m with
@@ -81,21 +89,28 @@ let decrement =
   increment >> increment >> increment >> increment >> increment >>
   increment >> increment >> increment >> increment
   
-let applyToPosition f ((a, b, c, d):Model) (p:Position) =
+let applyToPosition f ((a, b, c, d):NacaNum, col) (p:DigitPosition) =
   match p with
-  | First ->  (f a, b, c, d) 
-  | Second -> (a, f b, c, d)
-  | Third ->  (a, b, f c, d)
-  | Forth ->  (a, b, c, f d)
+  | First ->  (f a, b, c, d), col 
+  | Second -> (a, f b, c, d), col
+  | Third ->  (a, b, f c, d), col
+  | Forth ->  (a, b, c, f d), col
 
 // State
-let initialState () = (Dgt 3, Dgt 4, Dgt 1, Dgt 2), Cmd.none
+let initialState () = (((Dgt 2, Dgt 4, Dgt 1, Dgt 2), "orange"),
+                       ((Dgt 2, Dgt 4, Dgt 1, Dgt 2), "purple")), Cmd.none
 
-let update (msg:Message) (model:Model) = 
+let update (msg:Message) ((a, b):Model) = 
   match msg with
-  | Increment pos -> applyToPosition increment model pos, Cmd.none
-  | Decrement pos -> applyToPosition decrement model pos, Cmd.none
-    
+  | Increment (m, pos) ->
+      match m with 
+      | A ->  (applyToPosition increment a pos, b), Cmd.none
+      | B ->  (a, applyToPosition increment b pos), Cmd.none
+  | Decrement (m, pos) -> 
+      match m with 
+      | A -> (applyToPosition decrement a pos, b), Cmd.none
+      | B -> (a, applyToPosition decrement b pos), Cmd.none    
+
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 
@@ -103,7 +118,7 @@ let example2412 = myNaca2412
 
 module D = Fable.Helpers.React
 
-let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
+let makeLines a b c d col =
   let m = (float a) / 100.0
   let p = (float b) / 10.0
   let tt = ((float c) * 10.0 + (float d)) / 100.0
@@ -112,49 +127,45 @@ let view (Dgt a, Dgt b, Dgt c, Dgt d) dispatch =
   let makeLine x1 y1 x2 y2 = line 
                                [ X1 (!! (string x1)); Y1 (!! (string (y1 * -1.0))); 
                                  X2 (!! (string x2)); Y2 (!! (string (y2 * -1.0))); 
-                                 Stroke "orange"; !! ("stroke-width", string 0.005) ] 
+                                 Stroke col; !! ("stroke-width", string 0.005) ] 
                                []
-  let lines = (pairs |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2))
-              //needs end! append [makeLine List.first pairs]
+  pairs |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2)
+  //needs end! append [makeLine List.first pairs]
+                                           
+let view (afa, afb) dispatch = 
+
+  let (Dgt a, Dgt b, Dgt c, Dgt d), colA = afa 
+  let (Dgt e, Dgt f, Dgt g, Dgt h), colB = afb 
+
+  let linesA = makeLines a b c d colA
+  let linesB = makeLines e f g h colB
 
   let digitButtons v p =
     D.div [ Style [ Display "inline-block" ] ]
       [ D.button [ OnClick (fun _ -> dispatch <| Increment p)  ] [ D.str "+" ] 
         D.div [ Style [ TextAlign "center" ] ] [ D.str (sprintf "%d" v) ]
         D.button [ OnClick (fun _ -> dispatch <| Decrement p)  ] [ D.str "-" ] ]             
-                                           
+
   D.div []
-    [ digitButtons a First
-      digitButtons b Second
-      digitButtons c Third
-      digitButtons d Forth
-           
+    [ D.div []
+        [ D.div [ Style [ Display "inline-block" ] ]
+            [ digitButtons a (A, First)
+              digitButtons b (A, Second)
+              digitButtons c (A, Third)
+              digitButtons d (A, Forth) ]
+
+          D.div [ Style [ Display "inline-block" ] ]
+            [ digitButtons e (B, First)
+              digitButtons f (B, Second)
+              digitButtons g (B, Third)
+              digitButtons h (B, Forth) ]
+        ]
+
       svg 
         [ ViewBox "-0.1 -0.6 1.2 1.2"; unbox ("width", "40%") ]
-        lines 
+        (List.append linesA linesB)  
 
-    (* 
-    D.div []
-      [ D.button [ OnClick (fun _ -> dispatch <| Increment First)  ] [ D.str "+" ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment Second) ] [ D.str "+" ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment Third)  ] [ D.str "+" ]
-        D.button [ OnClick (fun _ -> dispatch <| Increment Forth)  ] [ D.str "+" ]
-        D.div [] [ D.str (sprintf "%A %A %A %A" a b c d) ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement First)  ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Second) ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Third)  ] [ D.str "-" ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement Forth)  ] [ D.str "-" ]        
-      ]
-    *)
-
-        // circle in the center
-        //circle 
-        //  [ Cx (!! "50"); Cy (!! "50"); R (!! "3"); !! ("fill", "#0B79CE") ; Stroke "#023963"; !! ("stroke-width", 1.0) ] 
-        //  []
-      
-   ]  
-
-
+    ]
 (**
 
 ### _**Making it** move_ ###

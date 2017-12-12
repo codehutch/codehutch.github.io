@@ -378,6 +378,12 @@ button:active {
 	padding: 0;
 }
 
+.controls,
+.controls div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 .buttonContainer {
     width: 100%;
 	padding: 0;

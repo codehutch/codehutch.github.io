@@ -1,7 +1,7 @@
 (*@
     Layout = "post";
     Title = "F# / Fable / Elmish / SVG - Fairfoil";
-    Date = "2017-12-22T07:19:37";
+    Date = "2017-12-12T07:19:37";
     Tags = "fsharp fable f# svg airfoil naca fairfoil functional";
     Description = "";
 *)
@@ -71,7 +71,14 @@ type NacaNum = Digit * Digit * Digit * Digit
 type AirfoilColour = string
 type AirfoilSpecifier = NacaNum * AirfoilColour 
 
-type Model = AirfoilSpecifier * AirfoilSpecifier 
+type InterpolationDirection = 
+| Up
+| Down
+
+type InterpolationFactor = float
+
+type Model = AirfoilSpecifier * AirfoilSpecifier * InterpolationDirection * InterpolationFactor
+
 type SubModelIndicator = 
 | A
 | B
@@ -79,6 +86,7 @@ type SubModelIndicator =
 type Message = 
 | Increment of SubModelIndicator * DigitPosition
 | Decrement of SubModelIndicator * DigitPosition
+| Tick
 
 let increment (m:Digit) =
   match m with
@@ -97,19 +105,36 @@ let applyToPosition f ((a, b, c, d):NacaNum, col) (p:DigitPosition) =
   | Forth ->  (a, b, c, f d), col
 
 // State
-let initialState () = (((Dgt 2, Dgt 4, Dgt 1, Dgt 2), "orange"),
-                       ((Dgt 2, Dgt 4, Dgt 1, Dgt 2), "purple")), Cmd.none
+let initialState () = (((Dgt 1, Dgt 4, Dgt 1, Dgt 2), "orange"),
+                       ((Dgt 9, Dgt 1, Dgt 9, Dgt 2), "purple"),
+                       Up, 0.0), Cmd.none
 
-let update (msg:Message) ((a, b):Model) = 
+let update (msg:Message) ((a, b, inpDir, inpFac):Model) = 
   match msg with
   | Increment (m, pos) ->
       match m with 
-      | A ->  (applyToPosition increment a pos, b), Cmd.none
-      | B ->  (a, applyToPosition increment b pos), Cmd.none
+      | A ->  (applyToPosition increment a pos, b, inpDir, inpFac), Cmd.none
+      | B ->  (a, applyToPosition increment b pos, inpDir, inpFac), Cmd.none
   | Decrement (m, pos) -> 
       match m with 
-      | A -> (applyToPosition decrement a pos, b), Cmd.none
-      | B -> (a, applyToPosition decrement b pos), Cmd.none    
+      | A -> (applyToPosition decrement a pos, b, inpDir, inpFac), Cmd.none
+      | B -> (a, applyToPosition decrement b pos, inpDir, inpFac), Cmd.none
+  | Tick ->
+      let (Dgt aa, Dgt bb, Dgt cc, Dgt dd), colA = a 
+      let (Dgt ee, Dgt ff, Dgt gg, Dgt hh), colB = b 
+      (a, 
+       b, 
+       (if inpDir = Up && inpFac > 1.0 then Down 
+        elif inpDir = Down && inpFac < 0.0 then Up
+        else inpDir),
+       if inpDir = Up then inpFac + 0.025 else inpFac - 0.025), Cmd.none       
+
+let timerTick dispatch =
+    window.setInterval(fun _ -> 
+        dispatch Tick
+    , 50) |> ignore
+
+let subscription _ = Cmd.ofSub timerTick    
 
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
@@ -119,9 +144,9 @@ let example2412 = myNaca2412
 module D = Fable.Helpers.React
 
 let makeLines a b c d col =
-  let m = (float a) / 100.0
-  let p = (float b) / 10.0
-  let tt = ((float c) * 10.0 + (float d)) / 100.0
+  let m = a / 100.0
+  let p = b / 10.0
+  let tt = (c * 10.0 + d) / 100.0
   let coords = naca4 100 m p tt
   let pairs = List.pairwise coords
   let makeLine x1 y1 x2 y2 = line 
@@ -131,14 +156,22 @@ let makeLines a b c d col =
                                []
   pairs |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2)
   //needs end! append [makeLine List.first pairs]
-                                           
-let view (afa, afb) dispatch = 
+let makeLinesInt a b c d =
+  makeLines (float a) (float b) (float c) (float d)                    
+let view (afa, afb, inpDir, inpFac) dispatch = 
 
   let (Dgt a, Dgt b, Dgt c, Dgt d), colA = afa 
   let (Dgt e, Dgt f, Dgt g, Dgt h), colB = afb 
 
-  let linesA = makeLines a b c d colA
-  let linesB = makeLines e f g h colB
+  let linesA = makeLinesInt a b c d colA
+  let linesB = makeLinesInt e f g h colB
+
+  let i = (double a) + ((double (e - a)) * inpFac) 
+  let j = (double b) + ((double (f - b)) * inpFac) 
+  let k = (double c) + ((double (g - c)) * inpFac) 
+  let l = (double d) + ((double (h - d)) * inpFac)
+
+  let linesC = makeLines i j k l "green"
 
   let digitButtons v p =
     D.div [ Style [ Display "inline-block" ] ]
@@ -146,15 +179,17 @@ let view (afa, afb) dispatch =
         D.div [ Style [ TextAlign "center" ] ] [ D.str (sprintf "%d" v) ]
         D.button [ OnClick (fun _ -> dispatch <| Decrement p)  ] [ D.str "-" ] ]             
 
-  D.div []
-    [ D.div []
-        [ D.div [ Style [ Display "inline-block" ] ]
+  D.div [ Id "graphicsWrapper" ]
+    [ D.div [ Id "graphicsContainer" ]
+        [ D.div [ Style [ Display "inline-block" ]
+                  ClassName "controls" ]
             [ digitButtons a (A, First)
               digitButtons b (A, Second)
               digitButtons c (A, Third)
               digitButtons d (A, Forth) ]
 
-          D.div [ Style [ Display "inline-block" ] ]
+          D.div [ Style [ Display "inline-block" ]
+                  ClassName "controls" ]
             [ digitButtons e (B, First)
               digitButtons f (B, Second)
               digitButtons g (B, Third)
@@ -162,8 +197,8 @@ let view (afa, afb) dispatch =
         ]
 
       svg 
-        [ ViewBox "-0.1 -0.6 1.2 1.2"; unbox ("width", "40%") ]
-        (List.append linesA linesB)  
+        [ ViewBox "-0.15 -0.65 1.3 1.3"; unbox ("width", "40%") ]
+        (List.append (List.append linesA linesB) linesC)  
 
     ]
 (**
@@ -179,6 +214,7 @@ on screen.
 *)   
 
 Program.mkProgram initialState update view
-|> Program.withConsoleTrace
+|> Program.withSubscription subscription 
+//|> Program.withConsoleTrace
 |> Program.withReact "elmish-app"
 |> Program.run

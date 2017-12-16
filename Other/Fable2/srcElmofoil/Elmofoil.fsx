@@ -105,8 +105,8 @@ let applyToPosition f ((a, b, c, d):NacaNum, col) (p:DigitPosition) =
   | Forth ->  (a, b, c, f d), col
 
 // State
-let initialState () = (((Dgt 1, Dgt 4, Dgt 1, Dgt 2), "orange"),
-                       ((Dgt 9, Dgt 1, Dgt 9, Dgt 2), "purple"),
+let initialState () = (((Dgt 1, Dgt 4, Dgt 1, Dgt 2), "rgb(204, 223, 80)"),
+                       ((Dgt 9, Dgt 1, Dgt 9, Dgt 2), "rgb(50, 157, 202)"),
                        Up, 0.0), Cmd.none
 
 let update (msg:Message) ((a, b, inpDir, inpFac):Model) = 
@@ -156,8 +156,10 @@ let makeLines a b c d col =
                                []
   pairs |> List.map (fun ((x1, y1),(x2, y2)) -> makeLine x1 y1 x2 y2)
   //needs end! append [makeLine List.first pairs]
+
 let makeLinesInt a b c d =
-  makeLines (float a) (float b) (float c) (float d)                    
+  makeLines (float a) (float b) (float c) (float d)        
+
 let view (afa, afb, inpDir, inpFac) dispatch = 
 
   let (Dgt a, Dgt b, Dgt c, Dgt d), colA = afa 
@@ -171,29 +173,29 @@ let view (afa, afb, inpDir, inpFac) dispatch =
   let k = (double c) + ((double (g - c)) * inpFac) 
   let l = (double d) + ((double (h - d)) * inpFac)
 
-  let linesC = makeLines i j k l "green"
+  let linesC = makeLines i j k l "rgb(235, 189, 49);"
 
-  let digitButtons v p =
+  let digitButtons v p colourClass =
     D.div [ Style [ Display "inline-block" ] ]
-      [ D.button [ OnClick (fun _ -> dispatch <| Increment p)  ] [ D.str "+" ] 
+      [ D.button [ OnClick (fun _ -> dispatch <| Increment p); ClassName colourClass ] [ D.str "+" ] 
         D.div [ Style [ TextAlign "center" ] ] [ D.str (sprintf "%d" v) ]
-        D.button [ OnClick (fun _ -> dispatch <| Decrement p)  ] [ D.str "-" ] ]             
+        D.button [ OnClick (fun _ -> dispatch <| Decrement p); ClassName colourClass  ] [ D.str "-" ] ]             
 
   D.div [ Id "graphicsWrapper" ]
     [ D.div [ Id "graphicsContainer" ]
         [ D.div [ Style [ Display "inline-block" ]
                   ClassName "controls" ]
-            [ digitButtons a (A, First)
-              digitButtons b (A, Second)
-              digitButtons c (A, Third)
-              digitButtons d (A, Forth) ]
+            [ digitButtons a (A, First)  "yellowGreen"
+              digitButtons b (A, Second) "yellowGreen"
+              digitButtons c (A, Third)  "yellowGreen"
+              digitButtons d (A, Forth)  "yellowGreen" ]
 
           D.div [ Style [ Display "inline-block" ]
                   ClassName "controls" ]
-            [ digitButtons e (B, First)
-              digitButtons f (B, Second)
-              digitButtons g (B, Third)
-              digitButtons h (B, Forth) ]
+            [ digitButtons e (B, First)  "blueGreen"
+              digitButtons f (B, Second) "blueGreen"
+              digitButtons g (B, Third)  "blueGreen"
+              digitButtons h (B, Forth)  "blueGreen" ]
         ]
 
       svg 

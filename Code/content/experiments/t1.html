@@ -14,6 +14,12 @@ svg {
   position: absolute;
 }
 
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -22,7 +28,10 @@ svg {
 var width = self.frameElement ? 960 : innerWidth,
     height = self.frameElement ? 500 : innerHeight;
 
-var data = d3.range(20).map(function() { return [Math.random() * width, Math.random() * height]; });
+var data = d3.range(5).map(function() { return [Math.random() * width, Math.random() * height]; });
+
+var line = d3.svg.line();
+line.interpolate("cardinal-closed");
 
 var color = d3.scale.category10();
 
@@ -32,19 +41,24 @@ var drag = d3.behavior.drag()
     .on("drag", dragged)
     .on("dragend", dragended);
 
-d3.select("body")
-    .on("touchstart", nozoom)
-    .on("touchmove", nozoom)
-  .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  .selectAll("circle")
+var svg = d3.select("body")
+    		.on("touchstart", nozoom)
+    		.on("touchmove", nozoom)
+  		.append("svg")
+    			.attr("width", width)
+    			.attr("height", height);
+
+svg.selectAll("circle")
     .data(data)
   .enter().append("circle")
     .attr("transform", function(d) { return "translate(" + d + ")"; })
     .attr("r", 32)
     .style("fill", function(d, i) { return color(i); })
     .call(drag);
+
+svg.append("path")
+    .datum(data)
+    .attr("class", "line");
 
 function dragstarted() {
   this.parentNode.appendChild(this);
@@ -61,6 +75,7 @@ function dragged(d) {
 
   d3.select(this)
       .attr("transform", "translate(" + d + ")");
+  svg.select("path").attr("d", line);
 }
 
 function dragended() {

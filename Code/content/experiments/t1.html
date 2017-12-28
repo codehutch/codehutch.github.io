@@ -28,7 +28,7 @@ svg {
 var width = self.frameElement ? 960 : innerWidth,
     height = self.frameElement ? 500 : innerHeight;
 
-var data = d3.range(5).map(function() { return [Math.random() * width, Math.random() * height]; });
+var data = d3.range(8).map(function() { return [Math.random() * width, Math.random() * height]; });
 
 var line = d3.svg.line();
 line.interpolate("cardinal-closed");

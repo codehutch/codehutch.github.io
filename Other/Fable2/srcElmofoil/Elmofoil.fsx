@@ -1,7 +1,7 @@
 (*@
     Layout = "post";
     Title = "F# / Fable / Elmish / SVG - Fairfoil";
-    Date = "2017-12-12T07:19:37";
+    Date = "2917-12-12T07:19:37";
     Tags = "fsharp fable f# svg airfoil naca fairfoil functional";
     Description = "";
 *)

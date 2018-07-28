@@ -1,0 +1,847 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>F#nctional F#n</title>
+    <meta name="description" content="F#nctional F#n">
+    <meta name="author" content="Andy Hutchinson">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="//code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="//code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css" id="theme">
+    <link type="text/css" rel="stylesheet" href="fsharp.formatting/styles/style.css" />
+    <link type="text/css" rel="stylesheet" href="fsharp.formatting/styles/deedle.css" />
+    <link type="text/css" rel="stylesheet" href="css/custom.css" />
+    <script src="fsharp.formatting/styles/tips.js" type="text/javascript"></script>
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/fsreveal.css">
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://"+window.location.host+"/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+</head>
+<body>
+    <div class="reveal">
+        <div class="tip" id="fs1">union case Shape.Circle: radius: double -&gt; Shape</div>
+<div class="tip" id="fs2">Multiple items<br />val double : value:&#39;T -&gt; double (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.double<br /><br />--------------------<br />type double = System.Double<br /><br />Full name: Microsoft.FSharp.Core.double</div>
+<div class="tip" id="fs3">union case Shape.Square: side: double -&gt; Shape</div>
+<div class="tip" id="fs4">union case Shape.Rectangle: width: double * height: double -&gt; Shape</div>
+<div class="tip" id="fs5">union case Shape.Triangle: baseLength: double * perpHeight: double -&gt; Shape</div>
+<div class="tip" id="fs6">val perimeter : s:Shape -&gt; float<br /><br />Full name: Index.perimeter</div>
+<div class="tip" id="fs7">val s : Shape</div>
+<div class="tip" id="fs8">val r : double</div>
+<div class="tip" id="fs9">namespace System</div>
+<div class="tip" id="fs10">type Math =<br />&#160;&#160;static val PI : float<br />&#160;&#160;static val E : float<br />&#160;&#160;static member Abs : value:sbyte -&gt; sbyte + 6 overloads<br />&#160;&#160;static member Acos : d:float -&gt; float<br />&#160;&#160;static member Asin : d:float -&gt; float<br />&#160;&#160;static member Atan : d:float -&gt; float<br />&#160;&#160;static member Atan2 : y:float * x:float -&gt; float<br />&#160;&#160;static member BigMul : a:int * b:int -&gt; int64<br />&#160;&#160;static member Ceiling : d:decimal -&gt; decimal + 1 overload<br />&#160;&#160;static member Cos : d:float -&gt; float<br />&#160;&#160;...<br /><br />Full name: System.Math</div>
+<div class="tip" id="fs11">field System.Math.PI = 3.14159265359</div>
+<div class="tip" id="fs12">val w : double</div>
+<div class="tip" id="fs13">val h : double</div>
+<div class="tip" id="fs14">val l : double</div>
+<div class="tip" id="fs15">val b : double</div>
+<div class="tip" id="fs16">System.Math.Sqrt(d: float) : float</div>
+<div class="tip" id="fs17">val area : s:Shape -&gt; float<br /><br />Full name: Index.area</div>
+<div class="tip" id="fs18">val a : float<br /><br />Full name: Index.a</div>
+<div class="tip" id="fs19">val ce : bool<br /><br />Full name: Index.ce</div>
+<div class="tip" id="fs20">val multiply : a:int -&gt; b:int -&gt; int<br /><br />Full name: Index.multiply</div>
+<div class="tip" id="fs21">val a : int</div>
+<div class="tip" id="fs22">val b : int</div>
+<div class="tip" id="fs23">val multiplyBy2 : (int -&gt; int)<br /><br />Full name: Index.multiplyBy2</div>
+<div class="tip" id="fs24">val multiplyBy4 : (int -&gt; int)<br /><br />Full name: Index.multiplyBy4</div>
+<div class="tip" id="fs25">val r : int<br /><br />Full name: Index.r</div>
+<div class="tip" id="fs26">val result : int list<br /><br />Full name: Index.result</div>
+<div class="tip" id="fs27">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs28">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list<br /><br />Full name: Microsoft.FSharp.Collections.List.map</div>
+<div class="tip" id="fs29">val filter : predicate:(&#39;T -&gt; bool) -&gt; list:&#39;T list -&gt; &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List.filter</div>
+<div class="tip" id="fs30">val factorial : _arg1:int -&gt; int<br /><br />Full name: Index.factorial</div>
+<div class="tip" id="fs31">val n : int</div>
+<div class="tip" id="fs32">val factorialB : n:int -&gt; int<br /><br />Full name: Index.factorialB</div>
+<div class="tip" id="fs33">val reduce : reduction:(&#39;T -&gt; &#39;T -&gt; &#39;T) -&gt; list:&#39;T list -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.List.reduce</div>
+<div class="tip" id="fs34">val fb : int<br /><br />Full name: Index.fb</div>
+<div class="tip" id="fs35">val newState : oldState:&#39;a -&gt; event:&#39;b -&gt; unit<br /><br />Full name: Index.newState</div>
+<div class="tip" id="fs36">val oldState : &#39;a</div>
+<div class="tip" id="fs37">val event : &#39;b</div>
+<div class="tip" id="fs38">val t : Shape<br /><br />Full name: Index.t</div>
+<div class="tip" id="fs39">val triangleArea : float<br /><br />Full name: Index.triangleArea</div>
+<div class="tip" id="fs40">val maybeCalculateArea : s:Shape option -&gt; float<br /><br />Full name: Index.maybeCalculateArea</div>
+<div class="tip" id="fs41">val s : Shape option</div>
+<div class="tip" id="fs42">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs43">val shape : Shape</div>
+<div class="tip" id="fs44">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs45">val someTriangle : Shape option<br /><br />Full name: Index.someTriangle</div>
+<div class="tip" id="fs46">val noTriange : &#39;a option<br /><br />Full name: Index.noTriange</div>
+<div class="tip" id="fs47">val areaSomeTriangle : float<br /><br />Full name: Index.areaSomeTriangle</div>
+<div class="tip" id="fs48">val areaNoTriangle : float<br /><br />Full name: Index.areaNoTriangle</div>
+<div class="tip" id="fs49">type Result&lt;&#39;TSuccess,&#39;TFailure&gt; =<br />&#160;&#160;| Success of &#39;TSuccess<br />&#160;&#160;| Failure of &#39;TFailure<br /><br />Full name: Index.Result&lt;_,_&gt;</div>
+<div class="tip" id="fs50">union case Result.Success: &#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TFailure&gt;</div>
+<div class="tip" id="fs51">Multiple items<br />union case Result.Failure: &#39;TFailure -&gt; Result&lt;&#39;TSuccess,&#39;TFailure&gt;<br /><br />--------------------<br />active recognizer Failure: exn -&gt; string option<br /><br />Full name: Microsoft.FSharp.Core.Operators.( |Failure|_| )</div>
+<div class="tip" id="fs52">val f : (&#39;a -&gt; Result&lt;&#39;b,&#39;c&gt;)</div>
+<div class="tip" id="fs53">val g : (&#39;b -&gt; Result&lt;&#39;d,&#39;c&gt;)</div>
+<div class="tip" id="fs54">val a : &#39;a</div>
+<div class="tip" id="fs55">val s : &#39;b</div>
+<div class="tip" id="fs56">union case Result.Failure: &#39;TFailure -&gt; Result&lt;&#39;TSuccess,&#39;TFailure&gt;</div>
+<div class="tip" id="fs57">val f : &#39;c</div>
+<div class="tip" id="fs58">val processWebRequest : (obj -&gt; Result&lt;obj,obj&gt;)<br /><br />Full name: Index.processWebRequest</div>
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            <section >
+<img src="images/fsharp512.png" style="background: transparent; border-style: none;"  width="512" />
+<h1>F#</h1>
+</section>
+<section >
+<h1>F#</h1>
+<br />
+<br />
+<h2>Welcome to the Functional Programming Appreciation Society</h2>
+<br />
+<br />
+<p>Andy Hutchinson</p>
+</section>
+<section >
+<section >
+<h2>F#n Quiz</h2>
+<p>...</p>
+</section>
+<section >
+<img src="images/ferrari.jpg" style="background: transparent; border-style: none;"  width="800" />
+<h3>Name that car...</h3>
+</section>
+<section >
+<img src="images/f-16.jpg" style="background: transparent; border-style: none;"  width="800" />
+<h3>Name the plane...</h3>
+</section>
+<section >
+<img src="images/florence.jpg" style="background: transparent; border-style: none;"  width="800" />
+<h3>Name that place...</h3>
+</section>
+<section >
+<img src="images/flashgordon.jpg" style="background: transparent; border-style: none;"  width="800" />
+<h3>Name the superhero...</h3>
+</section>
+<section >
+<img src="images/foofighters.jpg" style="background: transparent; border-style: none;"  width="800" />
+<h3>Name the band...</h3>
+</section>
+<section >
+<h3>Name a cool programming language starting with "F"...</h3>
+</section>
+<section >
+<img src="images/fortran.png" style="background: transparent; border-style: none;"  width="800" />
+</section>
+<section >
+<img src="images/fsharp2.jpeg" style="background: transparent; border-style: none;"  width="800" />
+</section>
+</section>
+<section >
+<section >
+<h2>Agenda</h2>
+<section>
+  <ul>
+    <li class="fragment" style="color:#ffffff">Intro</li>
+    <li class="fragment" style="color:#ffffff">Boring Example</li>
+    <li class="fragment" style="color:#ffffff">F#od for Thought</li>
+    <li class="fragment" style="color:#ffffff">Brief and Indisputably Accurate History of Programming Languages</li>
+    <li class="fragment" style="color:#ffffff">Character Assassination of Object Oriented Language Design Features</li>
+  </ul>
+  <br>
+  <br>
+  <h4 class="fragment">About 30 minutes of pain...</h4>
+</section>
+</section>
+<section >
+<h2>What is F#</h2>
+<h5>Microsoft's Functional Programming Language</h5>
+<br>
+<h5>V1.0 released in 2005 - Available within Visual Studio since 2010</h5>
+<br>
+<h5>Full compatibility with .NET Libs / Nuget / C# - 50:50 Solutions</h5>
+<br>
+<h5>Developed @ Microsoft Research, UK</h5>
+<h5>Based on ML / StandardML / OCaml / Haskell</h5>
+<br>
+<h5>Source of inspiration for C#:</h5>
+<h5>(Pattern matching, Tuples, Deconstruction, Local Functions, Nullable Reference Types, Records, Ranges...)</h5>
+</section>
+<section >
+<h2>Why am I telling you about F#?</h2>
+<br><br>
+<ul>
+ <li> I spent a year as an F# developer
+ <li> Restored my faith in <span style="text-decoration: line-through;">humanity</span> computers
+ <li> More concise and convenient - Get more done
+ <li> Amazing Compiler - Type Inference - Far Fewer Bugs
+ <li> Open Source
+ <li> Community - e.g. JavaScript Transpiler (this presentation...) 
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Dull Example</h2>
+<section>
+  <h3 class="fragment"> Absolute Classic... </h3>
+  <h3 class="fragment"> ...Shapes</h3>
+  <h4 class="fragment">Areas / Perimeters</h4>
+  <ul>
+    <li class="fragment" style="color:#ff0000">Circle</li>
+    <li class="fragment" style="color:#00ffff">Rectangle</li>
+    <li class="fragment" style="color:#8888ff">Square</li>
+    <li class="fragment" style="color:#00ff00">Triangle</li>
+  </ul>
+  <br />
+  <br />
+  <h3 class="fragment"> C# vs F# </h3>
+</section> 
+</section>
+<section data-background="#888800">
+<h3>C# - Shape</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">interface</span> Shape
+{
+    <span class="k">double</span> Area();
+    <span class="k">double</span> Perimeter();
+}
+</code></pre></td></tr></table>
+</section>
+<section data-background="#880000">
+<h3>C# - Circle</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">class</span> Circle <span class="o">:</span> Shape
+{
+    <span class="k">private</span> <span class="k">double</span> radius;
+
+    <span class="k">public</span> Circle(<span class="k">double</span> r) {
+        <span class="k">this</span>.radius <span class="o">=</span> r;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Area() {
+        <span class="k">return</span> System.Math.PI <span class="o">*</span> radius <span class="o">*</span> radius;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Perimeter() {
+        <span class="k">return</span> <span class="n">2</span> <span class="o">*</span> System.Math.PI <span class="o">*</span> radius;
+    }
+}
+</code></pre></td></tr></table>
+</section>
+<section data-background="#008888">
+<h3>C# - Rectangle</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">class</span> Rectangle <span class="o">:</span> Shape
+{
+    <span class="k">private</span> <span class="k">double</span> width;
+    <span class="k">private</span> <span class="k">double</span> height;
+
+    <span class="k">public</span> Rectangle(<span class="k">double</span> w, <span class="k">double</span> h) {
+        width <span class="o">=</span> w;
+        height <span class="o">=</span> h;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Area() {
+        <span class="k">return</span> width <span class="o">*</span> height;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Perimeter() {
+        <span class="k">return</span> <span class="n">2</span> <span class="o">*</span> (width <span class="o">+</span> height);
+    }
+}
+</code></pre></td></tr></table>
+</section>
+<section data-background="#444488">
+<h3>C# - Square</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="c">// Wanting to use inheritance stops us using value types / structs</span>
+<span class="k">class</span> Square <span class="o">:</span> Rectangle 
+{
+    <span class="k">public</span> Square(<span class="k">double</span> side) <span class="o">:</span> <span class="k">base</span>(side, side) {}
+}
+</code></pre></td></tr></table>
+</section>
+<section data-background="#008800">
+<h3>C# - Triangle</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">class</span> Triangle <span class="o">:</span> Shape
+{
+    <span class="k">private</span> <span class="k">double</span> baseLength;
+    <span class="k">private</span> <span class="k">double</span> perpendicularHeight;
+
+    <span class="k">public</span> Triangle(<span class="k">double</span> b, <span class="k">double</span> h) {
+        baseLength <span class="o">=</span> b;
+        perpendicularHeight <span class="o">=</span> h;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Area() {
+        <span class="k">return</span> <span class="n">0.5</span> <span class="o">*</span> baseLength <span class="o">*</span> perpendicularHeight;
+    }
+
+    <span class="k">public</span> <span class="k">double</span> Perimeter() {
+        <span class="c">//return Math.Sqrt(baseLength * baseLength + perpendicularHeight * perpendicularHeight) + baseLength + perpendicularHeight;</span>
+        <span class="k">throw</span> <span class="k">new</span> NotImplementedException();
+    }
+}
+</code></pre></td></tr></table>
+</section>
+</section>
+<section >
+<section data-background="images/stripes.gif">
+<h3>F# Shapes</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="t">Shape</span> <span class="o">=</span>                             <span class="c">// Discriminated Union</span>
+  | <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="p">Circle</span> <span class="k">of</span> <span class="i">radius</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="t">double</span>                            <span class="c">// Cases</span>
+  | <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="p">Square</span> <span class="k">of</span> <span class="i">side</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="t">double</span> 
+  | <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="p">Rectangle</span> <span class="k">of</span> <span class="i">width</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="t">double</span> <span class="o">*</span> <span class="i">height</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 7)" onmouseover="showTip(event, 'fs2', 7)" class="t">double</span>
+  | <span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="p">Triangle</span> <span class="k">of</span> <span class="i">baseLength</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 9)" onmouseover="showTip(event, 'fs2', 9)" class="t">double</span> <span class="o">*</span> <span class="i">perpHeight</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs2', 10)" onmouseover="showTip(event, 'fs2', 10)" class="t">double</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="f">perimeter</span> <span onmouseout="hideTip(event, 'fs7', 12)" onmouseover="showTip(event, 'fs7', 12)" class="i">s</span> <span class="o">=</span>                            <span class="c">// (No {brackets}) </span>
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="i">s</span> <span class="k">with</span>                                  <span class="c">// No arg types</span>
+  | <span onmouseout="hideTip(event, 'fs1', 14)" onmouseover="showTip(event, 'fs1', 14)" class="p">Circle</span> <span onmouseout="hideTip(event, 'fs8', 15)" onmouseover="showTip(event, 'fs8', 15)" class="i">r</span> <span class="k">-&gt;</span> <span class="n">2.0</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs9', 16)" onmouseover="showTip(event, 'fs9', 16)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 17)" onmouseover="showTip(event, 'fs10', 17)" class="t">Math</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 18)" onmouseover="showTip(event, 'fs11', 18)" class="i">PI</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs8', 19)" onmouseover="showTip(event, 'fs8', 19)" class="i">r</span>           <span class="c">// No return</span>
+  | <span onmouseout="hideTip(event, 'fs4', 20)" onmouseover="showTip(event, 'fs4', 20)" class="p">Rectangle</span> (<span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="i">w</span>, <span onmouseout="hideTip(event, 'fs13', 22)" onmouseover="showTip(event, 'fs13', 22)" class="i">h</span>) <span class="k">-&gt;</span> <span class="n">2.0</span> <span class="o">*</span> (<span onmouseout="hideTip(event, 'fs12', 23)" onmouseover="showTip(event, 'fs12', 23)" class="i">w</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs13', 24)" onmouseover="showTip(event, 'fs13', 24)" class="i">h</span>)
+  | <span onmouseout="hideTip(event, 'fs3', 25)" onmouseover="showTip(event, 'fs3', 25)" class="p">Square</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="i">l</span> <span class="k">-&gt;</span> <span class="n">4.0</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs14', 27)" onmouseover="showTip(event, 'fs14', 27)" class="i">l</span>
+  | <span onmouseout="hideTip(event, 'fs5', 28)" onmouseover="showTip(event, 'fs5', 28)" class="p">Triangle</span> (<span onmouseout="hideTip(event, 'fs15', 29)" onmouseover="showTip(event, 'fs15', 29)" class="i">b</span>, <span onmouseout="hideTip(event, 'fs13', 30)" onmouseover="showTip(event, 'fs13', 30)" class="i">h</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 31)" onmouseover="showTip(event, 'fs9', 31)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 32)" onmouseover="showTip(event, 'fs10', 32)" class="t">Math</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 33)" onmouseover="showTip(event, 'fs16', 33)" class="f">Sqrt</span> (<span onmouseout="hideTip(event, 'fs15', 34)" onmouseover="showTip(event, 'fs15', 34)" class="i">b</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs15', 35)" onmouseover="showTip(event, 'fs15', 35)" class="i">b</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs13', 36)" onmouseover="showTip(event, 'fs13', 36)" class="i">h</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs13', 37)" onmouseover="showTip(event, 'fs13', 37)" class="i">h</span>) <span class="o">+</span> <span onmouseout="hideTip(event, 'fs15', 38)" onmouseover="showTip(event, 'fs15', 38)" class="i">b</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs13', 39)" onmouseover="showTip(event, 'fs13', 39)" class="i">h</span>  
+
+<span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs17', 40)" onmouseover="showTip(event, 'fs17', 40)" class="f">area</span> <span onmouseout="hideTip(event, 'fs7', 41)" onmouseover="showTip(event, 'fs7', 41)" class="i">s</span> <span class="o">=</span> 
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs7', 42)" onmouseover="showTip(event, 'fs7', 42)" class="i">s</span> <span class="k">with</span>         <span class="c">// Stripey vs Blocky (2 sides same coin)</span>
+  | <span onmouseout="hideTip(event, 'fs1', 43)" onmouseover="showTip(event, 'fs1', 43)" class="p">Circle</span> <span onmouseout="hideTip(event, 'fs8', 44)" onmouseover="showTip(event, 'fs8', 44)" class="i">r</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 45)" onmouseover="showTip(event, 'fs9', 45)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 46)" onmouseover="showTip(event, 'fs10', 46)" class="t">Math</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 47)" onmouseover="showTip(event, 'fs11', 47)" class="i">PI</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs8', 48)" onmouseover="showTip(event, 'fs8', 48)" class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs8', 49)" onmouseover="showTip(event, 'fs8', 49)" class="i">r</span>  <span class="c">// Type safe, all cases</span>
+  | <span onmouseout="hideTip(event, 'fs4', 50)" onmouseover="showTip(event, 'fs4', 50)" class="p">Rectangle</span> (<span onmouseout="hideTip(event, 'fs12', 51)" onmouseover="showTip(event, 'fs12', 51)" class="i">w</span>, <span onmouseout="hideTip(event, 'fs13', 52)" onmouseover="showTip(event, 'fs13', 52)" class="i">h</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs12', 53)" onmouseover="showTip(event, 'fs12', 53)" class="i">w</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs13', 54)" onmouseover="showTip(event, 'fs13', 54)" class="i">h</span> 
+  | <span onmouseout="hideTip(event, 'fs3', 55)" onmouseover="showTip(event, 'fs3', 55)" class="p">Square</span> <span onmouseout="hideTip(event, 'fs14', 56)" onmouseover="showTip(event, 'fs14', 56)" class="i">l</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 57)" onmouseover="showTip(event, 'fs17', 57)" class="f">area</span> (<span onmouseout="hideTip(event, 'fs4', 58)" onmouseover="showTip(event, 'fs4', 58)" class="p">Rectangle</span> (<span onmouseout="hideTip(event, 'fs14', 59)" onmouseover="showTip(event, 'fs14', 59)" class="i">l</span>, <span onmouseout="hideTip(event, 'fs14', 60)" onmouseover="showTip(event, 'fs14', 60)" class="i">l</span>))                    <span class="c">// !</span>
+  | <span onmouseout="hideTip(event, 'fs5', 61)" onmouseover="showTip(event, 'fs5', 61)" class="p">Triangle</span> (<span onmouseout="hideTip(event, 'fs15', 62)" onmouseover="showTip(event, 'fs15', 62)" class="i">b</span>, <span onmouseout="hideTip(event, 'fs13', 63)" onmouseover="showTip(event, 'fs13', 63)" class="i">h</span>) <span class="k">-&gt;</span> <span class="n">0.5</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs15', 64)" onmouseover="showTip(event, 'fs15', 64)" class="i">b</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs13', 65)" onmouseover="showTip(event, 'fs13', 65)" class="i">h</span>     
+</code></pre></td>
+</tr>
+</table>
+</section>
+<section >
+<h2>In Use..</h2>
+<br>
+<h3>C# - Square</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">var</span> a <span class="o">=</span> (<span class="k">new</span> Square(<span class="n">5.0</span>)).Area();
+
+<span class="k">var</span> e <span class="o">=</span> (<span class="k">new</span> Circle(<span class="n">3.0</span>) <span class="o">=</span><span class="o">=</span> <span class="k">new</span> Circle(<span class="n">3.0</span>));       <span class="c">// False</span>
+<span class="k">var</span> f <span class="o">=</span> (<span class="k">new</span> Circle(<span class="n">3.0</span>).Equals(<span class="k">new</span> Circle(<span class="n">3.0</span>)));  <span class="c">// False</span>
+</code></pre></td></tr></table>
+<br>
+<h3>F# - Square</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 66)" onmouseover="showTip(event, 'fs18', 66)" class="i">a</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 67)" onmouseover="showTip(event, 'fs17', 67)" class="f">area</span> <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs3', 68)" onmouseover="showTip(event, 'fs3', 68)" class="p">Square</span> <span class="n">5.0</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 69)" onmouseover="showTip(event, 'fs19', 69)" class="i">ce</span> <span class="o">=</span> (<span onmouseout="hideTip(event, 'fs1', 70)" onmouseover="showTip(event, 'fs1', 70)" class="p">Circle</span> <span class="n">3.0</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs1', 71)" onmouseover="showTip(event, 'fs1', 71)" class="p">Circle</span> <span class="n">3.0</span>)
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>No value has been returned</code></pre></td></tr></table>
+</section>
+</section>
+<section >
+<section >
+<h3>Cake</h3>
+<p><img src="images/paulmarycake.jpg" alt="Paul Mary Cake" /></p>
+<h4>Recipe ??</h4>
+</section>
+<section >
+<h3>Mary Berry Cake Recipe</h3>
+<p><img src="images/maryberrycake.jpg" alt="Mary Cake" /></p>
+</section>
+<section >
+<h3>Mary's Wonderful Sponge Cake</h3>
+<ul>
+<li>Break the eggs into a large mixing bowl.</li>
+<li>Add the sugar, flour, baking powder and butter.</li>
+<li>Mix together until well combined with an electric hand mixer.</li>
+<li>Divide the mixture evenly between the tins.</li>
+<li>Bake the cakes on the middle shelf of the oven for 25 minutes.</li>
+</ul>
+</section>
+<section >
+<h3>Evil Paul Hollywood Cake Recipe</h3>
+<p><img src="images/paulcake.jpg" alt="Paul Cake" /></p>
+</section>
+<section >
+<h3>Paul has been Reading a Book...</h3>
+<p><img src="images/designpatterns.jpeg" alt="Design Patterns" /></p>
+<h4>...to help him achieve his plan for world domination</h4>
+</section>
+<section >
+<h3>Paul's Mass Produced Cake</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs">mixingBowl.Add(eggs.Break());
+mixingBowl.Add(<span class="k">new</span> Ingredients [] {sugar, flour, bakingPowder, butter});
+
+mixingBowl.AcceptVisit(foodMixer);
+
+cakeTin<span class="n">1</span>.AddMixture(mixingBowl.Take(<span class="n">0.5</span>));
+cakeTin<span class="n">2</span>.AddMixture(mixingBowl.Take(<span class="n">0.5</span>));
+
+<span class="k">var</span> oven <span class="o">=</span> ovenFactory.CreateOven(OvenType.GAS);
+oven.SetTemperature(<span class="n">180.0</span>);
+oven.Load(cakeTin<span class="n">1</span>);
+oven.Load(cakeTin<span class="n">2</span>);
+oven.SetTimer(<span class="n">25</span> <span class="o">*</span> <span class="n">60</span> <span class="o">*</span> <span class="n">1000</span>);
+
+<span class="k">try</span> {
+    oven.Bake();
+} <span class="k">catch</span> (TimeUpException e) {
+    <span class="c">//</span>
+}
+</code></pre></td></tr></table>
+</section>
+<section >
+<h3>OO // Land of the Nouns</h3>
+<br><br>
+<h4>Data Centric -&gt; Classes Are King</h4>
+<h5>Methods Belong To Classes</h5>
+<h5>-&gt; Verbs Belong To Nouns</h5>
+<br><br>
+<h5>!= English</h5>
+<h5>!= Natural Thought Process</h5>
+<h5>OO-Induced Damage...</h5>
+<h5>... the code reading can be difficult</h5>
+<h5>... the real world modeling of is slightly strange</h5>
+</section>
+</section>
+<section >
+<section >
+<h3>Brief and <em>Indisputably Accurate</em> History of Programming Languages</h3>
+<h5>All types of programming invented at roughly the same time</h5>
+<p><img src="images/kandr.jpg" alt="Kernighan and Richie" /></p>
+<h5>But... Procedural Languages Became Popular First</h5>
+</section>
+<section >
+<h5>"Best" Thing In Procedural Languages were Structs / Data Records</h5>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip"><code lang="c">struct account {
+   int account_number;
+   char *first_name;
+   char *last_name;
+   float balance;
+};
+</code></pre></td></tr></table>
+</section>
+<section >
+<h5>OO Languages Became Popular Next</h5>
+<p><img src="images/bjarne-stroustrups-quotes-1.jpg" alt="bjarne-stroustrups" /></p>
+</section>
+<section >
+<h4>OO Took the "Best" Thing In Procedural Languages &amp; Made it "Better"</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="c++"><span class="prep">#include</span> &lt;iostream&gt;
+<span class="k">using</span> <span class="k">namespace</span> std;
+
+<span class="k">class</span> Account {
+    <span class="k">int</span> account_number;
+    <span class="k">char</span> *first_name;
+    <span class="k">char</span> *last_name;
+    <span class="k">float</span> balance;
+  <span class="k">public</span>:
+    <span class="k">void</span> Charge (<span class="k">float</span> v);
+    <span class="k">void</span> Refund (<span class="k">float</span> v);
+    <span class="k">void</span> Close (<span class="k">char</span> *reason);
+};
+</code></pre></td></tr></table>
+<h5>Structs -&gt; Classes with Functions</h5>
+<h5>Nouns own Verbs</h5>
+<h5>Massive Design "Decision"</h5>
+</section>
+<section >
+<h3>Functional Programming Has Hit The Big Time</h3>
+<p><img src="images/functional.jpeg" alt="functional logos" /></p>
+<h5>#ProgrammingLikeFunctionsMatter #KingdomOfTheVerbs</h5>
+<h5>PUT FUNCTIONS FIRST + Different Design Decisions</h5>
+<h5>OO generalises over Data but FP generalises over Processes</h5>
+</section>
+<section >
+<h3>1st Class Functions</h3>
+<ul>
+<li>Killer Feature... All functions can take only 1 argument</li>
+</ul>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 72)" onmouseover="showTip(event, 'fs20', 72)" class="f">multiply</span> <span onmouseout="hideTip(event, 'fs21', 73)" onmouseover="showTip(event, 'fs21', 73)" class="i">a</span> <span onmouseout="hideTip(event, 'fs22', 74)" onmouseover="showTip(event, 'fs22', 74)" class="i">b</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs21', 75)" onmouseover="showTip(event, 'fs21', 75)" class="i">a</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs22', 76)" onmouseover="showTip(event, 'fs22', 76)" class="i">b</span>              <span class="c">// two functions (curried)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 77)" onmouseover="showTip(event, 'fs23', 77)" class="f">multiplyBy2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 78)" onmouseover="showTip(event, 'fs20', 78)" class="f">multiply</span> <span class="n">2</span>              <span class="c">// partial application</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 79)" onmouseover="showTip(event, 'fs24', 79)" class="f">multiplyBy4</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs23', 80)" onmouseover="showTip(event, 'fs23', 80)" class="f">multiplyBy2</span> <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs23', 81)" onmouseover="showTip(event, 'fs23', 81)" class="f">multiplyBy2</span> <span class="c">// composition/glue</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs25', 82)" onmouseover="showTip(event, 'fs25', 82)" class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs24', 83)" onmouseover="showTip(event, 'fs24', 83)" class="f">multiplyBy4</span> <span class="n">3</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>12</code></pre></td></tr></table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 84)" onmouseover="showTip(event, 'fs26', 84)" class="i">result</span> <span class="o">=</span> 
+  [<span class="n">1..</span><span class="n">10</span>]                       
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs27', 85)" onmouseover="showTip(event, 'fs27', 85)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 86)" onmouseover="showTip(event, 'fs28', 86)" class="f">map</span> <span onmouseout="hideTip(event, 'fs24', 87)" onmouseover="showTip(event, 'fs24', 87)" class="f">multiplyBy4</span>        <span class="c">// pipeline - function as value</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs27', 88)" onmouseover="showTip(event, 'fs27', 88)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs29', 89)" onmouseover="showTip(event, 'fs29', 89)" class="f">filter</span> ((<span class="o">&lt;&gt;</span>) <span class="n">24</span>)        <span class="c">// operator / function duality</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>[4; 8; 12; 16; 20; 28; 32; 36; 40]</code></pre></td></tr></table>
+</section>
+<section >
+<h3>No Variables (Immutability)</h3>
+<h5>Generally accepted that global variables are bad...</h5>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">public</span> <span class="k">double</span> factorial(<span class="k">int</span> n) { <span class="c">// 1 * 2 * 3 * ...  * n</span>
+    <span class="k">double</span> result <span class="o">=</span> <span class="n">1</span>;
+    <span class="k">for</span>(<span class="k">int</span> i <span class="o">=</span> <span class="n">2</span>; i&lt;=n; <span class="o">+</span>+i) {
+        result <span class="o">*</span><span class="o">=</span> i;
+    }
+    <span class="k">return</span> result;
+}
+</code></pre></td></tr></table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs30', 90)" onmouseover="showTip(event, 'fs30', 90)" class="f">factorial</span> <span class="o">=</span> <span class="k">function</span> <span class="c">// recursive - no variables, no loops</span>
+    | <span class="n">0</span> | <span class="n">1</span> <span class="k">-&gt;</span> <span class="n">1</span>
+    | <span onmouseout="hideTip(event, 'fs31', 91)" onmouseover="showTip(event, 'fs31', 91)" class="i">n</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs31', 92)" onmouseover="showTip(event, 'fs31', 92)" class="i">n</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs30', 93)" onmouseover="showTip(event, 'fs30', 93)" class="f">factorial</span> (<span onmouseout="hideTip(event, 'fs31', 94)" onmouseover="showTip(event, 'fs31', 94)" class="i">n</span><span class="o">-</span><span class="n">1</span>)
+</code></pre></td>
+</tr>
+</table>
+<p>Or... <strong>1 liner</strong> (Same as definition)</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 95)" onmouseover="showTip(event, 'fs32', 95)" class="f">factorialB</span> <span onmouseout="hideTip(event, 'fs31', 96)" onmouseover="showTip(event, 'fs31', 96)" class="i">n</span> <span class="o">=</span> [<span class="n">1..</span><span onmouseout="hideTip(event, 'fs31', 97)" onmouseover="showTip(event, 'fs31', 97)" class="i">n</span>] <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs27', 98)" onmouseover="showTip(event, 'fs27', 98)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs33', 99)" onmouseover="showTip(event, 'fs33', 99)" class="f">reduce</span> <span class="o">(*)</span>   <span class="c">// Map / reduce</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 100)" onmouseover="showTip(event, 'fs34', 100)" class="i">fb</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs32', 101)" onmouseover="showTip(event, 'fs32', 101)" class="f">factorialB</span> <span class="n">9</span>                    <span class="c">// do factorial 9 !!!</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>362880</code></pre></td></tr></table>
+</section>
+<section >
+<h3>Immutability - Entire Programs - Messages &amp; Agents</h3>
+<ul>
+<li>MailboxProcessors / Actors / Agents (like Erlang / Akka)</li>
+<li>Handling: Events / Messages</li>
+</ul>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 102)" onmouseover="showTip(event, 'fs35', 102)" class="f">newState</span> <span onmouseout="hideTip(event, 'fs36', 103)" onmouseover="showTip(event, 'fs36', 103)" class="i">oldState</span> <span onmouseout="hideTip(event, 'fs37', 104)" onmouseover="showTip(event, 'fs37', 104)" class="i">event</span> <span class="o">=</span> () <span class="c">// (State minimization)</span>
+</code></pre></td>
+</tr>
+</table>
+<ul>
+<li>Async / Multithreaded (helped by Immutability)</li>
+<li><a href="http://fable.io/samples-browser/mario/">Mario</a></li>
+<li><a href="http://fable.io/samples-browser/pacman/">Pacman</a></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h3>Assassination Attempt</h3>
+<p><img src="images/bond.jpg" alt="Bond" /></p>
+</section>
+<section >
+<h3>50 Billion Dollar Mistake</h3>
+<p><img src="images/tony.jpg" alt="Tony Hoare" /></p>
+<ul>
+<li>Tony Hoare - Algol 60 (London, 1960s)</li>
+<li>Admitted his mistake in 2009</li>
+<li>('Fixed' in C# 8.0 ... vs F# 1.0)</li>
+</ul>
+</section>
+<section >
+<h3>Null References</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs38', 105)" onmouseover="showTip(event, 'fs38', 105)" class="i">t</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 106)" onmouseover="showTip(event, 'fs5', 106)" class="p">Triangle</span> (<span class="n">3.0</span>, <span class="n">4.0</span>)
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs39', 107)" onmouseover="showTip(event, 'fs39', 107)" class="i">triangleArea</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 108)" onmouseover="showTip(event, 'fs17', 108)" class="f">area</span> <span onmouseout="hideTip(event, 'fs38', 109)" onmouseover="showTip(event, 'fs38', 109)" class="i">t</span>
+<span class="c">//let triangleArea2 = area null  // !! This is a compile error !!</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs40', 110)" onmouseover="showTip(event, 'fs40', 110)" class="f">maybeCalculateArea</span> <span onmouseout="hideTip(event, 'fs41', 111)" onmouseover="showTip(event, 'fs41', 111)" class="i">s</span> <span class="o">=</span>                      <span class="c">// Option types</span>
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs41', 112)" onmouseover="showTip(event, 'fs41', 112)" class="i">s</span> <span class="k">with</span>
+    | <span onmouseout="hideTip(event, 'fs42', 113)" onmouseover="showTip(event, 'fs42', 113)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs43', 114)" onmouseover="showTip(event, 'fs43', 114)" class="i">shape</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 115)" onmouseover="showTip(event, 'fs17', 115)" class="f">area</span> <span onmouseout="hideTip(event, 'fs43', 116)" onmouseover="showTip(event, 'fs43', 116)" class="i">shape</span>
+    | <span onmouseout="hideTip(event, 'fs44', 117)" onmouseover="showTip(event, 'fs44', 117)" class="p">None</span> <span class="k">-&gt;</span> <span class="n">0.0</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 118)" onmouseover="showTip(event, 'fs45', 118)" class="i">someTriangle</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs42', 119)" onmouseover="showTip(event, 'fs42', 119)" class="p">Some</span> <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs5', 120)" onmouseover="showTip(event, 'fs5', 120)" class="p">Triangle</span> (<span class="n">3.0</span>, <span class="n">4.0</span>)
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs46', 121)" onmouseover="showTip(event, 'fs46', 121)" class="i">noTriange</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 122)" onmouseover="showTip(event, 'fs44', 122)" class="p">None</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 123)" onmouseover="showTip(event, 'fs47', 123)" class="i">areaSomeTriangle</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 124)" onmouseover="showTip(event, 'fs40', 124)" class="f">maybeCalculateArea</span> <span onmouseout="hideTip(event, 'fs45', 125)" onmouseover="showTip(event, 'fs45', 125)" class="i">someTriangle</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs48', 126)" onmouseover="showTip(event, 'fs48', 126)" class="i">areaNoTriangle</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 127)" onmouseover="showTip(event, 'fs40', 127)" class="f">maybeCalculateArea</span> <span onmouseout="hideTip(event, 'fs46', 128)" onmouseover="showTip(event, 'fs46', 128)" class="i">noTriange</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>No value has been returned</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>No value has been returned</code></pre></td></tr></table>
+</section>
+<section >
+<h3>Exceptions</h3>
+<p><img src="images/fredbrooks.jpg" alt="Fred Brooks - Mythical Man Month" /></p>
+<ul>
+<li>Fred Brooks - PL/1 - 1960s</li>
+<li>Mythical Man Month</li>
+<li>To be fair, if you have <strong>null</strong> then you kind of need <strong>exceptions</strong> too...</li>
+</ul>
+</section>
+<section >
+<h3>Railway Oriented Programming</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// 2 Tracks / Pipelines</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs49', 129)" onmouseover="showTip(event, 'fs49', 129)" class="t">Result</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">TSuccess</span>,<span class="o">&#39;</span><span class="i">TFailure</span><span class="o">&gt;</span> <span class="o">=</span> 
+| <span onmouseout="hideTip(event, 'fs50', 130)" onmouseover="showTip(event, 'fs50', 130)" class="p">Success</span> <span class="k">of</span> <span class="o">&#39;</span><span class="i">TSuccess</span> 
+| <span onmouseout="hideTip(event, 'fs51', 131)" onmouseover="showTip(event, 'fs51', 131)" class="p">Failure</span> <span class="k">of</span> <span class="o">&#39;</span><span class="i">TFailure</span>
+
+<span class="k">let</span> (<span class="o">&gt;</span><span class="o">=&gt;</span>) <span onmouseout="hideTip(event, 'fs52', 132)" onmouseover="showTip(event, 'fs52', 132)" class="f">f</span> <span onmouseout="hideTip(event, 'fs53', 133)" onmouseover="showTip(event, 'fs53', 133)" class="f">g</span> <span onmouseout="hideTip(event, 'fs54', 134)" onmouseover="showTip(event, 'fs54', 134)" class="i">a</span> <span class="o">=</span> 
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs52', 135)" onmouseover="showTip(event, 'fs52', 135)" class="f">f</span> <span onmouseout="hideTip(event, 'fs54', 136)" onmouseover="showTip(event, 'fs54', 136)" class="i">a</span> <span class="k">with</span>
+    | <span onmouseout="hideTip(event, 'fs50', 137)" onmouseover="showTip(event, 'fs50', 137)" class="p">Success</span> <span onmouseout="hideTip(event, 'fs55', 138)" onmouseover="showTip(event, 'fs55', 138)" class="i">s</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs53', 139)" onmouseover="showTip(event, 'fs53', 139)" class="f">g</span> <span onmouseout="hideTip(event, 'fs55', 140)" onmouseover="showTip(event, 'fs55', 140)" class="i">s</span>
+    | <span onmouseout="hideTip(event, 'fs56', 141)" onmouseover="showTip(event, 'fs56', 141)" class="p">Failure</span> <span onmouseout="hideTip(event, 'fs57', 142)" onmouseover="showTip(event, 'fs57', 142)" class="i">f</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs56', 143)" onmouseover="showTip(event, 'fs56', 143)" class="p">Failure</span> <span onmouseout="hideTip(event, 'fs57', 144)" onmouseover="showTip(event, 'fs57', 144)" class="i">f</span>  
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs58', 145)" onmouseover="showTip(event, 'fs58', 145)" class="f">processWebRequest</span> <span class="o">=</span>
+  <span class="i">parseUrlPath</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">parseUrlParameters</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">parseRequestBodyFormValues</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">processAction</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">buildResponse</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">writeResponse</span>
+  <span class="o">&gt;</span><span class="o">=&gt;</span> <span class="i">handleErrors</span>
+</code></pre></td>
+</tr>
+</table>
+</section>
+</section>
+<section >
+<h3>...Recap... ((Esc))</h3>
+<h4>There's More...</h4>
+<h5>OO Features!!!, Mutability!!, Tuples, Records, Lists, Scripts, Interactive, Workflows (Async, Query, Seq...)</h5>
+<p><img src="images/Scott.jpg" alt="Scott" /></p>
+<h5><a href="https://fsharpforfunandprofit.com/">F# for Fun and Profit</a></h5>
+</section>
+
+
+        </div>
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script>
+        // Add the nohighlight class and data-noescape attribute to code elements that have already been formatted by FSharp.Formatting
+        $('pre.highlighted code').addClass('nohighlight').attr('data-noescape', '');
+
+        // Full list of configuration options available here:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+            // Parallax scrolling
+            // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+            // parallaxBackgroundSize: '2100px 900px',
+
+            // Optional libraries used to extend on reveal.js
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true, condition: function () { return !!document.body.classList; } },
+                { src: 'plugin/notes/notes.js', async: true, condition: function () { return !!document.body.classList; } }
+            ]
+        });
+
+    </script>
+</body>
+</html>
+

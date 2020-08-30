@@ -47,6 +47,18 @@
 
 ---
 
+> ## Method Attributes ##
+> * [HttpGet] - async Task<ActionResult<IEnumerable<Xyz>>>
+> * [HttpGet("{id}")] - async Task<ActionResult<Xyz>>
+> * [HttpPost]
+> * return CreatedAtAction(nameof(GetMethod), new { id=x }, item)
+> * [HttpPut("{id}")] - async Task<IActionResult>
+> * return NoContent()
+> * return BadRequest()
+> * return NotFound()
+
+---
+
 > ## Startup - Configure ##
 > * app.UseDeveloperExceptionPage
 > * app.UseHttpsRedirection

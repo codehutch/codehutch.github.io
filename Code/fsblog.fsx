@@ -159,7 +159,7 @@ let startWebServer () =
         >=> Writers.setHeader "Expires" "0"
         >=> browseHome ]
     startWebServerAsync serverConfig app |> snd |> Async.Start
-    Process.Start "http://localhost:8080/index.html" |> ignore
+    //Process.Start "http://localhost:8080/index.html" |> ignore
 
 // --------------------------------------------------------------------------------------
 // Static site tooling as a set of targets.

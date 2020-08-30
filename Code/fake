@@ -8,6 +8,6 @@ then
 else
   # use mono
   [ ! -f .paket/paket.exe ] && mono --runtime=v4.0 .paket/paket.bootstrapper.exe
-  mono --runtime=v4.0 .paket/paket.exe restore
-  mono --runtime=v4.0 packages/FAKE/tools/FAKE.exe fsblog.fsx -d:MONO $@
+  mono .paket/paket.exe restore
+  mono packages/FAKE/tools/FAKE.exe fsblog.fsx -d:MONO $@
 fi

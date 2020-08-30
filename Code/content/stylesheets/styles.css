@@ -1,7 +1,7 @@
 /**
 * Progletariat.com Blog CSS
 *
-* Copyright Andy Hutchinson 2015
+* Copyright Andy Hutchinson 2018
 *
 * You are welcome to lift the layout, but please change the
 * colours and fonts to make it a bit different.
@@ -484,6 +484,17 @@ button:active {
 .palette blockquote ul li::before {
   content: "";
   display: none;
+}
+
+.palette blockquote ul li a,
+.palette blockquote ul li a:visited,
+.palette blockquote ul li a:active {
+  color: white;
+  text-decoration: none;
+}
+
+.palette blockquote ul li a:hover {
+  text-decoration: underline;
 }
 
 .palette blockquote:nth-child(10n+1) { border-color: rgb(93, 48, 171); }

@@ -83,13 +83,16 @@
 ---
 
 > ## Responses ##
-> * Methods return IActionResult
+> * Methods return IActionResult are most general (allows success/fail?) 
+> * JsonResponse, ContentResponse
+> * [Produces(...)]
 > * Ok(...) / OkObjectResult(...)
 > * NotFound() / NotFountResult(...)
 > * BadRequest()
 > * Json(...)
 > * File(...)
 > * Created()
+> * services.AddMvc(options => options.OutputFormatters.Add(..)
 
 ---
 
@@ -102,6 +105,9 @@
 > * Result Filters  - I(Async)ResultFilter
 > * On...Executing - Before
 > * On...Executed - After
+> * On...ExecutionAsync - Both Async, await next() in middle
+> * : Attribute - for attribute-controlled filters
+> * services.AddMvc(options => options.Filters.Add(..) global
 
 ---
 
@@ -128,10 +134,19 @@
 ---
 
 > ## Startup - ConfigureServices ##
+> * services.AddMvc().AddApplicationPart(extentionAssembly)
 > * services.AddDbContext(opt => opt.UseInMemoryDatabase("DbName")
 > * services.AddControllers()
 > * services.AddRouting()
 > * service.AddSingleton<IHostedService, MyBackgroundService>()
+
+---
+
+> ## Configuration ##
+> * new ConfigurationBuilder().SetBasePath(..).AddJsonFile(..)
+> * .AddCommandLine(args) .AddEnvironmentalVariables() .AddUserSecrets(>>)
+> * Configuration = builder.Build()
+> * var value = Configuration["foo:bar"]
 
 ---
 

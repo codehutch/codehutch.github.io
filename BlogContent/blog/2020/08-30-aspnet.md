@@ -63,6 +63,25 @@
 
 ---
 
+> ## Model Binding ##
+> * Params: [FromBody] [FromForm] [FromHeader] [FromRoute] [FromServices
+> * [FromHeader(Name="My-Access-Token")]string accessToken
+> * IModelBinder - Task BindModelAsync(ModelBindingContext bc)
+
+---
+
+> ## Model Validation ##
+> * [Required, MaxLength(20)]
+> * [MinLength(5)]
+> * [EmailAddress]
+> * [Url]
+> * [Range(1, 5)]
+> * if (ModelState.IsValid) { .. } else { return BadRequest(ModelState) }
+> * : ValidationAttribute - Custom Attribute
+> * : IValidatableObject - Implement own Validate method on Dto 
+
+---
+
 > ## Responses ##
 > * Methods return IActionResult
 > * Ok(...) / OkObjectResult(...)
@@ -71,6 +90,18 @@
 > * Json(...)
 > * File(...)
 > * Created()
+
+---
+
+> ## Filters ##
+> * Authorization Filters - I(Async)AuthorizationFilter
+> * Resource Filters - I(Async)ResourceFilter
+> * (Model Binding)
+> * Action Execution Filters - I(Async)ActionFilter
+> * Exception Filters - I(Async)ExceptionFilter
+> * Result Filters  - I(Async)ResultFilter
+> * On...Executing - Before
+> * On...Executed - After
 
 ---
 

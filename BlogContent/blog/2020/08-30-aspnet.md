@@ -59,18 +59,42 @@
 
 ---
 
+> ## Routing ##
+> * rtBldr.MapRoute(string.Empty, context => { .. } 
+> * rtBldr.MapPost("foo/{name}", (req, resp, routeDat) => { .. }
+> * rtBldr.MapGet("bar/{number?}", (req, resp, routeDat) => { .. }
+
+---
+
 > ## Startup - Configure ##
 > * app.UseDeveloperExceptionPage
 > * app.UseHttpsRedirection
-> * app.UseRouting
+> * app.UseRouter(...)
 > * app.UseAuthorization
 > * app.UseEndpoints(ep => ep.MapControllers())
+> * Startup[EnvironmentName] class is used by preference
+> * app.Use / app.Map / app.MapWhen - very low-level routing
 
 ---
 
 > ## Startup - ConfigureServices ##
 > * services.AddDbContext(opt => opt.UseInMemoryDatabase("DbName")
 > * services.AddControllers()
+> * services.AddRouting()
+
+---
+
+> ## Program ##
+> * Minimal main: WebHost.CreateDefaultBuilder(args).Build().Run()
+> * WebHostBuilder.UseKestral() / WebHostBuilder.UseHttpSys()
+> * WebHostBuilder.UseIISIntegration()
+> * WebHostBuilder.UseStartup<Startup>()
+> * WebHostBuilder.UseContentRoot(...)
+> * WebHostBuilder.ConfugureAppConfiguration(...)
+> * WebHostBuilder.ConfigureLogging(...)
+> * WebHostBuilder.UseUrls (WebHostBuilder.PreferHostingUrls)
+> * WebHostBuilder.Build()
+> * WebHostBuilder.GetSetting()
 
 ---
 

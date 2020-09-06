@@ -40,8 +40,10 @@
 
 ---
 
-> ## Controller Attributes ##
-> * : ControllerBase
+> ## Controllers ##
+> * : ControllerBase (Or name ends with Controller, or [Controller])
+> * Request -> Routing -> Filters -> Formatters -> Controller Action
+> * Response <- Routing <- Filters <- Formatters <- Controller Action
 > * [ApiController] 
 > * [Route("api/[controller]")] - controller classname minus "Controller" suffix
 
@@ -50,7 +52,9 @@
 > ## Method Attributes ##
 > * [HttpGet] - async Task<ActionResult<IEnumerable<Xyz>>>
 > * [HttpGet("{id}")] - async Task<ActionResult<Xyz>>
-> * [HttpPost]
+> * Prefix method name with _http-verb_, or use annotation below
+> * [HttpPost] [HttpPut] [HttpDelete] [HttpHead] [HttpOptions] [HttpPatch]
+> * [NonAction]
 > * return CreatedAtAction(nameof(GetMethod), new { id=x }, item)
 > * [HttpPut("{id}")] - async Task<IActionResult>
 > * return NoContent()
@@ -59,10 +63,25 @@
 
 ---
 
+> ## Responses ##
+> * Methods return IActionResult
+> * Ok(...) / OkObjectResult(...)
+> * NotFound() / NotFountResult(...)
+> * BadRequest()
+> * Json(...)
+> * File(...)
+> * Created()
+
+---
+
 > ## Routing ##
 > * rtBldr.MapRoute(string.Empty, context => { .. } 
-> * rtBldr.MapPost("foo/{name}", (req, resp, routeDat) => { .. }
+> * rtBldr.MapPost("foo/{id:int}", (req, resp, routeDat) => { .. }
 > * rtBldr.MapGet("bar/{number?}", (req, resp, routeDat) => { .. }
+> * [Route("api/[controller]")] - base route attribute on Controller
+> * [HttpGet("")]
+> * [HttpGet("top/{n}")] - relative to controller base path
+> * [HttpPost("~/bob/person")] - _not_ relative to controller base path
 
 ---
 
@@ -81,6 +100,7 @@
 > * services.AddDbContext(opt => opt.UseInMemoryDatabase("DbName")
 > * services.AddControllers()
 > * services.AddRouting()
+> * service.AddSingleton<IHostedService, MyBackgroundService>()
 
 ---
 

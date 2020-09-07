@@ -157,10 +157,23 @@
 > * WebHostBuilder.UseStartup<Startup>()
 > * WebHostBuilder.UseContentRoot(...)
 > * WebHostBuilder.ConfugureAppConfiguration(...)
-> * WebHostBuilder.ConfigureLogging(...)
 > * WebHostBuilder.UseUrls (WebHostBuilder.PreferHostingUrls)
+> * WebHostBuilder.ConfigureLogging(logs => logs.AddConsole()) 
+> * WebHostBuilder.ConfigureLogging(logs => logs.SetMinimumLevel(..)) 
 > * WebHostBuilder.Build()
 > * WebHostBuilder.GetSetting()
+
+---
+
+> ## Logging ##
+> * Inject ILogger into constructors
+> * logger.LogTrace(..)
+> * logger.LogDebug(..)
+> * logger.LogInformation(..)
+> * logger.LogWarning(..)
+> * logger.LogError(..)
+> * logger.LogCritical(..)
+> * using (logger.BeginScope("Some scope")) { .. }
 
 ---
 

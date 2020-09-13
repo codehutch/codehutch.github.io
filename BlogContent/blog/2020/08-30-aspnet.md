@@ -13,7 +13,7 @@
 
 <div class="palette fewerColumnsPalette">
 
-> ## REST Principles ## 
+> ## REST Principles ##
 > * Separate Client and Server 
 > * Stateless Server
 > * Supports Caching (correctly uses caching headers)
@@ -28,15 +28,6 @@
 > * Resource Manipulation - HTTP verbs
 > * Self-describing Responses - Media Types
 > * State Management - HATEOAS
-
----
-
-> ## HATEOAS ##
-> * Hypermedia as the Engine of Application State
-> * In practice, a set of 'links' describing available actions for a resource
-> * e.g. 'deposit': '/account/123/deposit, 'withdraw': 'account/123/withdraw'
-> * RESTful interaction is driven by hypermedia, rather than out-of-band information.
-> * Supports discoverability and very-thin clients.
 
 ---
 
@@ -123,6 +114,7 @@
 ---
 
 > ## Startup - Configure ##
+> * app.UseAuthentication(...)
 > * app.UseDeveloperExceptionPage
 > * app.UseHttpsRedirection
 > * app.UseRouter(...)
@@ -158,14 +150,15 @@
 > * WebHostBuilder.UseContentRoot(...)
 > * WebHostBuilder.ConfugureAppConfiguration(...)
 > * WebHostBuilder.UseUrls (WebHostBuilder.PreferHostingUrls)
-> * WebHostBuilder.ConfigureLogging(logs => logs.AddConsole()) 
-> * WebHostBuilder.ConfigureLogging(logs => logs.SetMinimumLevel(..)) 
 > * WebHostBuilder.Build()
 > * WebHostBuilder.GetSetting()
 
 ---
 
 > ## Logging ##
+> * WebHostBuilder.ConfigureLogging(logs => logs.AddConsole()) 
+> * WebHostBuilder.ConfigureLogging(logs => logs.SetMinimumLevel(..)) 
+> * WebHostBuilder.ConfigureLogging(logs => logs.SetFilter(..)) 
 > * Inject ILogger into constructors
 > * logger.LogTrace(..)
 > * logger.LogDebug(..)
@@ -181,6 +174,42 @@
 > * Controllers
 > * Dtos
 > * Models
+
+---
+
+> ## Versioning ##
+> * Ways: query string, url segment, request header, media type
+> * Microsoft.AspNetCore.Mvc.Versioning (defaults to query string)
+> * services.AddApiVersioning(options...)
+> * On controller class: [ApiVersion("1.0")]
+> * Or On method [MapToApiVersion("1.0")]
+> * Good idea to put different versions in different namespaces
+> * [Route("api/v{version:apiVersion}/bob")]
+> * Request header is now most popular place for versioning
+> * options => options.ApiVersionReader = new ... ("x-api-version")
+> * options.DefaultApiVersion, options.AssumeDefault...
+> * options.ReportApiVersions
+
+---
+
+> ## Swagger ##
+> * services.AddSwaggerGen(...)
+> * app.UseSwagger()
+> * app.UseSwaggerUI(...)
+
+---
+
+> ## HATEOAS ##
+> * Hypermedia as the Engine of Application State
+> * In practice, a set of 'links' describing available actions for a resource
+> * e.g. 'deposit': '/account/123/deposit, 'withdraw': 'account/123/withdraw'
+> * RESTful interaction is driven by hypermedia, rather than out-of-band information.
+> * Supports discoverability and very-thin clients.
+> * To implement, define a Link DTO containing Href, Method and Rel (xlation key)
+> * Define a Resource DTO containing a List of Links
+> * All Other DTOs extend Resource, apart from listing DTOs...
+> * Define a ResourceList<T> DTO for listings, of List<T> and Links
+> * Various community aspnet core hateoas nugets available 
 
 ---
 

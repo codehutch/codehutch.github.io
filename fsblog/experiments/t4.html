@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<style>
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+svg {
+  position: absolute;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.cbar {
+  height: 10%;
+  background-color: #341234;
+}
+
+
+</style>
+<body>
+
+<div id="cbar" class="cbar"> Controls </div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var width = innerWidth,
+    height = innerHeight * 0.9 - 1;
+
+var data = d3.range(8).map(function() { return [Math.random() * width, Math.random() * height]; });
+
+var line = d3.svg.line();
+line.interpolate("cardinal-closed");
+
+var color = d3.scale.category10();
+
+var drag = d3.behavior.drag()
+    .origin(function(d) { return {x: d[0], y: d[1]}; })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged)
+    .on("dragend", dragended);
+
+var svg = d3.select("body")
+    		.on("touchstart", nozoom)
+    		.on("touchmove", nozoom)
+  		.append("svg")
+    			.attr("width", width)
+    			.attr("height", height);
+
+svg.selectAll("circle")
+    .data(data)
+  .enter().append("circle")
+    .attr("transform", function(d) { return "translate(" + d + ")"; })
+    .attr("r", 32)
+    .style("fill", function(d, i) { return color(i); })
+    .call(drag);
+
+svg.append("path")
+    .datum(data)
+    .attr("class", "line");
+
+function dragstarted() {
+  this.parentNode.appendChild(this);
+
+  d3.select(this).transition()
+      .ease("elastic")
+      .duration(500)
+      .attr("r", 48);
+}
+
+function dragged(d) {
+  d[0] = d3.event.x;
+  d[1] = d3.event.y;
+
+  d3.select(this)
+      .attr("transform", "translate(" + d + ")");
+  svg.select("path").attr("d", line);
+}
+
+function dragended() {
+  d3.select(this).transition()
+      .ease("elastic")
+      .duration(500)
+      .attr("r", 32);
+}
+
+function nozoom() {
+  d3.event.preventDefault();
+}
+
+</script>
+</body>
+</html>

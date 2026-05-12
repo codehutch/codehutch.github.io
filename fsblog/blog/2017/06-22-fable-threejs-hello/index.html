@@ -1,0 +1,363 @@
+
+<html>
+  <head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Fable / Three.js  - Hello Cube</title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/fsharp.formatting/tooltips.css" />
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/default.css">
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/monokai-sublime.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+
+	<script type="text/javascript" src="/fsharp.formatting/tooltips.js"></script>
+    <script src="/javascripts/highlight.pack.js"></script>
+    <script src="/javascripts/multifunctional.js"></script>
+
+	<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-102004520-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0a1d2d">
+    <meta name="apple-mobile-web-app-title" content="Progletariat">
+    <meta name="application-name" content="Progletariat">
+    <meta name="theme-color" content="#0a1d2d">
+
+  </head>
+  <body>
+	<h1>
+		<div>
+			<a href="/index.html">Pro<i>g</i>letariat</a>
+		</div>
+	</h1>
+	
+
+
+<h2><strong> F#, Fable &amp; ThreeJs: <em>Hello Cube</em> </strong></h2>
+<div id="graphicsWrapper"><div id="graphicsContainer"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
+<script src="/otherOutput/fable1/BlogFableThreeHelloWorldBuild.js"></script>
+<p><strong>The F# to JS compiler <a href="http://fable.io/">Fable</a> is looking ever more impressive. What better way to showcase its abilities than
+by putting a spinning a cube on your screen?...</strong> The official Fable ThreeJs / WebGL <a href="http://fable.io/samples/webGLTerrain/index.html">demo</a>
+is actually far superior to my effort here. This is a much cut-down version of that demo, showing how little code is needed to get F#
+drawing 3D graphics in a browser.</p>
+<h3><em><strong>First things</strong> first</em></h3>
+<p>To use Fable, your machine will need .NET Core installed - so you can use the <code>dotnet</code> command line tool. Assuming you have that, the quickest way to get started
+is to clone the official Fable <a href="https://github.com/fable-compiler/samples-browser">samples-browser</a> repository and then run the <code>restore</code> script
+contained in its base directory, which will install the Fable extensions to the dotnet command line tool and will also then go on to run <code>yarn install</code> and
+<code>dotnet restore</code> for you. This will pull down all the required npm (javascript) and paket (dotnet / nuget) dependencies. You can then replace the
+code in the samples-browser/webGLTerrain/src/App.fs file with the below. <em>Note that you should comment out the first two lines of the below code</em>
+(they are necessary only as I'm writing a fsx script file for this blog, whereas probably you would write a standard fs file, if not blogging). Once you've copied, pasted
+and commented the code, you can then run <code>dotnet fable npm-run start</code> to compile the code to javascript and launch a dev server, then browse to
+<code>http://localhost:8080/webGLTerrain</code> (which should actually now show you a plain spinning cube rather than fancy terrain). <strong>Talking of the code,
+the first lines are below</strong>. Initially we just import the necessary namespaces and modules, then we define two functions to return the desired
+size of the graphics canvas.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Comment out the below two lines if you are writing a .fs (compiled)</span>
+<span class="c">// file rather than a .fsx (script) file</span>
+<span class="prep">#r</span> <span class="s">&quot;../../../packages/Fable.Core/lib/netstandard1.6/Fable.Core.dll&quot;</span>
+<span class="prep">#load</span> <span class="s">&quot;../../../node_modules/fable-import-three/Fable.Import.Three.fs&quot;</span>
+
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">System</span>
+<span class="k">open</span> <span class="i">Fable</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">Core</span>
+<span class="k">open</span> <span class="i">Fable</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="i">Core</span><span class="o">.</span><span class="i">JsInterop</span>
+<span class="k">open</span> <span class="i">Fable</span><span class="o">.</span><span class="i">Import</span>
+<span class="k">open</span> <span class="i">Fable</span><span class="o">.</span><span class="i">Import</span><span class="o">.</span><span class="i">Three</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="f">width</span> () <span class="o">=</span> <span class="i">Browser</span><span class="o">.</span><span class="i">window</span><span class="o">.</span><span class="i">innerWidth</span> <span class="o">/</span> <span class="n">2.0</span>;
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="f">height</span> () <span class="o">=</span> <span class="i">Browser</span><span class="o">.</span><span class="i">window</span><span class="o">.</span><span class="i">innerHeight</span> <span class="o">/</span> <span class="n">2.0</span>
+</code></pre></td>
+</tr>
+</table>
+<h4><em><strong>1:</strong> Lights</em></h4>
+<p>Our scene needs lights (so that we can see stuff).The below function adds a dim ambient light and
+a bright spotlight to the scene. Ambient light defines a base-level of illumination within the
+scene. It does not have a particular direction or position (hence it is easy to create). By contrast,
+a spotlight has an exact location and shines in a particular direction, illuminating objects within
+it's beam differently depending on the angle they meet it at. Here we just set the spotlight's
+position and leave it shining at the origin (the center of our scene). Note that before we
+specify a colour as a hex string, we have to use <code>U2.Case2</code> to create a union case. This is because
+the underlying javascript libraries are weakly typed, but F# is very much a strongly typed language.
+Therefore, where javascript functions are willing to accept various types of arguments, the F#
+translation of them has to wrap each of the javascript-acceptable types in a union to keep the F#
+type-system happy.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="f">initLights</span> (<span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">scene</span><span class="o">:</span><span class="i">Scene</span>) <span class="o">=</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="i">ambientLight</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">AmbientLight</span>(<span class="i">U2</span><span class="o">.</span><span class="i">Case2</span> <span class="s">&quot;#3C3C3C&quot;</span>, <span class="n">1.0</span>)
+    <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="i">scene</span><span class="o">.</span><span class="i">add</span>(<span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="i">ambientLight</span>)
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="i">spotLight</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">SpotLight</span>(<span class="i">U2</span><span class="o">.</span><span class="i">Case2</span> <span class="s">&quot;#FFFFFF&quot;</span>)
+    <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="i">spotLight</span><span class="o">.</span><span class="i">position</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="i">set</span>(<span class="o">-</span><span class="n">30.</span>, <span class="n">60.</span>, <span class="n">60.</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="f">ignore</span>
+    <span onmouseout="hideTip(event, 'fs6', 15)" onmouseover="showTip(event, 'fs6', 15)" class="i">scene</span><span class="o">.</span><span class="i">add</span>(<span onmouseout="hideTip(event, 'fs8', 16)" onmouseover="showTip(event, 'fs8', 16)" class="i">spotLight</span>)
+</code></pre></td>
+</tr>
+</table>
+<h3><em><strong>2:</strong> Camera</em></h3>
+<p>We also need a camera, which sets the location that the scene is viewed from. We need to set the
+aspect ratio of the camer'a field of view. We use the <code>width()</code> and <code>height()</code> functions we defined above so that the
+camera field's aspect will match the intended dimensions of our graphics output area. The last line of
+the function is its return value; so the camera is returned back to the caller so that it can be used
+during rendering.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 17)" onmouseover="showTip(event, 'fs11', 17)" class="f">initCamera</span> () <span class="o">=</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 18)" onmouseover="showTip(event, 'fs12', 18)" class="i">camera</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">PerspectiveCamera</span>(<span class="n">75.0</span>, <span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="i">width</span>() <span class="o">/</span> <span onmouseout="hideTip(event, 'fs4', 20)" onmouseover="showTip(event, 'fs4', 20)" class="i">height</span>(), <span class="n">0.01</span>, <span class="n">1000.0</span>)
+    <span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="i">camera</span><span class="o">.</span><span class="i">matrixAutoUpdate</span> <span class="o">&lt;-</span> <span class="k">true</span>
+    <span onmouseout="hideTip(event, 'fs12', 22)" onmouseover="showTip(event, 'fs12', 22)" class="i">camera</span><span class="o">.</span><span class="i">rotationAutoUpdate</span> <span class="o">&lt;-</span> <span class="k">true</span>
+    <span onmouseout="hideTip(event, 'fs12', 23)" onmouseover="showTip(event, 'fs12', 23)" class="i">camera</span><span class="o">.</span><span class="i">position</span><span class="o">.</span><span class="i">z</span> <span class="o">&lt;-</span> <span class="n">2.0</span>
+    <span onmouseout="hideTip(event, 'fs12', 24)" onmouseover="showTip(event, 'fs12', 24)" class="i">camera</span>
+</code></pre></td>
+</tr>
+</table>
+<h4><em><strong>3:</strong> Renderer</em></h4>
+<p>OK, so not quite a case of <em>lights-camera-action</em>, as we now need a renderer. A renderer is sort of
+analogous to a screen, and embodies the output area for our graphics. We have to tell Three which
+DOM element within our page to put the render target into (and our HTML page must contain an element
+called <code>graphicsContainer</code>. We also get to choose which kind of renderer to use. <code>WebGLRenderer</code> is
+the fastest, but Three does support other renderers that could be used on devices without WebGL support.
+The call to <code>setClearColour</code> sets the background colour for areas of the screen that are not otherwise
+drawn on. Again we set the size of the output area using the <code>width()</code> and <code>height()</code> functions that we defined
+above, so that the output dimensions tie up with the aspect ratio of the camera.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 25)" onmouseover="showTip(event, 'fs13', 25)" class="f">initRenderer</span> () <span class="o">=</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="i">renderer</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">WebGLRenderer</span>()
+    <span onmouseout="hideTip(event, 'fs14', 27)" onmouseover="showTip(event, 'fs14', 27)" class="i">renderer</span><span class="o">.</span><span class="i">setClearColor</span>(<span class="s">&quot;#0A1D2D&quot;</span>)
+    (<span onmouseout="hideTip(event, 'fs14', 28)" onmouseover="showTip(event, 'fs14', 28)" class="i">renderer</span> <span class="o">:&gt;</span> <span class="i">Three</span><span class="o">.</span><span class="i">Renderer</span>)<span class="o">.</span><span class="i">setSize</span>(<span onmouseout="hideTip(event, 'fs3', 29)" onmouseover="showTip(event, 'fs3', 29)" class="i">width</span>(), <span onmouseout="hideTip(event, 'fs4', 30)" onmouseover="showTip(event, 'fs4', 30)" class="i">height</span>())
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 31)" onmouseover="showTip(event, 'fs15', 31)" class="i">container</span> <span class="o">=</span> <span class="k">if</span> <span class="i">Browser</span><span class="o">.</span><span class="i">document</span><span class="o">.</span><span class="i">getElementById</span>(<span class="s">&quot;graphicsContainer&quot;</span>) <span class="o">&lt;&gt;</span> <span class="k">null</span>
+                    <span class="k">then</span> <span class="i">Browser</span><span class="o">.</span><span class="i">document</span><span class="o">.</span><span class="i">getElementById</span>(<span class="s">&quot;graphicsContainer&quot;</span>)
+                    <span class="k">else</span> <span class="i">Browser</span><span class="o">.</span><span class="i">document</span><span class="o">.</span><span class="i">body</span>
+
+    <span onmouseout="hideTip(event, 'fs15', 32)" onmouseover="showTip(event, 'fs15', 32)" class="i">container</span><span class="o">.</span><span class="i">innerHTML</span> <span class="o">&lt;-</span> <span class="s">&quot;&quot;</span>
+    <span onmouseout="hideTip(event, 'fs15', 33)" onmouseover="showTip(event, 'fs15', 33)" class="i">container</span><span class="o">.</span><span class="i">appendChild</span>((<span onmouseout="hideTip(event, 'fs14', 34)" onmouseover="showTip(event, 'fs14', 34)" class="i">renderer</span> <span class="o">:&gt;</span> <span class="i">Three</span><span class="o">.</span><span class="i">Renderer</span>)<span class="o">.</span><span class="i">domElement</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 35)" onmouseover="showTip(event, 'fs10', 35)" class="f">ignore</span>
+
+    <span onmouseout="hideTip(event, 'fs14', 36)" onmouseover="showTip(event, 'fs14', 36)" class="i">renderer</span>
+</code></pre></td>
+</tr>
+</table>
+<h3><em><strong>4:</strong> Geometry</em></h3>
+<p>Nearly there, but not quite like the movies. Now we have to create something to star in our scene.
+We have only one cast member, a simple cube. Fortunately Three provides methods for defining most
+standard geometric shapes, so we don't have to build the cube up out of individual triangles. Each object
+also needs its surface properties defining (so that we know what it should look like). Here we say
+that our cube's surface is made from a Lambert type material (which would allow for some shininess,
+but we don't set that up here and just go for a plain purple matt surface). We buffer the cube's
+geometry, which moves it to a more compact internal representation (for better performance) and then
+combine it's shape and material definition together into a mesh. Finally we add the mesh to the scene
+and also return the cube geometry for later use.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 37)" onmouseover="showTip(event, 'fs16', 37)" class="f">initGeometry</span>(<span onmouseout="hideTip(event, 'fs6', 38)" onmouseover="showTip(event, 'fs6', 38)" class="i">scene</span><span class="o">:</span><span class="i">Scene</span>) <span class="o">=</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 39)" onmouseover="showTip(event, 'fs17', 39)" class="i">cubeStart</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">BoxGeometry</span>(<span class="n">1.</span>, <span class="n">1.</span>, <span class="n">1.</span>)
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 40)" onmouseover="showTip(event, 'fs18', 40)" class="i">matProps</span> <span class="o">=</span> <span class="i">createEmpty</span><span class="o">&lt;</span><span class="i">Three</span><span class="o">.</span><span class="i">MeshLambertMaterialParameters</span><span class="o">&gt;</span>
+    <span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="i">matProps</span><span class="o">.</span><span class="i">color</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs19', 42)" onmouseover="showTip(event, 'fs19', 42)" class="i">Some</span> (<span class="i">U2</span><span class="o">.</span><span class="i">Case2</span> <span class="s">&quot;#9430B3&quot;</span>)
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 43)" onmouseover="showTip(event, 'fs20', 43)" class="i">cube</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">BufferGeometry</span>()<span class="o">.</span><span class="i">fromGeometry</span>(<span onmouseout="hideTip(event, 'fs17', 44)" onmouseover="showTip(event, 'fs17', 44)" class="i">cubeStart</span>);
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 45)" onmouseover="showTip(event, 'fs21', 45)" class="i">mesh</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">Mesh</span>(<span onmouseout="hideTip(event, 'fs20', 46)" onmouseover="showTip(event, 'fs20', 46)" class="i">cube</span>, <span class="i">Three</span><span class="o">.</span><span class="i">MeshLambertMaterial</span>(<span onmouseout="hideTip(event, 'fs18', 47)" onmouseover="showTip(event, 'fs18', 47)" class="i">matProps</span>))
+
+    <span onmouseout="hideTip(event, 'fs6', 48)" onmouseover="showTip(event, 'fs6', 48)" class="i">scene</span><span class="o">.</span><span class="i">add</span>(<span onmouseout="hideTip(event, 'fs21', 49)" onmouseover="showTip(event, 'fs21', 49)" class="i">mesh</span>)
+    <span onmouseout="hideTip(event, 'fs20', 50)" onmouseover="showTip(event, 'fs20', 50)" class="i">cube</span>
+</code></pre></td>
+</tr>
+</table>
+<h4><em><strong>5:</strong> Action</em></h4>
+<p>Finally we're there. We can create a Scene and initialise all required elements by calling
+the functions we defined above. We return a 4-tuple of the 4 key graphics elements back to
+the caller so that those elements can be used later on in rendering / animation. In-fact,
+"the caller" is just the line of script at the bottom of the section, which creates top-level
+bindings to each of the key graphics elements.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 51)" onmouseover="showTip(event, 'fs22', 51)" class="f">action</span>() <span class="o">=</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 52)" onmouseover="showTip(event, 'fs23', 52)" class="i">scene</span> <span class="o">=</span> <span class="i">Three</span><span class="o">.</span><span class="i">Scene</span>()
+    <span onmouseout="hideTip(event, 'fs23', 53)" onmouseover="showTip(event, 'fs23', 53)" class="i">scene</span><span class="o">.</span><span class="i">autoUpdate</span> <span class="o">&lt;-</span> <span class="k">true</span>
+
+    <span onmouseout="hideTip(event, 'fs5', 54)" onmouseover="showTip(event, 'fs5', 54)" class="f">initLights</span> <span onmouseout="hideTip(event, 'fs23', 55)" onmouseover="showTip(event, 'fs23', 55)" class="i">scene</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 56)" onmouseover="showTip(event, 'fs24', 56)" class="i">camera</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs11', 57)" onmouseover="showTip(event, 'fs11', 57)" class="f">initCamera</span> ()
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 58)" onmouseover="showTip(event, 'fs14', 58)" class="i">renderer</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 59)" onmouseover="showTip(event, 'fs13', 59)" class="f">initRenderer</span> ()
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs25', 60)" onmouseover="showTip(event, 'fs25', 60)" class="i">cube</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs16', 61)" onmouseover="showTip(event, 'fs16', 61)" class="f">initGeometry</span> <span onmouseout="hideTip(event, 'fs23', 62)" onmouseover="showTip(event, 'fs23', 62)" class="i">scene</span>
+
+    <span onmouseout="hideTip(event, 'fs14', 63)" onmouseover="showTip(event, 'fs14', 63)" class="i">renderer</span>, <span onmouseout="hideTip(event, 'fs23', 64)" onmouseover="showTip(event, 'fs23', 64)" class="i">scene</span>, <span onmouseout="hideTip(event, 'fs24', 65)" onmouseover="showTip(event, 'fs24', 65)" class="i">camera</span>, <span onmouseout="hideTip(event, 'fs25', 66)" onmouseover="showTip(event, 'fs25', 66)" class="i">cube</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 67)" onmouseover="showTip(event, 'fs26', 67)" class="i">renderer</span>, <span onmouseout="hideTip(event, 'fs27', 68)" onmouseover="showTip(event, 'fs27', 68)" class="i">scene</span>, <span onmouseout="hideTip(event, 'fs28', 69)" onmouseover="showTip(event, 'fs28', 69)" class="i">camera</span>, <span onmouseout="hideTip(event, 'fs29', 70)" onmouseover="showTip(event, 'fs29', 70)" class="i">cube</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs22', 71)" onmouseover="showTip(event, 'fs22', 71)" class="f">action</span>()
+</code></pre></td>
+</tr>
+</table>
+<h3><em><strong>Making it</strong> move</em></h3>
+<p>So, as we're using the movies as an analogy, we actually ought to add some movement to the scene,
+a spinning cube is going to be much more impressive than a static one. Each frame we rotate the
+cube a little about each of its axes to make it appear to spin. The use of requestAnimationFrame
+(rather than a loop) ensures that the animation is paused if the render's target element isn't
+on screen.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 72)" onmouseover="showTip(event, 'fs30', 72)" class="f">render</span>() <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs29', 73)" onmouseover="showTip(event, 'fs29', 73)" class="i">cube</span><span class="o">.</span><span class="i">rotateX</span> ( <span class="n">0.003</span> ) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 74)" onmouseover="showTip(event, 'fs10', 74)" class="f">ignore</span>
+    <span onmouseout="hideTip(event, 'fs29', 75)" onmouseover="showTip(event, 'fs29', 75)" class="i">cube</span><span class="o">.</span><span class="i">rotateY</span> ( <span class="n">0.007</span> ) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 76)" onmouseover="showTip(event, 'fs10', 76)" class="f">ignore</span>
+    <span onmouseout="hideTip(event, 'fs29', 77)" onmouseover="showTip(event, 'fs29', 77)" class="i">cube</span><span class="o">.</span><span class="i">rotateZ</span> ( <span class="n">0.011</span> ) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 78)" onmouseover="showTip(event, 'fs10', 78)" class="f">ignore</span>
+    <span onmouseout="hideTip(event, 'fs26', 79)" onmouseover="showTip(event, 'fs26', 79)" class="i">renderer</span><span class="o">.</span><span class="i">render</span>(<span onmouseout="hideTip(event, 'fs27', 80)" onmouseover="showTip(event, 'fs27', 80)" class="i">scene</span>, <span onmouseout="hideTip(event, 'fs28', 81)" onmouseover="showTip(event, 'fs28', 81)" class="i">camera</span>)
+
+<span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs31', 82)" onmouseover="showTip(event, 'fs31', 82)" class="f">animate</span> (<span onmouseout="hideTip(event, 'fs32', 83)" onmouseover="showTip(event, 'fs32', 83)" class="i">dt</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs33', 84)" onmouseover="showTip(event, 'fs33', 84)" class="t">float</span>) <span class="o">=</span>
+    <span class="i">Browser</span><span class="o">.</span><span class="i">window</span><span class="o">.</span><span class="i">requestAnimationFrame</span>(<span onmouseout="hideTip(event, 'fs34', 85)" onmouseover="showTip(event, 'fs34', 85)" class="i">Func</span><span class="o">&lt;</span>_,_<span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs31', 86)" onmouseover="showTip(event, 'fs31', 86)" class="i">animate</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 87)" onmouseover="showTip(event, 'fs10', 87)" class="f">ignore</span>
+    <span onmouseout="hideTip(event, 'fs30', 88)" onmouseover="showTip(event, 'fs30', 88)" class="f">render</span>()
+
+<span onmouseout="hideTip(event, 'fs31', 89)" onmouseover="showTip(event, 'fs31', 89)" class="f">animate</span>(<span class="n">0.0</span>) <span class="c">// Start the animation going</span>
+</code></pre></td>
+</tr>
+</table>
+
+<div class="tip" id="fs1">namespace System</div>
+<div class="tip" id="fs2">namespace Microsoft.FSharp.Core</div>
+<div class="tip" id="fs3">val width : unit -&gt; float<br /><br />Full name: 06-22-fable-threejs-hello_.width</div>
+<div class="tip" id="fs4">val height : unit -&gt; float<br /><br />Full name: 06-22-fable-threejs-hello_.height</div>
+<div class="tip" id="fs5">val initLights : scene:&#39;a -&gt; &#39;b<br /><br />Full name: 06-22-fable-threejs-hello_.initLights</div>
+<div class="tip" id="fs6">val scene : &#39;a</div>
+<div class="tip" id="fs7">val ambientLight : obj</div>
+<div class="tip" id="fs8">val spotLight : obj</div>
+<div class="tip" id="fs9">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.set</div>
+<div class="tip" id="fs10">val ignore : value:&#39;T -&gt; unit<br /><br />Full name: Microsoft.FSharp.Core.Operators.ignore</div>
+<div class="tip" id="fs11">val initCamera : unit -&gt; &#39;a<br /><br />Full name: 06-22-fable-threejs-hello_.initCamera</div>
+<div class="tip" id="fs12">val camera : &#39;a</div>
+<div class="tip" id="fs13">val initRenderer : unit -&gt; &#39;a<br /><br />Full name: 06-22-fable-threejs-hello_.initRenderer</div>
+<div class="tip" id="fs14">val renderer : &#39;a</div>
+<div class="tip" id="fs15">val container : obj</div>
+<div class="tip" id="fs16">val initGeometry : scene:&#39;a -&gt; &#39;b<br /><br />Full name: 06-22-fable-threejs-hello_.initGeometry</div>
+<div class="tip" id="fs17">val cubeStart : obj</div>
+<div class="tip" id="fs18">val matProps : obj</div>
+<div class="tip" id="fs19">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs20">val cube : &#39;b</div>
+<div class="tip" id="fs21">val mesh : obj</div>
+<div class="tip" id="fs22">val action : unit -&gt; &#39;a * &#39;b * &#39;c * &#39;d<br /><br />Full name: 06-22-fable-threejs-hello_.action</div>
+<div class="tip" id="fs23">val scene : &#39;b</div>
+<div class="tip" id="fs24">val camera : &#39;c</div>
+<div class="tip" id="fs25">val cube : &#39;d</div>
+<div class="tip" id="fs26">val renderer : obj<br /><br />Full name: 06-22-fable-threejs-hello_.renderer</div>
+<div class="tip" id="fs27">val scene : obj<br /><br />Full name: 06-22-fable-threejs-hello_.scene</div>
+<div class="tip" id="fs28">val camera : obj<br /><br />Full name: 06-22-fable-threejs-hello_.camera</div>
+<div class="tip" id="fs29">val cube : obj<br /><br />Full name: 06-22-fable-threejs-hello_.cube</div>
+<div class="tip" id="fs30">val render : unit -&gt; &#39;a<br /><br />Full name: 06-22-fable-threejs-hello_.render</div>
+<div class="tip" id="fs31">val animate : dt:float -&gt; &#39;a<br /><br />Full name: 06-22-fable-threejs-hello_.animate</div>
+<div class="tip" id="fs32">val dt : float</div>
+<div class="tip" id="fs33">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
+<div class="tip" id="fs34">Multiple items<br />type Func&lt;&#39;TResult&gt; =<br />&#160;&#160;delegate of unit -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;T12,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 * &#39;T12 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;T12,&#39;T13,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 * &#39;T12 * &#39;T13 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;T12,&#39;T13,&#39;T14,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 * &#39;T12 * &#39;T13 * &#39;T14 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;T12,&#39;T13,&#39;T14,&#39;T15,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 * &#39;T12 * &#39;T13 * &#39;T14 * &#39;T15 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_&gt;<br /><br />--------------------<br />type Func&lt;&#39;T1,&#39;T2,&#39;T3,&#39;T4,&#39;T5,&#39;T6,&#39;T7,&#39;T8,&#39;T9,&#39;T10,&#39;T11,&#39;T12,&#39;T13,&#39;T14,&#39;T15,&#39;T16,&#39;TResult&gt; =<br />&#160;&#160;delegate of &#39;T1 * &#39;T2 * &#39;T3 * &#39;T4 * &#39;T5 * &#39;T6 * &#39;T7 * &#39;T8 * &#39;T9 * &#39;T10 * &#39;T11 * &#39;T12 * &#39;T13 * &#39;T14 * &#39;T15 * &#39;T16 -&gt; &#39;TResult<br /><br />Full name: System.Func&lt;_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_&gt;</div>
+
+
+<h3 class="blueViolet">
+	<em> Comments </em>
+</h3>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES * * */
+	var disqus_shortname = 'progletariat';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>	
+
+	<footer>
+	    <div>
+			Text: &copy; Andy H 2018
+		</div>
+    </footer>
+    <script src="/javascripts/scale.fix.js"></script>
+  </body>
+</html>

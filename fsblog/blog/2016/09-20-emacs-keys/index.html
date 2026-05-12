@@ -1,0 +1,414 @@
+
+<html>
+  <head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Emacs-Keys</title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/fsharp.formatting/tooltips.css" />
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/default.css">
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/monokai-sublime.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+
+	<script type="text/javascript" src="/fsharp.formatting/tooltips.js"></script>
+    <script src="/javascripts/highlight.pack.js"></script>
+    <script src="/javascripts/multifunctional.js"></script>
+
+	<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-102004520-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0a1d2d">
+    <meta name="apple-mobile-web-app-title" content="Progletariat">
+    <meta name="application-name" content="Progletariat">
+    <meta name="theme-color" content="#0a1d2d">
+
+  </head>
+  <body>
+	<h1>
+		<div>
+			<a href="/index.html">Pro<i>g</i>letariat</a>
+		</div>
+	</h1>
+	
+
+
+<h2><strong> EMACS: Key <em>Keys</em> </strong></h2>
+<h5>Files / Buffers</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>C-x C-f</p></td>
+<td><p>Open file</p></td>
+<td><p>C-x b <name></p></td>
+<td><p>New buffer</p></td>
+</tr>
+<tr class="even">
+<td><p>C-x C-s</p></td>
+<td><p>Save file</p></td>
+<td><p>C-x k</p></td>
+<td><p>Kill buffer</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-x b</p></td>
+<td><p>Switch buffer</p></td>
+<td><p>C-g</p></td>
+<td><p>Abandon command</p></td>
+</tr>
+<tr class="even">
+<td><p>C-x C-c</p></td>
+<td><p>Quit emacs</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h5>Navigation</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>C-b</p></td>
+<td><p>Back 1 char</p></td>
+<td><p>C-f</p></td>
+<td><p>Forward 1 char</p></td>
+</tr>
+<tr class="even">
+<td><p>M-b</p></td>
+<td><p>Back 1 word</p></td>
+<td><p>M-f</p></td>
+<td><p>Forward 1 word</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-a</p></td>
+<td><p>Start of line</p></td>
+<td><p>C-e</p></td>
+<td><p>End of line</p></td>
+</tr>
+<tr class="even">
+<td><p>M-a</p></td>
+<td><p>Start of block</p></td>
+<td><p>M-e</p></td>
+<td><p>End of block</p></td>
+</tr>
+<tr class="odd">
+<td><p>M-&lt;</p></td>
+<td><p>Start of buffer</p></td>
+<td><p>M-&gt;</p></td>
+<td><p>End of buffer</p></td>
+</tr>
+<tr class="even">
+<td><p>M-v</p></td>
+<td><p>Back 1 screen</p></td>
+<td><p>C-v</p></td>
+<td><p>Forwards 1 screen</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-p</p></td>
+<td><p>Previous line (up)</p></td>
+<td><p>C-n</p></td>
+<td><p>Next line (down)</p></td>
+</tr>
+<tr class="even">
+<td><p>M-a</p></td>
+<td><p>Move first non-whitespace</p></td>
+<td><p>Or...</p></td>
+<td><p>Just use the arrow keys</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3><em>Even <strong>more</strong> Keys</em></h3>
+<h5>Windows</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>C-x o q</p></td>
+<td><p>Close window</p></td>
+<td><p>C-x 1</p></td>
+<td><p>Delete all other windows</p></td>
+</tr>
+<tr class="even">
+<td><p>C-x o</p></td>
+<td><p>Switch windows</p></td>
+<td><p>C-x 2</p></td>
+<td><p>Split frame top / bottom</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-x 0</p></td>
+<td><p>Delete current window</p></td>
+<td><p>C-x 3</p></td>
+<td><p>Split frame left / right</p></td>
+</tr>
+</tbody>
+</table>
+
+<h5>Help / Search</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>C-h k <keys></p></td>
+<td><p>Help on key binding</p></td>
+<td><p>C-s</p></td>
+<td><p>Search (regex)</p></td>
+</tr>
+<tr class="even">
+<td><p>C-h f <func></p></td>
+<td><p>Describe function</p></td>
+<td><p>C-r</p></td>
+<td><p>Search backwards</p></td>
+</tr>
+<tr class="odd">
+<td><p>M-g g</p></td>
+<td><p>Go to line</p></td>
+<td><p>C-c C-d C-a</p></td>
+<td><p>Free text doc search</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td><p>C-c C-d C-d</p></td>
+<td><p>Display documentation</p></td>
+</tr>
+</tbody>
+</table>
+
+<h4><em>Editing <strong>and</strong> Packages</em></h4>
+<h5>Editing</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>C-k</p></td>
+<td><p>Kill line</p></td>
+<td><p>M-w</p></td>
+<td><p>Copy to kill ring</p></td>
+</tr>
+<tr class="even">
+<td><p>C-/</p></td>
+<td><p>Undo</p></td>
+<td><p>C-w</p></td>
+<td><p>Cut to kill ring</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-space</p></td>
+<td><p>Start mark region</p></td>
+<td><p>M-d</p></td>
+<td><p>Cut word</p></td>
+</tr>
+<tr class="even">
+<td><p>C-u n <cmd></p></td>
+<td><p>Repeat command n times</p></td>
+<td><p>C-y</p></td>
+<td><p>Yank from kill ring (paste)</p></td>
+</tr>
+<tr class="odd">
+<td><p>M-/</p></td>
+<td><p>Expand</p></td>
+<td><p>M-y</p></td>
+<td><p>Kill selected text and replace it with last killed item</p></td>
+</tr>
+<tr class="even">
+<td><p>M-\</p></td>
+<td><p>Delete surrounding space</p></td>
+<td><p>C-j</p></td>
+<td><p>Newline and indent</p></td>
+</tr>
+</tbody>
+</table>
+
+<h5>Packages</h5>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+<th><p>Keys</p></th>
+<th><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>M-x package-refresh-contents</p></td>
+<td><p>Refresh list of known packages</p></td>
+<td><p>M-x clojure-mode</p></td>
+<td><p>Enter clojure mode</p></td>
+</tr>
+<tr class="even">
+<td><p>M-x package-list-packages</p></td>
+<td><p>List packages</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>M-x package-install <name></p></td>
+<td><p>Install package</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3><em><strong>Cider</strong> REPL</em></h3>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>M-x cider-jack-in</p></td>
+<td><p>Start CIDER clojure REPL</p></td>
+<td><p>C-Enter</p></td>
+<td><p>Evaluate</p></td>
+</tr>
+<tr class="even">
+<td><p>C-x C-e</p></td>
+<td><p>Eval expression to left of cursor</p></td>
+<td><p>C-u C-x C-e</p></td>
+<td><p>Print to right of cursor, result of expr to left of cursor</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-x C-k</p></td>
+<td><p>Compile buffer into REPL</p></td>
+<td><p>a</p></td>
+<td><p>In stack trace - expand / collapse details</p></td>
+</tr>
+<tr class="even">
+<td><p>M-, / M-.</p></td>
+<td><p>Navigate to source / back from source</p></td>
+<td><p>C-c M-n</p></td>
+<td><p>Set REPL namespace to match current file</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-upArrow</p></td>
+<td><p>Command history - back</p></td>
+<td><p>C-downArrow</p></td>
+<td><p>Command history - forwards</p></td>
+</tr>
+</tbody>
+</table>
+
+<h4><em><strong>Paredit</strong> mode</em></h4>
+<table>
+<thead>
+<tr class="header">
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+<th><p>Keys</p></th>
+<th><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>M-x paredit-mode</p></td>
+<td><p>Enable paredit</p></td>
+<td><p>C-M-f</p></td>
+<td><p>Move forwards one expression</p></td>
+</tr>
+<tr class="even">
+<td><p>M-(</p></td>
+<td><p>Wrap brackets around point</p></td>
+<td><p>C-M-b</p></td>
+<td><p>Move backwards one expression</p></td>
+</tr>
+<tr class="odd">
+<td><p>C-rightArrow</p></td>
+<td><p>Slurp; move bracket after next token</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>C-leftArrow</p></td>
+<td><p>Barf; move bracket before next token</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+<h3 class="blueViolet">
+	<em> Comments </em>
+</h3>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES * * */
+	var disqus_shortname = 'progletariat';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>	
+
+	<footer>
+	    <div>
+			Text: &copy; Andy H 2018
+		</div>
+    </footer>
+    <script src="/javascripts/scale.fix.js"></script>
+  </body>
+</html>

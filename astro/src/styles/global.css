@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: "Cabin", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Oleo Script", cursive, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-vast-shadow: "Vast Shadow", "Oleo Script", cursive, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --breakpoint-hsm: 37rem;
+}
+
+@utility prose-hutch {
+  --tw-prose-body: var(--color-cyan-950);
+  --tw-prose-invert-body: var(--color-white);  
+  --tw-prose-headings: var(--color-cyan-600);
+  --tw-prose-invert-headings: var(--color-cyan-500);  
+}
+
+@layer base {
+
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+  }
+  
+  body {
+    @apply flex min-h-svh flex-col text-sm md:text-base lg:text-lg;
+  }
+
+  button {
+    @apply bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 border-b-4 border-r-3 hover:border-b-0 hover:border-r-0 hover:border-l-3 hover:border-t-4 border-cyan-700 hover:border-cyan-700 rounded;
+  }
+
+  button.answerCorrect {
+    @apply bg-emerald-500;
+  }
+
+  button.answerIncorrect {
+    @apply bg-red-500;
+  }
+
+  p {
+    @apply text-base lg:text-lg;
+  }
+  
+  #name {
+    @apply font-vast-shadow underline decoration-2 decoration-double underline-offset-5 underline text-4xl hsm:text-5xl;
+  }
+
+  #name #andy {
+    @apply hidden hsm:inline;
+  }
+
+  .never-used {
+    color:  color-orange-500; /* stops colours being optimized out */
+  }
+
+  .menuPill {
+    @apply items-center justify-center border font-sans font-medium text-center duration-100 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-base py-2 px-4 shadow-sm hover:shadow-md bg-orange-500 hover:bg-orange-400 border-stone-900 text-stone-50 rounded-full transition antialiased;
+  }
+
+  .footerPill {
+    @apply rounded-full aspect-square border-cyan-500 items-center justify-center font-sans font-medium text-center duration-100 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-base py-2 px-4 rounded-full transition antialiased;
+  }
+
+}
+
+@utility markdown-hutch {
+
+  h1+blockquote p {
+    @apply text-orange-500 font-mono not-italic font-bold;
+  }
+
+  h1+blockquote p::before {
+    content: "Page built with: ";
+  }
+
+  blockquote p::after {
+    content: "";
+  }
+ 
+}

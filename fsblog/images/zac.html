@@ -1,0 +1,68 @@
+<html>
+
+  <head>
+
+    <style>
+ 
+      #zacface {
+
+        background-image: url("zacFace.png");
+        width: 172px;
+        height: 200px;
+        position: absolute;
+
+      }
+
+    </style>
+
+    <script>
+
+      var zl = 0;
+      var zt = 0;
+      var zr = 0;
+
+      var zld = 10;
+      var ztd = 10;
+      var zrd = 10;
+
+      function zacanimate () {
+  
+        var zac = document.getElementById ("zacface");
+        
+        if (zl > window.innerWidth - 182)
+          zld = -10;
+        else if (zl < 0)
+          zld = 10;
+
+        if (zt > window.innerHeight - 210)
+          ztd = -10;
+        else if (zt < 0)
+          ztd = 10;
+
+        zl = zl + zld;
+        zt = zt + ztd;
+        zr = zr + zrd;
+
+        zac.style.left = "" + zl + "px";
+        zac.style.top  = "" + zt + "px";
+        zac.style.transform = "rotate(" + zr + "deg)"
+
+      }
+
+      setInterval( zacanimate, 50 );
+
+    </script>
+
+  </head>
+
+  <body>
+
+    hi, i'm zac ;-)
+
+    <div id="zacface">
+       
+    </div>
+
+  </body>
+
+</html>

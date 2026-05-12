@@ -1,0 +1,296 @@
+
+<html>
+  <head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>FParsec Palette</title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/fsharp.formatting/tooltips.css" />
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/default.css">
+	<link rel="stylesheet" href="/stylesheets/highlightStyles/monokai-sublime.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+
+	<script type="text/javascript" src="/fsharp.formatting/tooltips.js"></script>
+    <script src="/javascripts/highlight.pack.js"></script>
+    <script src="/javascripts/multifunctional.js"></script>
+
+	<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-102004520-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0a1d2d">
+    <meta name="apple-mobile-web-app-title" content="Progletariat">
+    <meta name="application-name" content="Progletariat">
+    <meta name="theme-color" content="#0a1d2d">
+
+  </head>
+  <body>
+	<h1>
+		<div>
+			<a href="/index.html">Pro<i>g</i>letariat</a>
+		</div>
+	</h1>
+	
+
+
+<h2><strong> FParsec: <em>Palette</em> </strong></h2>
+<p><strong>At last, the single page reference to both FParsec and FParsec-Pipes that you've been waiting your whole life for</strong>.
+<a href="http://www.quanttec.com/fparsec/">FParsec</a> is an amazing <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinator</a>
+library for F# written by Stephan Tolksdorf (and based on Haskell's <a href="https://wiki.haskell.org/Parsec">Parsec</a>). Learning it means
+holding quite a lot of different function names in your head, so here's an attempt to provide a single page cheat-sheet.</p>
+<div class="palette fewerColumnsPalette">
+<blockquote>
+<h2>Single Char Parsers</h2>
+<ul>
+<li>pchar c</li>
+<li>skipChar c</li>
+<li>charReturn c v</li>
+<li>anyChar {+skip}</li>
+<li>satisfy fcb {+skip}{+label}</li>
+<li>anyOf s {+skip}</li>
+<li>noneOf s {+skip}</li>
+<li>letter {+ascii}</li>
+<li>lower {+ascii}</li>
+<li>upper {+ascii}</li>
+<li>digit</li>
+<li>hex</li>
+<li>octal</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Numeric Parsers</h2>
+<ul>
+<li>pfloat</li>
+<li>p[u]int8/16/32/64</li>
+<li>numberLiteral options label</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Direct String Parsers</h2>
+<ul>
+<li>pstring s {+CI}</li>
+<li>skipString s {+CI}</li>
+<li>stringReturn s {+CI}</li>
+<li>anyString n {+skip}</li>
+<li>restOfLine b {+skip}</li>
+<li>regex r</li>
+<li>charsTillString s b n {+skip}{+CI}</li>
+<li>identifier o</li>
+<li>many[1]Satisfy fcb {+skip}</li>
+<li>many[1]Satisfy2 fhcb ftcb {+skip}{+label}</li>
+<li>manyMinMaxSatisfy n m fcb {+skip}{+label}</li>
+<li>manyMinMaxSatisfy2 n m fhcb ftcp {+skip}{+label}</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Composite String Parsers</h2>
+<ul>
+<li>many[1]Chars cp</li>
+<li>many[1]Chars2 cph cpt</li>
+<li>manyCharsTill cp endp {+apply}</li>
+<li>manyCharsTill2 cph cpt endp {+apply}</li>
+<li>many[1]Strings sp</li>
+<li>many[1]Strings2 sph spt</li>
+<li>stringsSepBy sp sep</li>
+<li>skipped p</li>
+<li>withSkippedString f p</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Whitespace Parsers</h2>
+<ul>
+<li>newline {+skip}</li>
+<li>unicodeNewLine {+skip}</li>
+<li>newlineReturn v</li>
+<li>unicodeNewlineReturn v</li>
+<li>spaces[1] (includes newlines)</li>
+<li>unicodeSpaces[1] (includes newlines)</li>
+<li>eof</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Chaining Parsers</h2>
+<ul>
+<li>preturn x</li>
+<li>p &gt;&gt;% x</li>
+<li>p |&gt;&gt; f</li>
+<li>p &gt;&gt;= fp</li>
+<li>pl &gt;&gt;. pr (take right)</li>
+<li>pl .&gt;&gt; pr (take left)</li>
+<li>pl .&gt;&gt;. pr (take both)</li>
+<li>between pLeft pRight p</li>
+<li>tuple2/3/4/5 p1 p2 ...</li>
+<li>pipe2/3/4/5 p1 p2 ... f</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Sequence Parsers</h2>
+<ul>
+<li>parray n p</li>
+<li>skipArray n p</li>
+<li>many[1] p {+skip}</li>
+<li>sepBy[1] p pSep {+skip}</li>
+<li>sepEndBy[1] p pSep {+skip}</li>
+<li>many[1]Till p pEnd {+skip}</li>
+<li>chainl[1] p pSepOp</li>
+<li>chainr[1] p pSepOp</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Optional Parsers</h2>
+<ul>
+<li>p1 <|> pOnlyTryIfP1FailedOnFirstToken</li>
+<li>choice seqOfParsers</li>
+<li>p <|>% x</li>
+<li>opt p</li>
+<li>optional p</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Backtracking Parsers</h2>
+<ul>
+<li>attempt pAttemptButBacktrackIfFails</li>
+<li>pBacktrackIfFails &gt;&gt;? pBacktrackIfFailsFirstToken</li>
+<li>pBacktrackIfFails .&gt;&gt;? pBacktrackIfFailsFirstToken</li>
+<li>pBacktrackIfFails .&gt;&gt;.? pBacktrackIfFailsFirstToken</li>
+<li>pBacktrackIfFails &gt;&gt;=? fpBacktrackIfFailsFirstToken</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Conditional Look Ahead Parsers</h2>
+<ul>
+<li>notEmpty p</li>
+<li>[not]followedBy p {+label}</li>
+<li>notFollowedByEof</li>
+<li>[not]followedByString[CI] s</li>
+<li>next[2]CharSatisfies[Not] fcb</li>
+<li>previousCharSatisfies[Not] fcb</li>
+<li>lookAhead p</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Error Messaging Parsers</h2>
+<ul>
+<li>p < ? > label</li>
+<li>p < ?? > label</li>
+<li>fail msg</li>
+<li>failFatally msg</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>State Handling Parsers</h2>
+<ul>
+<li>getUserState</li>
+<li>setUserState u</li>
+<li>updateUserState f</li>
+<li>userStateSatisfies f</li>
+<li>getPosition</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+<h3><em>FParsec <strong>Pipes</strong></em></h3>
+<p><a href="https://github.com/rspeele/FParsec-Pipes">FParsec Pipes</a> is an independent extension to FParsec, written by Robert Peele.
+It adds some new operators and combinators that make it (arguably) more intuitive to translate a grammar into a parser.
+The <a href="http://rspeele.github.io/FParsec-Pipes/Intro.html">documentation</a> for Pipes is actually pretty concise, but I wanted
+a single page reference to both libraries so I've documented some of it below.</p>
+<div class="palette fewerColumnsPalette">
+<blockquote>
+<h2>Default Parsers</h2>
+<ul>
+<li>%"a specific string" // pstring ...</li>
+<li>%ci "case insensitive" // pstringCI ...</li>
+<li>%'c' // pchar ...</li>
+<li>%ci 'c' // pcharCI ...</li>
+<li>%['a'; 'b'] // choice [...]</li>
+<li>%["hello"; "there"] // choice [...]</li>
+<li>%[pint32; pMyParser] // choice [...]</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Parsers For Types</h2>
+<ul>
+<li>%p< int > // pint32</li>
+<li>%p< uint16 > // puint16</li>
+<li>%p< float > // pfloat</li>
+<li>%p< Position > // getPosition</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Pipes</h2>
+<ul>
+<li>%% // start a pipe</li>
+<li>-- // build pipe</li>
+<li>+. // capture element</li>
+<li>-|&gt; // empty captured pipe elements to func</li>
+<li>-%&gt; auto // empty captured pipe elements to tuple</li>
+<li>?- // wrap left side in an attempt</li>
+<li>-? // attempts left side and then .&gt;&gt;.? right</li>
+</ul>
+</blockquote>
+<hr />
+<blockquote>
+<h2>Repeats and Separations</h2>
+<ul>
+<li>pA * qty.[3..] // 3+ pAs</li>
+<li>qty.[2..4] / ',' * pA // 2 to 4 pAs - sepBy comma</li>
+<li>qty.[..5] / ',' * pA // up to 5 pAs - sepEndBy comma</li>
+</ul>
+</blockquote>
+<hr />
+</div>
+
+
+
+<h3 class="blueViolet">
+	<em> Comments </em>
+</h3>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES * * */
+	var disqus_shortname = 'progletariat';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>	
+
+	<footer>
+	    <div>
+			Text: &copy; Andy H 2018
+		</div>
+    </footer>
+    <script src="/javascripts/scale.fix.js"></script>
+  </body>
+</html>

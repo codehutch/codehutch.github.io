@@ -1,0 +1,42 @@
+---
+layout: ../../src/layouts/Layout.astro
+title: AZ-900 Questions - Part 1 
+description: A quiz (written in React) to help you revise for Microsoft's AZ-900 exam 
+---
+
+import Counter from '../../src/components/Counter.jsx';
+import Counter2 from '../../src/components/react/Counter2.jsx';
+import Answer from '../../src/components/react/quiz/Answer.jsx';
+import Question from '../../src/components/react/quiz/Question.jsx';
+export const published = new Date('2022-02-01');
+
+# AZ-900 - Practice Questions
+
+> Astro | React | MDX
+
+Some practice questions for Microsoft's AZ-900 exam. The question / answer components
+on this page are built with React. 
+
+## Part 2
+
+We also support syntax highlighting in MDX out-of-the-box! This example uses the default [Shiki](https://shiki.style) theme. See the [MDX integration docs](https://docs.astro.build/en/guides/integrations-guide/mdx/#configuration) for configuration options.
+
+### Part 3
+
+We never support syntax highlighting in MDX out-of-the-box! This example uses the default [Shiki](https://shiki.style) theme. See the [MDX integration docs](https://docs.astro.build/en/guides/integrations-guide/mdx/#configuration) for configuration options.
+
+#### Part 4
+
+We never support syntax highlighting in MDX out-of-the-box! This example uses the default [Shiki](https://shiki.style) theme. See the [MDX integration docs](https://docs.astro.build/en/guides/integrations-guide/mdx/#configuration) for configuration options.
+
+Cat's are _undoubtedly_ the best pet __but__ some people like dogs
+
+<Question client:idle 
+ answers={[
+    "cat", 
+    "dog",
+    "fish"
+ ]}
+>
+    What's your best pet?
+</Question>

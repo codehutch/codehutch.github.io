@@ -1,0 +1,605 @@
+/**
+* Progletariat.com Blog CSS
+*
+* Copyright Andy Hutchinson 2015
+*
+* You are welcome to lift the layout, but please change the
+* colours and fonts to make it a bit different.
+*
+* This CSS is a bit strange as it needs to be compatible with
+* the output of a markdown -> html processor.
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic|Open+Sans:400,800);
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+	margin: 0 0 2.5rem 0;
+	padding: 1.0rem 2.0rem 1.0rem 2.0rem;
+	font-size: 16pt;
+	color: rgb(10, 29, 45);
+    font-family: 'Open Sans', sans-serif;
+	padding: 0;
+}
+
+h1 {
+	margin: 0;
+	font-size: 1.75rem;
+	font-weight: normal;
+    border-bottom: 2px solid rgb(50, 157, 202);
+    font-family: 'Gentium Book Basic', serif;
+	padding: 0.1em 0em 0.1em 0em;
+	position: fixed;
+	width: 100%;
+	color: white;
+	background-color: rgb(10, 29, 45);
+}
+
+h1 div a {
+	text-decoration: none;
+	color: white;
+	transition: color 0.2s ease;
+}
+
+h1 div a:visited {
+	text-decoration: none;
+	color: white;
+}
+
+h1 div a:hover {
+	text-decoration: none;
+	color: rgb(235, 189, 49);
+}
+
+h1 div a:active {
+	text-decoration: none;
+	color: rgb(204, 223, 80);
+}
+
+h2 {
+	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 44px;
+	font-weight: 800;
+	font-style: normal;
+	padding-bottom: 0.15em;
+	padding-top: 2.75rem;
+	border-bottom: 0px solid black;
+	color: white;
+    background-color: rgb(93, 48, 171);
+}
+
+h2 strong {
+    display: block;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 44px;
+	font-weight: 800;
+	font-style: normal;
+}
+
+h2 strong em {
+    font-family: 'Gentium Book Basic', serif;
+	font-size: 52px;
+	font-weight: normal;
+	font-style: italic;
+}
+
+h3,
+h4 {
+    padding-top: 1rem;
+	padding-bottom: 1rem;
+    font-family: 'Gentium Book Basic', serif;
+	font-size: 40px;
+	font-weight: normal;
+	margin-top: 1rem;
+	margin-bottom: 1.5rem;
+	color: white;
+}
+
+h2+h3 {
+	margin-top: 0;
+    border-top: 2px	solid rgb(204, 223, 80);
+	border-bottom: 2px solid rgb(235, 189, 49);
+}
+
+h3 {
+	background-color: rgb(50, 157, 202);
+}
+
+h4 {
+	background-color: rgb(148, 48, 179);
+}
+
+h3 em,
+h4 em {
+    display: block;
+	font-style: italic;
+}
+
+h3 em strong,
+h4 em strong {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 36px;
+	font-weight: 800;
+	font-style: normal;
+}
+
+h5, h6 {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 800;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+h5 { font-size: 0.95em; }
+h6 { font-size: 0.85em; }
+
+p.noCols, p.noCol, p.oneCol, table p {
+	column-count: 1;
+	-webkit-column-count: 1;
+	-moz-column-count: 1;
+}
+
+table p {
+	margin: 0;
+	padding: 1em;
+}
+
+
+div.flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+code, pre.fssnip, pre.highlighted {
+  font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', 'Droid Sans Mono', Terminal, 'Lucida Grande', monospace;
+  font-size: 20px;
+  padding:2px 3px;
+  color:#d14;
+  background-color: transparent;
+  -webkit-border-radius:3px;
+  -moz-border-radius:3px;
+  border-radius:3px;
+  column-count: 1;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+}
+
+code.hljs {
+  background-color: transparent;
+}
+
+table {
+	width: 100%;
+	padding-left: 0em !important;
+    padding-right: 0em !important;
+}
+
+table.pre {
+	width: auto;
+    background-repeat: no-repeat;
+    background-position: right 5px top 5px;
+    background-size: 48px 48px;
+	background-color: #212d30;
+	margin: 0rem auto 0.5rem auto !important;
+	padding-left: 0.75em !important;
+    padding-right: 0.75em !important;
+}
+
+table.pre caption {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 800;
+	font-size: 15px;
+	background-color: white;
+	color: rgb(10, 29, 45);
+	border-radius: 7px;
+	float: left;
+	text-align: center;
+	padding-left: 0.5rem;
+	padding-right: 0.25rem;
+	padding-bottom: 0.15rem;
+}
+
+table.fsharp {
+  background-image: url("/images/fsharpLogo.png");
+}
+
+table.clojure {
+  background-image: url("/images/clojureLogo.png");
+}
+
+table.haskell {
+  background-image: url("/images/haskellLogo.svg");
+}
+
+table.scala {
+  background-image: url("/images/scalaLogo.png");
+}
+
+td.lines {
+    display: none;
+}
+
+th {
+    background-color: rgb(93, 48, 171);
+	color: white;
+}
+
+td:nth-child(even) {
+	background-color: rgb(204, 223, 80);
+	color: rgb(10, 29, 45);
+}
+
+td:nth-child(odd) {
+	background-color: rgb(235, 189, 49);
+	color: rgb(10, 29, 45);
+}
+
+td:nth-child(1) {
+	background-color: skyblue;
+	color: rgb(10, 29, 45);
+}
+
+table.pre td {
+    background-color: inherit;
+}
+
+td p img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+ul { list-style: none; }
+
+ul li::before {
+  content: "\2022\0020";
+  font-weight: bold;
+}
+
+ul li:nth-child(5n+1):before { color: rgb(93, 48, 171); }
+ul li:nth-child(5n+2):before { color: rgb(148, 48, 179); }
+ul li:nth-child(5n+3):before { color: rgb(50, 157, 202); }
+ul li:nth-child(5n+4):before { color: rgb(209, 220, 14); }
+ul li:nth-child(5n+0):before { color: orange; }
+
+blockquote {
+    font-family: 'Gentium Book Basic', serif;
+	font-weight: normal;
+	font-style: italic;
+}
+
+footer {
+	position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1.5rem;
+    width: 100%;
+    padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+    font-family: 'Open Sans', sans-serif;
+	font-size: 12pt;
+	font-weight: normal;
+	margin: 0;
+	margin-top: 1rem;
+	color: white;
+	background-color: rgb(10, 29, 45);
+    border-top: 2px solid rgb(50, 157, 202);
+}
+
+a {
+	transition: color 0.2s ease;
+	color: rgb(50, 157, 202);
+}
+
+a:visited {
+	color: rgb(148, 48, 179);
+}
+
+a:hover {
+	color: rgb(235, 189, 49);
+}
+
+a:active {
+	color: rgb(204, 223, 80);
+}
+
+button {
+	border: none;
+	border-radius: 2px;
+	display: inline-block;
+	height: 36px;
+	line-height: 36px;
+	padding: 0 1rem;
+	vertical-align: middle;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    -webkit-box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
+    outline: 0;
+}
+
+button:active {
+    outline: 0;
+	opacity: 0.75;
+}
+
+.definitionTerm  {
+	font-family: 'Times New Roman', 'times new roman', Times, serif;
+	font-size: 2.0rem;
+	font-weight: 800;
+	padding-bottom: 0.4rem;
+}
+
+.definitionNumber {
+	font-size: 1.0rem;
+	font-family: 'Times New Roman', 'times new roman', Times, serif;
+	font-weight: 800;
+}
+
+.definition {
+	font-size: 1.0rem;
+	font-weight: 400;
+	padding-right: 0 !important;
+	padding-bottom: 0.5rem;
+}
+
+.secondaryDefinition { display: none; }
+
+.tab {
+	text-indent: 4rem;
+}
+
+#graphicsContainer,
+.imageContainer {
+	margin: 0;
+	padding: 0;
+}
+
+#graphicsWrapper,
+.imageWrapper {
+    text-align: center;
+	margin-top: 1em;
+}
+
+#graphicsContainer {
+	margin: 0;
+	padding: 0;
+}
+
+.controls,
+.controls div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    text-align: center;
+}
+
+.buttonContainer {
+    width: 100%;
+	padding: 0;
+}
+
+.buttonContainer button {
+	margin-top: 1em;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+}
+
+.violet {
+	background-color: rgb(148, 48, 179);
+}
+
+.blueViolet {
+    background-color: rgb(93, 48, 171);
+}
+
+.blueGreen {
+	background-color: rgb(50, 157, 202);
+}
+
+.yellowGreen {
+	background-color: rgb(204, 223, 80);
+}
+
+.yellowOrange {
+	background-color: rgb(235, 189, 49);
+}
+
+.white { 
+	color: white;
+}
+
+.headingBlue {
+	background-color: rgb(10, 29, 45);
+}
+
+.palette blockquote {
+  border-radius: 8px;
+  background-color: white;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin: 0 0 0.5em 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  border: 3px solid rgb(148, 48, 179);
+}
+
+.palette hr {
+  display: none;
+}
+
+.palette blockquote h2 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  color: white;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 7px;
+  text-align: center;
+  padding: 0.25em;
+  font-size: 1em;
+  margin: 0;
+  margin-bottom: 0.1em;
+}
+
+.palette blockquote ul {
+  padding: 0.25em;
+  margin: 0;
+  line-height: 1.6em;
+  overflow: hidden;
+}
+
+.palette blockquote ul li {
+  display: inline;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: white;
+  padding: 0.1em 0.3em 0.2em 0.3em !important;
+  margin-left: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+}
+
+.palette blockquote ul li::before {
+  content: "";
+  display: none;
+}
+
+.palette blockquote:nth-child(10n+1) { border-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(10n+1) h2, .palette blockquote:nth-child(10n+1) ul li { background-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(10n+2) { border-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(10n+2) h2, .palette blockquote:nth-child(10n+2) ul li { background-color: rgb(93, 48, 171); }
+.palette blockquote:nth-child(10n+3) { border-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(10n+3) h2, .palette blockquote:nth-child(10n+3) ul li { background-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(10n+4) { border-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(10n+4) h2, .palette blockquote:nth-child(10n+4) ul li { background-color: rgb(148, 48, 179); }
+.palette blockquote:nth-child(10n+5) { border-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(10n+5) h2, .palette blockquote:nth-child(10n+5) ul li { background-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(10n+6) { border-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(10n+6) h2, .palette blockquote:nth-child(10n+6) ul li { background-color: rgb(50, 157, 202); }
+.palette blockquote:nth-child(10n+7) { border-color: rgb(209, 220, 14); }
+.palette blockquote:nth-child(10n+7) h2, .palette blockquote:nth-child(10n+7) ul li { background-color: rgb(209, 220, 14); }
+.palette blockquote:nth-child(10n+8) { border-color: rgb(209, 220, 14); }
+.palette blockquote:nth-child(10n+8) h2, .palette blockquote:nth-child(10n+8) ul li { background-color: rgb(209, 220, 14); }
+.palette blockquote:nth-child(10n+9) { border-color: orange; }
+.palette blockquote:nth-child(10n+9) h2, .palette blockquote:nth-child(10n+9) ul li { background-color: orange; }
+.palette blockquote:nth-child(10n+0) { border-color: orange; }
+.palette blockquote:nth-child(10n+0) h2, .palette blockquote:nth-child(10n+0) ul li { background-color: orange; }
+
+.palette {
+  -moz-column-count: 1;
+  -moz-columns: 1;
+  -webkit-columns: 1;
+  columns: 1;
+}
+
+@media screen and (min-width: 450px) {
+  .palette {
+    -moz-column-count: 2;
+    -moz-columns: 2;
+    -webkit-columns: 2;
+    columns: 2;
+  }
+  .fewerColumnsPalette {
+    -moz-column-count: 1;
+    -moz-columns: 1;
+    -webkit-columns: 1;
+    columns: 1;
+  }
+}
+
+@media screen and (min-width: 630px) {
+  h2 { font-size: 64px; }
+  h2 strong { font-size: 64px; }
+  h2 strong em { font-size: 72px; }
+  .definitionTerm  { font-size: 2.5rem; }
+  .secondaryDefinition { display: inherit; }
+  .palette {
+    -moz-column-count: 3;
+    -moz-columns: 3;
+    -webkit-columns: 3;
+    columns: 3;
+  }
+  .fewerColumnsPalette {
+    -moz-column-count: 1;
+    -moz-columns: 1;
+    -webkit-columns: 1;
+    columns: 1;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .palette {
+    -moz-column-count: 4;
+    -moz-columns: 4;
+    -webkit-columns: 4;
+    columns: 4;
+  }
+  .fewerColumnsPalette {
+    -moz-column-count: 2;
+    -moz-columns: 2;
+    -webkit-columns: 2;
+    columns: 2;
+  }
+  p {
+	column-count: 2;
+	-webkit-column-count: 2;
+	-moz-column-count: 2;
+	column-gap: 3em;
+	-webkit-column-gap: 3em;
+	-moz-column-gap: 3em;
+	column-rule-style: solid;
+	-webkit-column-rule-style: solid;
+	-moz-column-rule-style: solid;
+	column-rule-width: 2px;
+	-webkit-column-rule-width: 2px;
+	-moz-column-rule-width: 2px;
+	column-rule-color: #dedede;
+	-webkit-column-rule-color: #dedede;
+	-moz-column-rule-color: #dedede;
+  }
+}
+
+@media screen and (min-width: 3000px) {
+  .fewerColumnsPalette {
+    -moz-column-count: 4;
+    -moz-columns: 4;
+    -webkit-columns: 4;
+    columns: 4;
+  }
+}
+
+h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media screen and (min-width: 1850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 1600px; } }
+@media screen and (min-width: 2350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2100px; } }
+@media screen and (min-width: 2850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 2600px; } }
+@media screen and (min-width: 3350px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 3100px; } }
+@media screen and (min-width: 3850px) { h2 strong, h3 em, h4 em, h5, h6, p, div, table, table.pre, ul { max-width: 90%; } }

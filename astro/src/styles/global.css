@@ -11,11 +11,22 @@
   --breakpoint-hsm: 37rem;
 }
 
+@font-face { /* Load Vast Shadow again under an alias for colour trick on ^ accent */
+  font-family: 'VastShadow3';
+  src: url('/VastShadow3.woff2') format('woff2'),
+       url('/VastShadow3.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @utility prose-hutch {
   --tw-prose-body: var(--color-cyan-950);
   --tw-prose-invert-body: var(--color-white);  
   --tw-prose-headings: var(--color-cyan-600);
   --tw-prose-invert-headings: var(--color-cyan-500);  
+  --tw-prose-quote-borders: var(--color-orange-500);
+  --tw-prose-invert-quote-borders: var(--color-orange-500);  
 }
 
 @layer base {
@@ -78,7 +89,7 @@
   }
 
   h1+blockquote p::before {
-    content: "Page built with: ";
+    content: "Page ⚒️ with: ";
   }
 
   blockquote p::after {

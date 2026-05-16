@@ -26,7 +26,9 @@
   --tw-prose-headings: var(--color-cyan-600);
   --tw-prose-invert-headings: var(--color-cyan-500);  
   --tw-prose-quote-borders: var(--color-orange-500);
-  --tw-prose-invert-quote-borders: var(--color-orange-500);  
+  --tw-prose-invert-quote-borders: var(--color-orange-500); 
+  --tw-prose-links: var(--color-orange-600);
+  --tw-prose-invert-links: var(--color-orange-500);
 }
 
 @layer base {
@@ -89,11 +91,23 @@
   }
 
   h1+blockquote p::before {
-    content: "Page ⚒️ with: ";
+    content: "🛠️ with ❤️ ++ | ";
   }
 
-  blockquote p::after {
-    content: "";
+  h1+blockquote p::after {
+    content: " |";
   }
  
+  blockquote.tagline p {
+    @apply text-orange-500 font-mono not-italic font-bold;
+  }
+
+  blockquote.tagline p::before {
+    content: "";
+  }
+
+  blockquote.tagline p::after {
+    content: "";
+  }  
+
 }

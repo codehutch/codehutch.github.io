@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+export const published = new Date('2022-02-01');
+---
+
+<Layout>
+
+    <h1>Dummy Post for Styles in Embedded Blazor components</h1>
+
+    <p>
+        Stop styles that Astro doesn't "know" about from getting optimized out
+    </p>
+
+    <button class="px-4 py-2 mt-10 mb-10 bg-orange-500 text-white rounded hover:bg-orange-700">Some Button</button>
+
+    <div class="not-prose leading-normal grid grid-rows-20 grid-cols-20 aspect-square border-b-4 border-r-4 border-cyan-500">
+
+        <span class="border-t-4 border-l-4">&nbsp;</span>
+        <span class="border-t-4 border-t-cyan-500 border-l-4 border-l-cyan-500">&nbsp;</span>
+        <span class="border-t-4 border-t-transparent border-l-4 border-l-transparent">&nbsp;</span>        
+        <span class="border-t-4 bg-emerald-200 bg-pink-200">&nbsp;</span>        
+
+    </div>
+
+</Layout>

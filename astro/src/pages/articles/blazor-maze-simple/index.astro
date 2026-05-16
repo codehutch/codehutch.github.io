@@ -1,0 +1,103 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<style>
+
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke: #1b6ec2;
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+    display: none;
+}
+
+</style>
+
+<Layout>
+
+	<h1>Blazor Maze Simple</h1>
+
+    <blockquote>
+        <p>C# | Blazor | CSS-Grid</p>
+    </blockquote>
+
+    <p>
+        Hacky little maze generator in 80 lines of <strong>C# / Blazor</strong>. 
+        Using <strong>CSS-Grid</strong> to hold the maze status. 
+        <strong>Press the button</strong> below to generate a maze...
+    </p>
+
+    <div id="app" class="not-prose">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+	<script is:inline src="/articles/blazor-maze-simple/_framework/blazor.webassembly.js"></script>
+
+    <h2>Sidewinder, and other shortcuts</h2>
+
+    <p>
+        The code is using the 
+        <a target="_blank" href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Simple_algorithms">Sidewinder</a>
+        algorithm to generate the maze. This isn't the greatest  (e.g. there's always a long corridor along the top of the maze), 
+        but it is the shortest!
+    </p>
+
+    <p>
+        Normally we would need to store the state of the maze grid in an array, then display it somehow. But if we use CSS Grid, 
+        then we can combine these two needs by binding the maze cell states as (Tailwind) CSS border classes on the grid eleemnts. 
+        Then we can just let the browser handle the displaying of the grid.   
+    </p>
+
+    <h2>Borderline result</h2>
+
+    <p>
+        The code sets top and left borders on each cell, then changes the borders to <strong>transparent</strong> if the maze generator
+        feels that there should be a gap
+    </p>
+
+    <script is:inline crossorigin="anonymous" src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fcodehutch%2Fblazor-blog%2Fblob%2Fmaster%2Fblazor-maze-simple%2Fblazor-maze-simple%2FApp.razor%3Fts%3D2%23L50-L75&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+    <h2>Tailwind classes</h2>
+
+    <p>
+        Setting up a square 20x20 CSS Grid is easily done with Tailwind. Then we need a couple of nested loops in Blazor
+        to create all the cells and bind each of their display classes to an element in a 2D array of class names.
+    </p>
+
+    <script is:inline crossorigin="anonymous" src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fcodehutch%2Fblazor-blog%2Fblob%2Fmaster%2Fblazor-maze-simple%2Fblazor-maze-simple%2FApp.razor%3Fts%3D2%23L3-L13&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+    <h2>End</h2>
+
+    <p>
+        That's about all there is to it. The full code is 
+        <a href="https://github.com/codehutch/blazor-blog/blob/master/blazor-maze-simple/blazor-maze-simple/App.razor">here</a>. 
+        The hard part is taking the Blazor code and embedding it in your Astro blog ... which needs a separate article to explain...
+    </p>  
+
+</Layout>
+
+ 

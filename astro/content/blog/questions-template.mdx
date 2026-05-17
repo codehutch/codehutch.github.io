@@ -1,0 +1,165 @@
+---
+layout: ../../src/layouts/Layout.astro
+title: AZ-900 Questions - Part 1 
+description: A quiz (written in React) to help you revise for Microsoft's AZ-900 exam 
+---
+
+import Answer from '../../src/components/react/quiz/Answer.jsx';
+import Question from '../../src/components/react/quiz/Question.jsx';
+export const published = new Date('2022-02-01');
+
+# React Quiz Components - Template
+
+> React | Astro | MDX
+
+Some practice questions about pets. BTW - the question & answer widgets
+on this page are built with my [__React Quiz components__](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/quiz)
+and the animations are courtesy of [Tailwind](https://tailwindcss.com/)
+
+## Section A - Pets
+
+Cat's are _undoubtedly_ the best pet __but__ some people like dogs
+
+### Question 1
+
+<Question client:idle kind="spin"
+ answers={[
+    "cat", 
+    "dog",
+    "fish"
+ ]}
+>
+    What's your best pet? (spin)
+</Question>
+
+### Question 2
+
+<Question client:idle kind="slide"
+ answers={[
+    "dog", 
+    "cat",
+    "fish"
+ ]}
+>
+    What's your worst pet? (slide)
+</Question>
+
+### Question 3
+
+<Question client:idle kind="scale"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your sister's pet? (scale)
+</Question>
+
+### Question 4
+
+<Question client:idle kind="skew"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your brother's pet? (skew)
+</Question>
+
+### Question 5
+
+<Question client:idle kind="flip"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your mother's pet? (flip)
+</Question>
+
+### Question 6
+
+<Question client:idle kind="knock"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your father's pet? (knock)
+</Question>
+
+### Question 7
+
+<Question client:idle kind="drop"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your auntie's pet? (drop)
+</Question>
+
+### Question 8
+
+<Question client:idle kind="spin scale"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your uncle's pet? (spin scale)
+</Question>
+
+### Question 9
+
+<Question client:idle kind="spin flip"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your nephew's pet? (spin flip)
+</Question>
+
+### Question 10
+
+<Question client:idle kind="drop flip"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your niece's pet? (drop flip)
+</Question>
+
+### Question 11
+
+<Question client:idle kind="scale flip"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your friend's pet? (scale flip)
+</Question>
+
+### Question 12
+
+<Question client:idle kind="flip skew"
+ answers={[
+    "fish", 
+    "cat",
+    "dog"
+ ]}
+>
+    What's your enemy's pet? (flip skew)
+</Question>

@@ -1,0 +1,112 @@
+---
+layout: ../../src/layouts/Layout.astro
+title: AI-200 Questions - Part 1 
+description: A quiz (written in React) to help you revise for Microsoft's AI-200 exam 
+---
+
+import Answer from '../../src/components/react/quiz/Answer.jsx';
+import Question from '../../src/components/react/quiz/Question.jsx';
+export const published = new Date('2022-02-01');
+
+# AI-200 Practice Questions - Part 1
+
+> React | Astro | Tailwind
+
+__Some practice questions which might help if you are preparing to take Microsoft's AI-200 Exam__ (Azure AI Cloud Developer Associate). BTW - the question & answer widgets
+on this page are built with my [React Quiz components](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/quiz)
+
+## Question 1
+
+You are implementing a Retrieval Augmented Generation (RAG) solution using Azure OpenAI and Azure AI Search. 
+You need to ensure that the retrieved document chunks are relevant to the user query before 
+passing them to the model.
+
+Which component should you use?
+
+<Question client:idle kind="spin"
+ answers={[
+    "Semantic Ranker", 
+    "Vector Index",
+    "Indexer"
+ ]}
+></Question>
+
+## Question 2
+
+You need to build a pipeline that extracts text, key-value pairs, and table structures from thousands of scanned invoices. 
+The processed data must be pushed automatically into an search index for user querying.
+
+Which combination of Azure AI components should you use?
+
+<Question client:idle kind="slide"
+ answers={[
+    "Document Intelligence and Custom Skillset", 
+    "Azure OpenAI and Semantic Ranker",
+    "Language Service and Blob Indexer",
+    "Speech Service and Knowledge Store"
+ ]}
+>
+</Question>
+
+## Question 3
+
+You are deploying a customer-facing chatbot using Azure OpenAI GPT-4. You must ensure the model automatically blocks 
+user inputs that contain hate speech or violent content before they reach the model.
+
+Which feature should you configure in Azure AI Studio?
+
+<Question client:idle kind="scale"
+ answers={[
+    "Content Filters", 
+    "Custom Skillset",
+    "Rate Limits"
+ ]}
+></Question>
+
+## Question 4
+
+You are using Azure AI Prompt Flow to develop a question-answering application. You need to mathematically evaluate 
+how well the model's generated answers match the truthfulness and facts provided in your source ground-truth documents.
+
+Which evaluation metric should you use?
+
+<Question client:idle kind="skew"
+ answers={[
+    "Groundedness", 
+    "Coherence",
+    "Fluency", 
+    "Relevance"
+ ]}
+></Question>
+
+## Question 5
+
+You are deploying an Azure AI Vision container to an on-premises server. You need to ensure the container can 
+authenticate with your Azure subscription to report billing usage without exposing hardcoded primary keys.
+
+Which authentication method should you use?
+
+<Question client:idle kind="flip"
+ answers={[
+    "Managed Identity", 
+    "Shared Access Signature",
+    "API Management",
+    "Anonymous Access"
+ ]}    
+></Question>
+
+## Question 6
+
+You plan to fine-tune an Azure OpenAI model to respond in a highly specific corporate tone. You must prepare 
+a training dataset consisting of past customer service interactions.
+
+Which file format must you use to upload this training data?
+
+<Question client:idle kind="knock"
+ answers={[
+    "JSONL", 
+    "CSV",
+    "PARQUET",
+    "XML"
+ ]}
+></Question>

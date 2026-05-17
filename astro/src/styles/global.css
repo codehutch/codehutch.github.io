@@ -48,18 +48,6 @@
     @apply flex min-h-svh flex-col text-sm md:text-base lg:text-lg;
   }
 
-  button {
-    @apply bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 border-b-4 border-r-3 hover:border-b-0 hover:border-r-0 hover:border-l-3 hover:border-t-4 border-cyan-700 hover:border-cyan-700 rounded;
-  }
-
-  button.answerCorrect {
-    @apply bg-emerald-500;
-  }
-
-  button.answerIncorrect {
-    @apply bg-red-500;
-  }
-
   p {
     @apply text-base lg:text-lg;
   }
@@ -71,6 +59,44 @@
   #name #andy {
     @apply hidden hsm:inline;
   }
+
+  button {
+    @apply bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 border-b-4 border-r-3 hover:border-b-0 hover:border-r-0 hover:border-l-3 hover:border-t-4 border-cyan-700 hover:border-cyan-700 rounded;
+  }
+
+  .answerGroup button {
+    @apply mr-2 mb-2 bg-pink-500 hover:bg-cyan-400 text-white font-bold py-2 px-4 border-b-4 border-r-3 hover:border-b-4 hover:border-r-3 hover:border-l-0 hover:border-t-0 border-cyan-700 hover:border-cyan-700 rounded;
+  }
+
+  button.answerCorrect {
+    @apply bg-emerald-500 hover:bg-emerald-500 transition duration-300;
+  }
+
+  button.answerIncorrect {
+    @apply bg-red-500 hover:bg-red-500 transition duration-300; 
+  }
+
+  .spin .answerGroup button.answerCorrect   { @apply rotate-360 }
+  .spin .answerGroup button.answerIncorrect { @apply -rotate-180 }
+
+  .slide .answerGroup button.answerCorrect   { @apply animate-bounce; animation-iteration-count: 2; }
+  .slide .answerGroup button.answerIncorrect { @apply translate-x-1000 }
+
+  .scale .answerGroup button.answerCorrect   { @apply scale-130 }
+  .scale .answerGroup button.answerIncorrect { @apply scale-70 } 
+
+  .skew .answerGroup button.answerCorrect   { @apply skew-150 }
+  .skew .answerGroup button.answerIncorrect { @apply skew-20 }   
+
+  .flip .answerGroup button.answerCorrect   { @apply rotate-y-360 }
+  .flip .answerGroup button.answerIncorrect { @apply -rotate-y-360 }    
+
+  .knock .answerGroup button.answerCorrect   { @apply rotate-x-360 }
+  .knock .answerGroup button.answerIncorrect { @apply rotate-x-90 origin-bottom-left }    
+
+  .drop .answerGroup button.answerCorrect   { @apply -rotate-45 origin-top-left }
+  .drop .answerGroup button.answerIncorrect { @apply rotate-45 origin-bottom-left }    
+  
 
   .never-used {
     color:  color-orange-500; /* stops colours being optimized out */

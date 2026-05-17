@@ -1,0 +1,53 @@
+---
+layout: ../../src/layouts/Layout.astro
+title: Blog 1
+description: Test blog post 1 
+---
+
+export const published = new Date('2026-05-17');
+
+# Ubuntu Syslog Spam
+
+There's a really annoying issue in __Ubuntu 24 LTS__ where the system update-notifier process spams `/var/log/syslog` with 
+no end of messages like:
+
+```shell
+[13465:0100/000000.837732:ERROR:zygote_linux.cc(249)] Error reading message from browser: Socket operation on non-socket (88)
+```
+
+This can consume __all available disk space__ with hours, which can then prevent you starting new processes, or even from logging in.
+
+## Immediate Fix
+
+If you suspect you have the issue, this can be revealed by: 
+
+```
+df -h                       ## are you at 99% disk usage?
+du -hac /var/log/syslog*    ## syslog using crazy space? 
+```
+
+An immediate fix is `sudo truncate -s 0 /var/log/*`, which is a bit drastic, but likely to allow you to carry on working.
+
+## Preventative Fix
+
+To stop this from happening (until the issue is fixed), you can create a config file under `/etc/rsyslog.d`. 
+
+These are numbered by priority, with a higher number having higher precedence. The default config file is 
+`/etc/rsyslog.d/50-default.conf`, so _create_ a file like `/etc/rsyslog.d/49-ignore-update-notifier.conf` 
+to turn off logging from update-notifier: 
+
+```shell
+:programname, isequal, "update-notifier.desktop" stop
+:programname, isequal, "update-notifier-crash" stop
+
+```
+
+Additional benefit of this fix is that it stops the messages from being written to disk, rather than other fixes that just clear the
+messages up afterwards.
+
+## Extra Fixes
+
+Additionally:
+
+- Consider setting up / configuring `logrotate` (although this may not help you if your disk fills up with spam in a single day)
+- Consider configuring `systemd journal` limits

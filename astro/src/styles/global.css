@@ -29,6 +29,8 @@
   --tw-prose-invert-quote-borders: var(--color-orange-500); 
   --tw-prose-links: var(--color-orange-600);
   --tw-prose-invert-links: var(--color-orange-500);
+  --tw-prose-bullets: var(--color-orange-600);
+  --tw-prose-invert-bullets: var(--color-orange-500);  
 }
 
 @layer base {
@@ -109,5 +111,25 @@
   blockquote.tagline p::after {
     content: "";
   }  
+
+  code {
+    background-color: var(--color-orange-500);
+    padding-left: 0.15em;
+    padding-right: 0.15em;    
+  }  
+
+  code::before, code::after {
+    content: none;
+  }
+
+  pre code {
+    background-color: inherit;
+    padding-left: 0;
+    padding-right: 0;
+  }    
+
+  code::before, code::after {
+    content: none;
+  }
 
 }

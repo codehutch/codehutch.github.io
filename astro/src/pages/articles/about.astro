@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AboutScene from '../../components/AboutScene.jsx';
+export const published = new Date('2022-02-01');
+---
+
+<Layout>
+
+    <h1>About...</h1>
+
+    <blockquote class="tagline pt-0 mt-0"> 
+        <p class="pt-0 mt-0">
+            🛠️&nbsp;Software&nbsp;Engineering&nbsp;| 🏢&nbsp;Solution&nbsp;Architecture&nbsp;| 🎹&nbsp;Piano&nbsp;😺&nbsp;|
+        </p>
+    </blockquote>
+    
+    <AboutScene client:load />
+
+    <p class="mt-10">
+        Brought to you from somewhere near Keighley, Yorkshire 💮. 
+        Here I am on <a href="https://uk.linkedin.com/in/andy-hutchinson-24780168">LinkedIn</a>
+    </p>
+
+    <h2>Colophon</h2>
+
+    <p>
+        Inspired by the <a href="https://github.com/djsiddz/space-ahead">Space Ahead</a> and 
+        <a href="https://github.com/satnaing/astro-paper">Astro Paper</a> themes for Astro.
+    </p>
+
+    <p class="text-xl">
+        🛠️  with  ❤️  ++ 
+    </p>
+
+    <ul>
+        <li>
+            🚀 <a class="font-mono" href="https://astro.build/">Astro</a>,
+        </li>
+        <li>
+            ⚛️ <a class="font-mono" href="https://react.dev/">React</a>,
+        </li>
+        <li>
+            🔥 <a class="font-mono" href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor">Blazor / C#</a>
+        </li>
+        <li>
+            🌪️ <a class="font-mono" href="https://tailwindcss.com/">Tailwind</a>
+        </li>
+        <li>
+            <span class="font-serif text-xl">Oleo Script</span>
+        </li>
+        <li>
+            <span class="font-sans text-xl">Cabin</span>
+        </li>        
+        <li>
+            <span class="font-mono text-xl">IBM Plex Mono</span>
+        </li>        
+        <li>
+            and of course, <span class="font-vast-shadow text-2xl">Vast Shadow</span>
+        </li>
+    </ul>
+
+</Layout>

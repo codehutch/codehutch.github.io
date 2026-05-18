@@ -1,5 +1,3 @@
 Themes...? 
-- astropaper
-- astroplate
-- milky way
-- cactus?
+- astro paper
+- space ahead

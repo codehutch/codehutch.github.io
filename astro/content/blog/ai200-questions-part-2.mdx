@@ -1,0 +1,106 @@
+---
+layout: ../../src/layouts/Layout.astro
+title: AZ-900 Questions - Part 1 
+description: Another quiz (written in React) to help you revise for Microsoft's AI-200 exam 
+---
+
+import Answer from '../../src/components/react/quiz/Answer.jsx';
+import Question from '../../src/components/react/quiz/Question.jsx';
+export const published = new Date('2022-02-01');
+
+# AI-200 Practice Questions - Part 2
+
+> React | Astro | MDX
+
+Some more practice questions to help with studying for Microsoft's __AI-200 Exam__ (Azure AI Cloud Developer Associate). The question & answer widgets
+on this page use my [React Quiz components](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/quiz)
+
+## Question 1
+
+Your company wants to build a custom solution to monitor factory machinery. The system must process real-time data from vibration sensors, 
+detect unusual patterns that indicate potential failures, and trigger immediate alerts. Which Azure AI service should you use?
+
+<Question client:idle kind="drop"
+ answers={[
+    "Azure AI Anomaly Detector",
+    "Azure AI Custom Vision", 
+    "Azure AI Language",
+    "Azure AI Search"
+ ]}
+>
+</Question>
+
+## Question 2
+
+Your company wants to build a virtual customer service assistant for its website. The assistant must understand natural language user queries, 
+manage multi-turn conversations, and integrate with your existing knowledge base. Which Azure AI service should you use?
+
+<Question client:idle kind="spin scale"
+ answers={[
+    "Azure AI Bot Service", 
+    "Azure AI Content Safety",
+    "Azure AI Personalizer"
+ ]}
+>
+</Question>
+
+## Question 3
+
+Your team is developing an AI system to review loan applications. To ensure fairness, you want to make sure the system does not 
+discriminate against applicants based on demographic factors, and that users can easily understand how a decision was made. 
+Which Microsoft Responsible AI principle are you directly addressing?
+
+<Question client:idle kind="scale flip"
+ answers={[
+    "Transparency", 
+    "Accountability",
+    "Reliability and Safety",
+    "Inclusiveness"
+ ]}
+>
+</Question>
+
+## Question 4
+
+Your company wants to develop a mobile application that allows tourists to take photos of signs in foreign languages and instantly hear the 
+translated text spoken aloud in their native language. Which service should you choose to generate the spoken audio?
+
+<Question client:idle kind="spin flip"
+ answers={[
+    "Azure AI Speech", 
+    "Azure AI Translator",
+    "Azure AI Vision"
+ ]}
+>
+</Question>
+
+## Question 5
+
+Your company is building a retrieval-augmented generation (RAG) application using Azure AI Search. You need to convert unstructured text 
+documents into numerical representations that capture semantic meaning for a vector search index. Which tool or service should you use 
+to generate these representations?
+
+<Question client:idle kind="flip skew"
+ answers={[
+    "Azure OpenAI embedding model", 
+    "Azure AI Search indexer",
+    "Azure OpenAI GPT-4o chat model",
+    "Azure AI Language sentiment analyzer"
+ ]}
+>
+</Question>
+
+## Question 6
+
+Your company wants to implement a solution that analyzes thousands of customer product reviews. The system must automatically identify the primary 
+language of each review and detect whether the customer's sentiment is positive or negative. Which Azure AI service should you use?
+
+<Question client:idle kind="drop flip"
+ answers={[
+    "Azure AI Language", 
+    "Azure AI Translator",
+    "Azure AI Search",
+    "Azure AI Personalizer"
+ ]}
+>
+</Question>

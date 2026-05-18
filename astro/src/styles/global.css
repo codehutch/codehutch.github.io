@@ -79,9 +79,6 @@
   .spin .answerGroup button.answerCorrect   { @apply rotate-360 }
   .spin .answerGroup button.answerIncorrect { @apply -rotate-180 }
 
-  .slide .answerGroup button.answerCorrect   { @apply animate-bounce; animation-iteration-count: 2; }
-  .slide .answerGroup button.answerIncorrect { @apply translate-x-1000 }
-
   .scale .answerGroup button.answerCorrect   { @apply scale-130 }
   .scale .answerGroup button.answerIncorrect { @apply scale-70 } 
 

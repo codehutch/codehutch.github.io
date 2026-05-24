@@ -40,7 +40,7 @@
   <body>
 	<h1>
 		<div>
-			<a href="/index.html">Pro<i>g</i>letariat</a>
+			<a href="/index.html">CodeHutch</a>
 		</div>
 	</h1>
 	
@@ -60,7 +60,7 @@ if you prefer). As a disclaimer, nicer and shorter maze generation algorithms ar
 is what I ended up with and it does illustrate quite a few F# concepts...</p>
 <h3><em><strong>Building</strong> blocks</em></h3>
 <p>So we're going to need to generate a maze, and then render it graphically. My 3D graphics skills are pretty much limited to drawing
-<a href="http://www.progletariat.com/blog/2017/06-22-fable-threejs-hello/index.html">cubes</a>, so we'll base our representation of a maze
+cubes, so we'll base our representation of a maze
 around single <em>cells</em>, that either do or don't get drawn as a cube. If a <code>Cell</code> is drawn as a cube, it's part of a wall in the maze.
 If a <code>Cell</code> is not drawn, then it's a gap or passage in the maze. So a <code>Cell</code> is effectively a thing that can exist as one of several
 possible forms (but an individual <code>Cell</code> can only ever be one of these possible forms). In F#, a

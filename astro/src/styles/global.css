@@ -107,6 +107,26 @@
     @apply rounded-full aspect-square border-cyan-500 items-center justify-center font-sans font-medium text-center duration-100 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-base py-2 px-4 rounded-full transition antialiased;
   }
 
+  #graphicsContainer .buttonContainer {
+
+      margin-top: 1em;
+      text-align: center;
+
+      button {
+        @apply bg-orange-500 hover:bg-cyan-500 mr-2;        
+      }
+
+      button:first-child {
+        @apply bg-lime-500 hover:bg-cyan-500;
+      }
+
+      button:last-child {
+        margin-right: 0;
+        @apply bg-rose-500 hover:bg-cyan-500;
+      }
+
+  }  
+
 }
 
 @utility markdown-hutch {

@@ -1,0 +1,92 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+---
+
+<Layout>
+
+	<h1>F# ThreeJs Maze</h1>
+
+    <blockquote>
+        <p>Three.js | Fable | F#</p>
+    </blockquote>
+
+    <p>
+        Another little maze generator, this time in <strong>Three.js and F#</strong>. 
+        Press one of the <strong>buttons</strong> below 👇 to generate some mazes...
+    </p>
+
+    <div class="not-prose aspect-square" id="graphicsWrapper"><div class="not-prose aspect-square answerGroup" id="graphicsContainer"></div></div>
+
+    <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.js"></script>
+    <script is:inline src="/fsblog/otherOutput/fable1/BlogFableThreeMazeBuild.js"></script>
+        
+    <h2>Recursive subdivision</h2>
+
+    <p>
+        The code is using the 
+        <a target="_blank" href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_division_method">Recursive subdivision</a>
+        algorithm to generate the maze. The big limitation with this approach is that it is easy to see the links between sections, which makes 
+        the maze easy to solve once these are spotted. Compared to my <a href="/articles/blazor-maze-simple/index.html">other maze generator</a>
+        which uses the "Sidewinder" algorithm, this one is more obviously composed of blocks, but it doesn't suffer from having a long corridor
+        along the top of the maze.
+    </p>
+
+    <p>
+        The maze walls are rendered as a load of cubes (or <em>no</em> cubes, for the passages) using <a href="https://threejs.org" target="_blank">Three.js</a>. This gives the maze 
+        some 3D depth, and also makes it easy to do the zoom in effect for a new maze by moving the camera out.
+    </p>
+
+    <h2>Literal Utilities</h2>
+
+    <p>
+        The maze logic is written in <a href="https://fsharp.org/" target="_blank">F#</a>. I won't turn this into a tutorial on F#, but to 
+        illustrate how nice the syntax is, it is possible to very neatly define some utility functions that help with rearranging maze blocks to 
+        come up with more possible blocks. E.g. To rotate a piece of maze, the code just needs to 'spin' the parts round, and we can write this
+        almost literally in <strong>F#</strong>:
+    </p>
+
+    <Code lang="fsharp" code={`
+// Rotate a large square clockwise by 90 degrees
+let rotate a b c d e
+           f g h i j
+           k l m n o
+           p q r s t
+           u v w x y = ls u p k f a
+                          v q l g b
+                          w r m h c
+                          x s n i d
+                          y t o j e
+    `}>
+    </Code>      
+
+    <p>
+        Similarly, we can write a literal definition of what it means to flip a maze square horizontally (btw <code>ls</code> is just a utility 
+        function here to create a "large square" of maze - not the linux <code>dir</code> equivalent!)
+    </p>
+
+    <Code lang="fsharp" code={`
+// Flip a large square horizontally
+let flip a b c d e
+         f g h i j
+         k l m n o
+         p q r s t
+         u v w x y = ls e d c b a
+                        j i h g f
+                        o n m l k
+                        t s r q p
+                        y x w v u
+    `}>
+    </Code>
+
+    <h2>Going deeper into the maze</h2>  
+
+    <p>
+        If you want to know more about how to recursively generate a maze in F# then I wrote a <em>much</em> more detailed article on 
+        <a href="/fsblog/blog/2017/07-03-fsharp-fable-three-maze/index.html">my old blog here</a> (sadly the styling no longer works)
+
+    </p>
+
+</Layout>
+
+ 

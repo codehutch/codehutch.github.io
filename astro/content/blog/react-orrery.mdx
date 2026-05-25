@@ -27,18 +27,18 @@ children, and keep the time updated.
 
 <Github from="1" to="16" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
 
-If also handles the twinkling of the stars, the updating of the simulation speed, and some boring resize
+It also handles the twinkling of the stars, the updating of the simulation speed, and some boring resize
 behaviour (that we won't get bogged down in here).
 
 <Github from="38" to="52" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
 
 ## Children of the Stars
 
-The other think the `SolarSystem` does is to hold and instantiate its child components. Each child component just
+The other thing the `SolarSystem` does is to hold and instantiate its child components. Each child component just
 displays a spacey character from an __emoji font__, and holds various properties useful for positioning itself in
 the solar system (like orbit diameter and year length). All the child components need to be passed the current _time_. 
 
-Note that _earth_ has the _moon_ as a child component, and that the _sun_ can be implemented as a planet on a 
+Note that _earth_ has the _moon_ as a child component, and that the _sun_ can be implemented as a planet on an 
 orbital radius of 0. 
 
 <Github from="99" to="122" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
@@ -47,7 +47,7 @@ orbital radius of 0.
 
 The `Planet` components take the orbital information passed down from the SolarSystem and use it to 
 absolutely position their emoji character on the solar system by calculating _leftPos_ and _topPos_. 
-Some rotation and scaling are supported to add some interest to the animation.
+Additionally, rotation and scaling are supported to add some interest to the animation.
 
 Planets can have children (i.e. moons) and can pass their own position down to a child (as `parentX/Y`) so that
 moons can orbit their parent planet by offsetting their own position from their parent's position. 
@@ -64,4 +64,4 @@ much code is needed - here it all is:
 
 ## Acknowledgements
 
-This orrery would not have been posssible without the `UseInterval` hook from [Overreacted](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)
+This orrery would not have been possible without the `UseInterval` hook from [Overreacted](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)

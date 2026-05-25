@@ -18,9 +18,7 @@ export default function Planet({ id, emoji, time, z, scale, spin, orbit, year, f
   };
 
   return (
-    <span id={id} style={myStyle} className="relative"> 
-        { emoji }
-    </span>
+    <span id={id} style={myStyle} className="relative"> { emoji }</span>
   );
 
 }

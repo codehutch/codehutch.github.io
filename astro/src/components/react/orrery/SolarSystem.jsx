@@ -75,7 +75,7 @@ export default function SolarSystem() {
   return (
 
   <>
-    <div className="prose dark:hidden">Looks best in <strong>dark mode</strong> <div className="inline-block animate-bounce">☝️</div> (click the sun in the title bar)</div>
+    <div className="prose dark:hidden">Looks best in <strong>dark mode</strong> <div className="inline-block text-2xl animate-bounce">☝️</div> (click the sun in the title bar)</div>
 
     <div 
       id="solarSystem" 

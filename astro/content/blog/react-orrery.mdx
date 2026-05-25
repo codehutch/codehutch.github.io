@@ -4,6 +4,7 @@ title: React Orrery
 description: Test blog post 2 
 ---
 
+import Github from '../../src/components/astro/EmGithub.astro';
 import SolarSystem from '../../src/components/react/orrery/SolarSystem.jsx';
 export const published = new Date('2026-05-24');
 
@@ -15,4 +16,52 @@ Totally inaccurate __React__ model of the solar system!
 
 <SolarSystem client:idle />
 
+## Runs Like Clockwork
 
+This orrery is implemented by three react components: `SolarSystem.jsx`, `Planet.jsx` and 
+`Satellite.jsx`, the code for them is 
+[here on my github blog repo](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery) 
+
+`SolarSystem.jsx` is the root component that contains the others, its main job is to share a `time` state with its
+children, and keep the time updated. 
+
+<Github from="1" to="16" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
+
+If also handles the twinkling of the stars, the updating of the simulation speed, and some boring resize
+behaviour (that we won't get bogged down in here).
+
+<Github from="38" to="52" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
+
+## Children of the Stars
+
+The other think the `SolarSystem` does is to hold and instantiate its child components. Each child component just
+displays a spacey character from an __emoji font__, and holds various properties useful for positioning itself in
+the solar system (like orbit diameter and year length). All the child components need to be passed the current _time_. 
+
+Note that _earth_ has the _moon_ as a child component, and that the _sun_ can be implemented as a planet on a 
+orbital radius of 0. 
+
+<Github from="99" to="122" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/orrery/SolarSystem.jsx" />
+
+## Planetary motion
+
+The `Planet` components take the orbital information passed down from the SolarSystem and use it to 
+absolutely position their emoji character on the solar system by calculating _leftPos_ and _topPos_. 
+Some rotation and scaling are supported to add some interest to the animation.
+
+Planets can have children (i.e. moons) and can pass their own position down to a child (as `parentX/Y`) so that
+moons can orbit their parent planet by offsetting their own position from their parent's position. 
+
+<Github from="13" to="29" target="https://github.com/codehutch/codehutch.github.io/blob/master/astro/src/components/react/orrery/Planet.jsx" />
+
+## Satellites and Space Junk
+
+The other sprites in the scene are all implemented by the `Satellite` component, which is very similar
+to the planet component, but supports a stretched-out orbit and different rotational spinning. Not very
+much code is needed - here it all is:  
+
+<Github target="https://github.com/codehutch/codehutch.github.io/blob/master/astro/src/components/react/orrery/Satellite.jsx" />
+
+## Acknowledgements
+
+This orrery wouldn't have been posssible withot the `UseInterval` hook from [Overreacted](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)

@@ -1,0 +1,14 @@
+---
+const { target, from, to } = Astro.props;
+
+let start = "https://emgithub.com/embed-v2.js?target=";
+let encTarget = encodeURI(target);
+let tabs = "%3Fts%3D2";
+let lines = (from && to) ? "%23L" + from + "-L" + to : ""; 
+
+let finish = "&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on";
+
+let url = start + encTarget + tabs + lines + finish;
+---
+
+<script is:inline crossorigin="anonymous" src={url}></script>

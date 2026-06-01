@@ -7,13 +7,12 @@ export default function Fruit({ icon, rotation }) {
   let myStyle = {
     fontSize:scale + 'rem',
     position: 'absolute',
-    left: "0%",
     backfaceVisibility: 'hidden',
     transform: 'translateY(88px) rotateX(' + rotateMod + 'deg) translateZ(135px)',
   };
 
   return (
-    <span style={myStyle} className="relative aspect-square">{icon}</span>
+    <span style={myStyle} className="relative aspect-square safari-text-shift-right-5">{icon}</span>
   );
 
 }

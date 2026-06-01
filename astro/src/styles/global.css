@@ -129,6 +129,38 @@
 
 }
 
+@supports (font: -apple-system-body) { 
+
+    .safari-text-shift-right-2 {
+        left:2%; 
+    } 
+
+    .safari-text-shift-right-5 {
+        left:5%; 
+    } 
+
+    .safari-text-shift-right-7 {
+        left:7%; 
+    } 
+
+    .safari-text-shift-right-10 {
+        left:10%; 
+    } 
+
+    .safari-text-shift-right-15 {
+        left:15%; 
+    } 
+
+    .safari-text-shift-right-20 {
+        left:20%; 
+    } 
+
+    .safari-text-shift-right-25 {
+        left:25%; 
+    } 
+
+}
+
 @utility markdown-hutch {
 
   h1+blockquote p {

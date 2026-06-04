@@ -1,12 +1,12 @@
 import Fruit from './Fruit.jsx';
 
-export default function Reel({ wheelSet }) {
+export default function Reel({ wheelState }) {
 
-  let rotation = wheelSet.position * 360 / 12; // 12 fruits per wheel
+  let rotation = wheelState.position * 360 / 12; // 12 fruits per wheel
 
   let classes = "grow bg-white flex flex-col mr-2 ml-2 border-3 rounded-md shadow-3xl "
-              + (wheelSet.isHold ? "border-red-500 dark:border-red-500" : 
-                                   "border-black dark:border-black");
+              + (wheelState.isHold ? "border-red-500 dark:border-red-500" : 
+                                     "border-black dark:border-black");
 
   return (
     <div className={classes}>

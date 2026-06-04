@@ -10,12 +10,19 @@ export const published = new Date('2026-05-29');
 
 # React Fruit Machine
 
-> React | Typescript | Tailwind
+> React | Tailwind | Confetti
 
-Spin the wheels... 
+Hit the green SPIN button... You need 3 of a kind... Everyone's a winner...
 
 <FruitMachine client:idle />
 
-## Some content
+## Spin the Wheels
 
-What if there was some content? How would it scroll?
+[Here is all the fruity code for this machine](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine). 
+Each icon on a wheel is given a rotation between 0 and 360 degrees.
+This rotation is implemented as a 3D CSS transform, which you can see on line 
+9 below:
+
+<Github target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/Fruit.jsx" />
+
+

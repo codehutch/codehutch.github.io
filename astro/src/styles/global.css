@@ -159,6 +159,34 @@
         left:25%; 
     } 
 
+    .safari-text-size-102 {
+        font-size:1.02rem; 
+    } 
+
+    .safari-text-size-105 {
+        font-size:1.05rem; 
+    } 
+
+    .safari-text-size-107 {
+        font-size:1.07rem; 
+    } 
+
+    .safari-text-size-110 {
+        font-size:1.10rem; 
+    } 
+
+    .safari-text-size-115 {
+        font-size:1.15rem; 
+    } 
+
+    .safari-text-size-120 {
+        font-size:1.20rem; 
+    } 
+
+    .safari-text-size-125 {
+        font-size:1.25rem; 
+    } 
+
 }
 
 @utility markdown-hutch {

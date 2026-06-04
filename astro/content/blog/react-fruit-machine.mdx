@@ -16,13 +16,77 @@ Hit the green SPIN button... You need 3 of a kind... Everyone's a winner...
 
 <FruitMachine client:idle />
 
-## Spin the Wheels
+## Fruit Loops
 
 [Here is all the fruity code for this machine](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine). 
-Each icon on a wheel is given a rotation between 0 and 360 degrees.
+The lowest-level component is `Fruit.jsx`, representing one of the 
+fruits/icons on a wheel.
+Each icon on a wheel is given a rotation, clamped to between 0 and 360 degrees.
 This rotation is implemented as a 3D CSS transform, which you can see on line 
 9 below:
 
 <Github target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/Fruit.jsx" />
 
+## Spin the Wheels / Reels
 
+The wheels are implemented by [Reel.jsx](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/Reel.jsx). 
+A reel is a collection of
+12 different Fruit components, each given a rotation offset of 30
+degrees from each other. It also adds some semi-transparent gradients and highlights
+over the top of the reel to give the impression of 3D shading (because CSS can do 3D transforms,
+but it doesn't do 3D lighting / shading, so we have to fake it).
+Here's a few of them:
+
+<Github from="23" to="28" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/Reel.jsx" />
+
+## Gimme a Nudge
+
+The Nudge and Hold buttons are implemented by the `NudgeHoldBlock.jsx` component.
+This component is passed a `WheelState` object which holds state relevant
+to each wheel of the machine. It also has methods that can be used as
+callbacks from this component to update its parent state when button 
+clicks happen. (This is OK for a small toy app, in a larger app it might 
+use Pinea/Redux to manage these kinds of state updates).
+
+<Github target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/NudgeHoldBlock.jsx" />
+
+## Wheelspin
+
+The main job of the `WheelState` class is to manage the movement
+of each wheel. The __position__ of the wheel corresponds to the rotation 
+that each `Reel` component shows. The wheels can be told to operate in 
+either __speed-seek__ mode, or __position-seek__ mode. Speed-seek is used
+for normal spin-ups and spin-downs. Position-seek is used for Nudges. At
+the end of a spin-down, the wheel switches from speed-seek mode to 
+position-seek, so that it alway ends up in an 'exact' position rather than
+ending up halfway between two fruit positions.
+
+<Github from="39" to="58" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/WheelState.js" />
+
+## Coordination
+
+The top-level [FruitMachine.jsx](https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/FruitMachine.jsx)
+component just needs to be concerned with things that affect all wheels
+at once. Mainly this is setting them all off spinning, and checking to
+see if a __win__ has occurred. A win happens when all the reels stop with
+the same position. Focussing on the `spin()` function, it works by 
+randomising the speed of each wheel, and then by setting a spinDown 
+countdown amount.
+
+<Github from="42" to="51" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/FruitMachine.jsx" />
+
+The _driving force_ of the machine is a `useInterval()` hook that 
+effectively functions as the _main loop_ of the simulation and manages
+the core tasks of keeping track of time, spinning the wheels down when 
+their spin time is up, and checking for _win_ states:
+
+<Github from="20" to="40" target="https://github.com/codehutch/codehutch.github.io/tree/master/astro/src/components/react/fruitmachine/FruitMachine.jsx" />
+
+## Acknowledgements
+
+This fruit machine would not have been possible without the `UseInterval` 
+hook from [Overreacted](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)
+
+A large debt is also owed to the 
+[Canvas Confetti NPM Package](https://www.npmjs.com/package/canvas-confetti)
+for its brilliant and amazingly configurable confetti implementation.

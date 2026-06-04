@@ -2,116 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import Reel from './Reel.jsx';
 import NudgeHoldBlock from './NudgeHoldBlock.jsx';
-
-class WheelState {
-
-    static masterSpeedFactor = 0.08;
-    static deltaSteps = 20;
-    
-    static initButtonClasses = "font-serif border-2 border-black rounded-md m-2 p-2";
-
-    constructor(individualSpeedFactor, initialSpeed) {
-        
-        this.position = 0;
-        this.targetPosition = 0;
-        
-        this.speed = 0;
-        this.targetSpeed = 0;
-        this.individualSpeedFactor = individualSpeedFactor;
-
-        this.isSpeedSeek = true;
-
-        this.isHold = false;
-        this.setCanHold(false);        
-        this.setCanNudge(false);        
-
-        this.setTargetSpeed(initialSpeed);
-    }
-
-    setPositionSeek(targetPosition) {
-        this.isSpeedSeek = false;
-        this.speed = 0;
-        this.targetPosition = targetPosition;
-    }
-
-    advance() {
-        if (this.isSpeedSeek)
-            this.doSpeedSeek();
-        else
-            this.doPositionSeek();
-    }
-
-    doSpeedSeek() {
-
-        let delta = (this.targetSpeed - this.speed) / WheelState.deltaSteps;
-
-        this.speed += delta * WheelState.deltaSteps * 0.25;
-
-        if (!this.isHold)
-            this.position += this.speed;
-
-        // Switch to position seek if nearly at 0 speed
-        if (this.targetSpeed === 0 && this.speed < 0.001) {
-            this.setPositionSeek(Math.round(this.position));
-        }
-
-    }
-
-    doPositionSeek() {
-        let delta = (this.targetPosition - this.position) / WheelState.deltaSteps;
-        this.position += delta * 2; 
-    }
-
-    setTargetSpeed(newTarget) {
-        this.targetSpeed = newTarget * this.individualSpeedFactor * WheelState.masterSpeedFactor;
-        this.isSpeedSeek = true;
-    }
-
-    setHold(hold) {
-      this.isHold = hold;
-      this.holdClasses = this.getHoldClasses();
-    }
-
-    setCanHold(canHold) {
-      this.canHold = canHold;
-      this.holdClasses = this.getHoldClasses();
-    }
-
-    toggleHold() {
-      if (this.canHold) {
-        this.setHold(!this.isHold);
-
-        if (this.isHold) {
-          this.targetSpeed = 0;
-          this.isSpeedSeek = true;
-        }
-      }
-    }
-
-    getHoldClasses() {
-      return WheelState.initButtonClasses +
-             (this.canHold ? " bg-red-500 " : " bg-red-950 ") +
-             (this.isHold ? " animate-pulse" : "");
-    }
-
-    nudge() {
-      if (this.canNudge) {
-        this.targetSpeed = 0;
-        this.setPositionSeek(Math.round(this.position + Math.round(Math.random() + 1)));  
-        this.setCanNudge(false);
-      }
-    } 
-
-    setCanNudge(can) {
-      this.canNudge = can;
-      this.nudgeClasses = WheelState.initButtonClasses + 
-                          (this.canNudge ? " bg-orange-500 " : " bg-orange-950");
-    }
-
-    isNearTarget() {
-      return Math.abs(this.targetPosition - this.position) < 0.01;
-    }
-}
+import WheelState from './WheelState.js';
 
 export default function FruitMachine() {
 
@@ -184,8 +75,7 @@ export default function FruitMachine() {
         x.setCanHold(false);
         x.setCanNudge(false);
       });
-    }
-    
+    } 
   }
 
   // Utility to act on all wheels
@@ -196,24 +86,23 @@ export default function FruitMachine() {
   }
 
   return (
-
-  <>
+   <>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <div className={winClass}> 
       
       <div className="rounded-md bg-cyan-500 border-2 border-black not-prose aspect-square max-w-[310px] mx-auto p-2 shadow-xl">
         <div className="aspect-square flex flex-row not-prose max-w-[290px] mx-auto">     
-          <Reel wheelSet={ ws0 } /> 
-          <Reel wheelSet={ ws1 } /> 
-          <Reel wheelSet={ ws2 } />                 
+          <Reel wheelState={ ws0 } /> 
+          <Reel wheelState={ ws1 } /> 
+          <Reel wheelState={ ws2 } />                 
         </div>
       </div>
 
       <div className="not-prose max-w-[310px] mx-auto p-2">
         <div className="grid grid-flow-col grid-rows-1 grid-cols-3 mx-auto not-prose max-w-[290px]">     
-          <NudgeHoldBlock wheelSet={ws0} colStart="1" />
-          <NudgeHoldBlock wheelSet={ws1} colStart="2" />
-          <NudgeHoldBlock wheelSet={ws2} colStart="3" />
+          <NudgeHoldBlock wheelState={ws0} colStart="1" />
+          <NudgeHoldBlock wheelState={ws1} colStart="2" />
+          <NudgeHoldBlock wheelState={ws2} colStart="3" />
         </div>
         <div className="grid grid-flow-col grid-rows-1 grid-cols-3 mx-auto not-prose max-w-[290px]">     
           <div className="row-start-2 col-span-3 gap-2 flex flex-col">
@@ -223,8 +112,7 @@ export default function FruitMachine() {
       </div>
 
     </div>     
-  </>
-
+   </>
   );
 
   // UseInterval hook from https://overreacted.io

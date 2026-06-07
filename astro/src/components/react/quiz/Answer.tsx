@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-export default function Answer({ isCorrect, val }) {
+export interface AnswerProps {
+    isCorrect: boolean;
+    val: string;
+}
+
+export function Answer({ isCorrect, val }: AnswerProps) {
     const [answerClass, setAnswerClass] = useState("answerUnknown");
     const check = () => setAnswerClass((x) => isCorrect ? "answerCorrect" : "answerIncorrect");   
 

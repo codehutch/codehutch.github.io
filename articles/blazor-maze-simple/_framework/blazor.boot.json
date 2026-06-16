@@ -1,21 +1,22 @@
 {
   "mainAssemblyName": "blazor-maze-simple",
   "resources": {
-    "hash": "sha256-6BuWuVwpQUxu+Bd/+6juG3TdNY6m8J7ctzOyopzP50Q=",
+    "hash": "sha256-ATIwKQH9zp+1Bc6Yw1rCo12I4aWgukeT2Vkgxj2wWz0=",
     "jsModuleNative": {
-      "dotnet.native.8.0.26.4qq7b680zd.js": "sha256-nElGk+CZFyq0PbPm4JU8avD6lER7x9Z1C54BK7qY12Q="
+      "dotnet.native.js": "sha256-YDHEHpc+/PUWFYa9BMCN3EcVlpemjKD024swcpPfMIQ="
     },
     "jsModuleRuntime": {
-      "dotnet.runtime.8.0.26.skyt7op13d.js": "sha256-HuKpYzsYoQBMbqMPjy15HX+ShsypvOKN9uGvoA7P/+o="
+      "dotnet.runtime.js": "sha256-3FQ/XEf1pRsQQWd2Exmra8Vcj2xJ1gqzTFxi9rolro4="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-s2/s2HkJfsLLhPUvCJwiFsRUqPX4xG9g3t57WxxFR98="
+      "dotnet.native.wasm": "sha256-fXtKAQ0BH3VRNZxAmaIF0D5MblYpWbqElRqj+SotyLQ="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
       "icudt_EFIGS.dat": "sha256-8fItetYY8kQ0ww6oxwTLiT3oXlBwHKumbeP2pRF4yTc=",
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
+    "coreAssembly": {},
     "assembly": {
       "Microsoft.AspNetCore.Authorization.wasm": "sha256-2LCSu/GwMOyDLtHF9Yg4oasppUSVtIQ2pd/Dd1fahj0=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-p+xr2clvU8a5EzizHafDd9a/bylXLudbE1gk3w3xvUU=",
@@ -208,10 +209,10 @@
       "mscorlib.wasm": "sha256-UzRTTeY8BezBltrUF59UgvVNxbmnZS3LeowarsPY8+Y=",
       "netstandard.wasm": "sha256-xHQSNwqHm8E9DM86qW7CTJoRXXsQuGmPeNipDwQFNr8=",
       "System.Private.CoreLib.wasm": "sha256-N9/Djwpe2mX4HdyhCGu9jrxG/DSYKoTPbtsIOv6VFDk=",
-      "blazor-maze-simple.wasm": "sha256-XW4AwFroK5rJkVijIev2ixdXhEh2Oyymi9luqPZB+VE="
+      "blazor-maze-simple.wasm": "sha256-ddZeh8E20cKN9WWvxDugqFCnl/XeWbPu89nQMfexkIQ="
     },
     "pdb": {
-      "blazor-maze-simple.pdb": "sha256-XbnWIrXwUAAZxn0F2uPN001TfE1s3f1oFKHNZs7mJHI="
+      "blazor-maze-simple.pdb": "sha256-x9UvuKApwwwdhYEZgh13N/HLfLLqS9FRJYrzqDYlNQc="
     }
   },
   "cacheBootResources": true,

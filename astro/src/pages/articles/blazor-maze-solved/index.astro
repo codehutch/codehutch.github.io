@@ -1,0 +1,122 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<style>
+
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke: #1b6ec2;
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+    display: none;
+}
+
+</style>
+
+<Layout>
+
+	<h1>Blazor Maze Solved</h1>
+
+    <blockquote>
+        <p>C# | Blazor | CSS-Grid</p>
+    </blockquote>
+
+    <p>
+        Searching for paths through randomly generated mazes in <strong>C# and Blazor</strong>. 
+        This builds on my <a target="_blank" href="/articles/blazor-maze-simple/index.html">
+        previous article about how to randomly generate mazes</a> and adds about 50 lines of
+        code to do the solving. 
+        <strong>Press the button</strong> below 👇 to generate and solve a maze...
+    </p>
+
+    <div id="app" class="not-prose">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+	<script is:inline src="/articles/blazor-maze-solved/_framework/blazor.webassembly.js"></script>
+
+    <h2>Depth first search</h2>
+
+    <p>
+        The code uses a recursive  
+        <a target="_blank" href="https://en.wikipedia.org/wiki/Depth-first_search">depth-first search</a> algorithm to find
+        a path through the maze. (Strangely, DFS was invented in the 19th century as a maze-solving technique long before
+        computers came about). 
+    </p>
+
+    <p>
+        The search code consists of a pair of mutually recursive functions. The primary function, <code>Solve</code> checks to see if we have 
+        reached the end square of the maze yet. If not, it checks to see if we can move left, down, right or up. If we can
+        move, the first available direction is tried by making a call to the secondary recursive function. If moving in the chosen
+        direction doesn't find a path that completes the maze, other available directions are tried. 
+    </p>
+
+    <script is:inline crossorigin="anonymous" src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fcodehutch%2Fblazor-blog%2Fblob%2Fmaster%2Fblazor-maze-solved%2Fblazor-maze-solved%2FApp.razor%3Fts%3D2%23L97-L106&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+    <p>
+        Due to the recursiveness of the functions, each move direction is tried in full, down as long of a path as possible, before trying another
+        move direction from the current square. This is what makes the search <strong>'depth first'</strong>. The functions return <code>true</code>
+        to each other when they have found a path to the end, otherwise they return <code>false</code> when no further progress can be made down a path.
+    </p>
+
+    <h2>Secondary function</h2>
+
+    <p>
+        The secondary function acts on the square we moved <em>'to'</em>. It marks this square as visited. (Then it pauses for a
+        bit for suspense, so that the maze isn't instantly solved). Then it makes a recursive call back to the first function to see if
+        a successful move to the end can be made from this square. If so, <code>true</code> is returned and the current square is coloured
+        the GOOD_PATH colour (dark purple) so that the good path through the maze is displayed. 
+    </p>
+
+    <script is:inline crossorigin="anonymous" src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fcodehutch%2Fblazor-blog%2Fblob%2Fmaster%2Fblazor-maze-solved%2Fblazor-maze-solved%2FApp.razor%3Fts%3D2%23L108-L121&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+    <h2>Utilities</h2>
+
+    <p>
+        The only other code needed is some utilities to test if we can move to target squares. These have to check the maze bounds, check if walls are in 
+        the way, and check that the destination hasn't been visited already (in which case there is no point in visiting again, unless you like 
+        infinite recursion)
+    </p>
+
+    <script is:inline crossorigin="anonymous" src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fcodehutch%2Fblazor-blog%2Fblob%2Fmaster%2Fblazor-maze-solved%2Fblazor-maze-solved%2FApp.razor%3Fts%3D2%23L123-L141&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+    <h2>Finally...</h2>
+
+    <p>
+        Displaying and colouring the maze is a topic in itself. <strong>Tailwind and CSS-Grid</strong> make this
+        easy, please see <a target="_blank" href="/articles/blazor-maze-simple/index.html">
+        my previous post on generating and displaying the maze </a> for more info. 
+    </p>
+
+    <p>
+        That's about all there is to it. The full code is 
+        <a href="https://github.com/codehutch/blazor-blog/blob/master/blazor-maze-solved/blazor-maze-solved/App.razor" target="_blank">here</a>.
+    </p>
+
+</Layout>
+
+ 

@@ -96,7 +96,7 @@
   
 
   .never-used {
-    color:  color-orange-500; /* stops colours being optimized out */
+    color:  color-orange-500; /* stops colours being optimized out - old approach - see now the dummy-styles.astro file instead */
   }
 
   .menuPill {
